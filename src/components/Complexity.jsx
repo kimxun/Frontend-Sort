@@ -1,30 +1,29 @@
 //Hiển thị độ phức tạp thuật toán
 import React from 'react';
 
-function Complexity({ currentComplexity }) {
+function Complexity() {
   return (
-    <div style={{ backgroundColor: '#fff', borderRadius: '16px', padding: '24px', boxShadow: '0 4px 20px rgba(0,0,0,0.05)', border: '1px solid #eaeaea' }}>
-      <h3 style={{ margin: '0 0 16px 0', fontSize: '18px', color: '#0f172a' }}>Đánh Giá Giải Thuật (Độ Phức Tạp)</h3>
-      <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '14px' }}>
-        <thead>
-          <tr style={{ backgroundColor: '#cbd5e1', color: '#0f172a' }}>
-            <th style={{ padding: '10px', border: '1px solid #94a3b8' }}>Thời Gian (Time)</th>
-            <th style={{ padding: '10px', border: '1px solid #94a3b8' }}>Không Gian (Space)</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td style={{ padding: '10px', border: '1px solid #cbd5e1', color: '#334155' }}>
-              Tốt nhất (Best Case): <strong>{currentComplexity.best}</strong><br/>
-              Trung bình (Average Case): <strong>{currentComplexity.avg}</strong><br/>
-              Tệ nhất (Worst Case): <strong>{currentComplexity.worst}</strong>
-            </td>
-            <td style={{ padding: '10px', border: '1px solid #cbd5e1', color: '#334155', verticalAlign: 'top' }}>
-              Space: <strong>{currentComplexity.space}</strong>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+    <div className="card" style={{ height: '100%' }}>
+      <h3 style={{ color: '#3182ce', marginBottom: '10px' }}>Selection Sort</h3>
+      <p style={{ fontSize: '0.9rem', color: '#4a5568', lineHeight: '1.5' }}>
+        Thuật toán sắp xếp chọn (Selection Sort) tìm phần tử nhỏ nhất trong mảng chưa sắp xếp và đưa nó vào vị trí đúng.
+      </p>
+
+      <h4 style={{ marginTop: '20px', marginBottom: '10px' }}>Độ phức tạp:</h4>
+      <ul style={{ fontSize: '0.9rem', color: '#4a5568', listStyle: 'none', padding: 0 }}>
+        <li>Thời gian: O(n²)</li>
+        <li>Không gian: O(1)</li>
+      </ul>
+
+      <h4 style={{ marginTop: '20px', marginBottom: '10px' }}>Các bước thực hiện:</h4>
+      <ol style={{ fontSize: '0.9rem', color: '#4a5568', paddingLeft: '20px', lineHeight: '1.6' }}>
+        <li>Tìm phần tử nhỏ nhất trong mảng chưa sắp xếp</li>
+        <li>Hoán đổi phần tử nhỏ nhất với phần tử đầu tiên</li>
+        <li>Lặp lại cho phần còn lại của mảng</li>
+      </ol>
+
+      <h4 style={{ marginTop: '20px', marginBottom: '10px' }}>Biến trạng thái</h4>
+      <p style={{ fontSize: '0.9rem', color: '#a0aec0' }}>Chưa có biến nào</p>
     </div>
   );
 }
