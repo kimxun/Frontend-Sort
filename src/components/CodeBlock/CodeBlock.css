@@ -1,0 +1,35 @@
+.code-card {
+  background-color: #0f141c !important;
+  color: #f8fafc;
+  padding: 0 !important;
+  overflow: hidden;
+  border: 1px solid #1e293b;
+}
+
+.code-header {
+  padding: 12px 20px;
+  background-color: #161b22;
+  border-bottom: 1px solid #21262d;
+}
+
+.code-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #4ade80;
+  font-weight: 600;
+}
+
+.code-card pre {
+  margin: 0;
+  padding: 20px;
+  background: transparent !important;
+  overflow-x: auto;
+}
+
+.code-card code {
+  font-family: 'Fira Code', 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #e2e8f0;
+  background: transparent !important;
+}

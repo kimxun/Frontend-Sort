@@ -1,0 +1,94 @@
+.control-panel-card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Khoảng cách đứng giữa dòng 1 và dòng 2 */
+  border: 1px solid var(--border);
+  padding: 20px;
+}
+
+.control-row {
+  display: flex;
+  align-items: flex-end; /* Căn lề theo đáy để các nút bằng hàng với ô select */
+  gap: 12px;             /* Khoảng cách ngang cố định giữa các nút theo bản vẽ */
+  justify-content: flex-start; /* Ép toàn bộ các phần tử tụ về bên trái, không kéo dãn */
+  flex-wrap: wrap;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-label {
+  font-size: 0.75rem;
+  color: var(--text);
+  opacity: 0.8;
+  font-weight: 600;
+  margin-bottom: 6px;
+  text-align: left;
+}
+
+.custom-select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background-color: var(--bg);
+  color: var(--text-h);
+  font-size: 0.9rem;
+  outline: none;
+  min-width: 300px;
+  height: 38px; /* Chiều cao tiêu chuẩn khớp với các nút bấm */
+  box-sizing: border-box;
+}
+
+.btn {
+  padding: 0 16px;
+  height: 38px; /* Đồng nhất chiều cao tuyệt đối cho tất cả các nút */
+  font-size: 0.85rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.btn-start { background-color: #3182ce; color: white; }
+.btn-start:hover { background-color: #2b6cb0; }
+
+.btn-outline { background-color: var(--bg); border: 1px solid var(--border); color: var(--text); }
+.btn-outline:hover { background-color: var(--code-bg); }
+
+.btn-apply { background-color: var(--code-bg); color: var(--text-h); border: 1px solid var(--border); }
+.btn-apply:hover { filter: brightness(0.9); }
+
+.btn-random { background-color: var(--bg); color: #aa3bff; border: 1px solid #d6bcfa; }
+.btn-random:hover { background-color: rgba(170, 59, 255, 0.05); }
+
+.custom-input {
+  width: 320px; 
+  padding: 9px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background-color: var(--bg);
+  color: var(--text-h);
+  font-size: 0.9rem;
+  outline: none;
+  height: 38px;
+  box-sizing: border-box;
+}
+.custom-input:focus { border-color: #3182ce; }
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 38px; /* Đồng bộ chiều cao để trục giữa thanh trượt thẳng hàng với tâm nút bấm */
+  /*  margin-left: auto để thanh trượt đứng ngay sau nút TĂNG DẦN */
+}
+
+.speed-icon { font-size: 1.1rem; color: var(--text); }
+.custom-slider { cursor: pointer; accent-color: #3182ce; width: 120px; }

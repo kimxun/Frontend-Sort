@@ -1,0 +1,35 @@
+.visualizer-card {
+  min-height: 320px;
+}
+
+.bars-container {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  height: 220px;
+  gap: 12px;
+  margin-top: 20px;
+  border-bottom: 2px solid #e2e8f0;
+  padding-bottom: 5px;
+}
+
+.bar-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 45px;
+}
+
+.bar-value {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #4a5568;
+  margin-bottom: 6px;
+}
+
+.bar-element {
+  width: 100%;
+  background-color: #3182ce;
+  border-radius: 4px 4px 0 0;
+  transition: height 0.3s ease;
+}

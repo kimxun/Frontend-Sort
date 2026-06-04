@@ -1,5 +1,5 @@
-//hien thi cong thuc thuat toan
 import React from 'react';
+import './CodeBlock.css';
 
 function CodeBlock() {
   const codeString = `function selectionSort(arr) {

@@ -1,22 +1,12 @@
-// src/App.jsx
 import React from 'react';
-import './App.css';
-import MainLayout from './components/MainLayout';
-import Visualizer from './components/Visualizer';
-import CodeBlock from './components/CodeBlock';
-import Complexity from './components/Complexity';
+import './index.css';
+import VisualizerPage from './pages/VisualizerPage/VisualizerPage.jsx';
 
 function App() {
   return (
-    <MainLayout
-      leftContent={
-        <>
-          <Visualizer />
-          <CodeBlock />
-        </>
-      }
-      rightContent={<Complexity />}
-    />
+    <div className="app-container">
+      <VisualizerPage />
+    </div>
   );
 }
 
