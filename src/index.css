@@ -127,13 +127,11 @@ pre::-webkit-scrollbar-thumb:hover,
 
 /* Giữ nguyên các định dạng bổ sung phía dưới của bạn */
 #root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
+    width: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  border-inline: 1px solid var(--border);
 }
 
 h1, h2, h3, h4, .card-title {
