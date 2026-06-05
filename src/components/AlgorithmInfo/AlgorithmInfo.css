@@ -1,0 +1,147 @@
+:root {
+  --card: #141720;
+  --border: rgba(255, 255, 255, 0.07);
+  --foreground: #f1f5f9;
+  --muted-foreground: #94a3b8;
+}
+
+.algorithm-info {
+  background: var(--card);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.algorithm-info-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(99, 102, 241, 0.06);
+}
+
+.algorithm-info-header-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.algorithm-info-emoji {
+  font-size: 22px;
+}
+
+.algorithm-info-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--foreground);
+}
+
+.algorithm-info-tagline {
+  font-size: 11px;
+  color: #6366f1;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.algorithm-info-body {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.algorithm-info-description {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  line-height: 1.6;
+  margin: 0;
+}
+
+.algorithm-info-badges {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.badge-time {
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+.badge-time .badge-label {
+  color: var(--muted-foreground);
+}
+
+.badge-time .badge-value {
+  color: #a5b4fc;
+}
+
+.badge-space {
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+}
+
+.badge-space .badge-label {
+  color: var(--muted-foreground);
+}
+
+.badge-space .badge-value {
+  color: #67e8f9;
+}
+
+.badge-stable {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+}
+
+.badge-unstable {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+.algorithm-info-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.steps-title {
+  font-size: 11px;
+  color: var(--muted-foreground);
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.step-item {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.step-number {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: #6366f1;
+  font-weight: 600;
+  min-width: 18px;
+  padding-top: 1px;
+}
+
+.step-text {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  line-height: 1.5;
+}

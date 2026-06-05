@@ -1,23 +1,43 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  /* ===== Ép bảng màu tối mặc định từ Figma ===== */
+  --bg: #0c0e14;                  /* Nền xanh đen tối tổng thể */
+  --text: #9ca3af;                /* Chữ xám nhạt */
+  --text-h: #f3f4f6;              /* Tiêu đề chữ trắng sáng */
+  --border: rgba(255, 255, 255, 0.07); /* Đường viền mảnh như Figma */
+  --code-bg: #141720;             /* Nền khu vực Code */
+  --card: #141720;                /* Nền của các ô Panel con */
+  
+  --accent: #6366f1;              /* Màu tím/xanh của nút Bắt đầu */
+  --accent-bg: rgba(99, 102, 241, 0.15);
+  --accent-border: rgba(99, 102, 241, 0.5);
+  --social-bg: rgba(47, 48, 58, 0.5);
+  --shadow: rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
 
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
+  /* ===== Biến cấu hình cho component UI (shadcn/ui / Tailwind) ===== */
+  --background: var(--bg);
+  --foreground: var(--text-h);
+  --card-foreground: var(--text-h);
+  --popover: var(--bg);
+  --popover-foreground: var(--text-h);
+  --primary: var(--accent);
+  --primary-foreground: #ffffff;
+  --secondary: var(--code-bg);
+  --secondary-foreground: var(--text-h);
+  --muted: var(--code-bg);
+  --muted-foreground: var(--text);
+  --accent-foreground: var(--text-h);
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --ring: var(--accent);
+  --radius: 0.5rem;
+
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
-  color-scheme: light dark;
+  color-scheme: dark;            /* Báo cho trình duyệt ép hẳn sang chế độ tối */
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
@@ -30,134 +50,147 @@
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-body {
+/* ===== ÉP TOÀN BỘ NỀN HỆ THỐNG SANG MÀU TỐI ===== */
+html, body, #root, .app-container {
+  background-color: var(--bg) !important;
+  color: var(--text) !important;
   margin: 0;
+  box-sizing: border-box;
 }
 
+/* ===== SỬA CÁC KHUNG PANEL BỊ TRẮNG (ControlPanel, Variables, History) ===== */
+.card, .layout-header, .panel {
+  background: var(--card) !important;       /* Ép sang màu nền tối #141720 */
+  background-color: var(--card) !important; /* Đè hoàn toàn bg-white nếu có */
+  border: 1px solid var(--border) !important;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  text-align: left; 
+  color: var(--text-h) !important;          /* Ép chữ bên trong thành màu sáng */
+  box-sizing: border-box;
+}
+
+/* ===== SỬA KHUNG TRÌNH CHỈNH SỬA CODE (CodePanel) ===== */
+code, pre, .code-panel, .code-container, [class*="SyntaxHighlighter"] {
+  background: var(--code-bg) !important;    /* Ép sang nền tối #141720 */
+  background-color: var(--code-bg) !important;
+  color: var(--text-h) !important;          /* Chữ code chuyển sang màu sáng */
+  font-family: var(--mono);
+  border-radius: 4px;
+}
+
+/* ===== TÙY BIẾN THANH KÉO (SCROLLBAR) CHO KHUNG CODE ===== */
+/* Cấu hình chuẩn cho Firefox */
+code, pre, .code-panel, .code-container, [class*="SyntaxHighlighter"] {
+  scrollbar-width: thin !important;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent !important;
+}
+
+/* Độ rộng thanh cuộn (Chrome, Safari, Edge) */
+code::-webkit-scrollbar,
+pre::-webkit-scrollbar,
+.code-panel::-webkit-scrollbar,
+.code-container::-webkit-scrollbar,
+[class*="SyntaxHighlighter"]::-webkit-scrollbar {
+  width: 8px !important;  /* Độ rộng thanh dọc nhỏ gọn tinh tế */
+  height: 8px !important; /* Độ cao thanh ngang */
+}
+
+/* Nền phía dưới thanh cuộn */
+code::-webkit-scrollbar-track,
+pre::-webkit-scrollbar-track,
+.code-panel::-webkit-scrollbar-track,
+.code-container::-webkit-scrollbar-track,
+[class*="SyntaxHighlighter"]::-webkit-scrollbar-track {
+  background: transparent !important; /* Để trong suốt, lộ nền tối màu của khung code */
+}
+
+/* Cục kéo di chuyển (Bo tròn dạng kén nhộng) */
+code::-webkit-scrollbar-thumb,
+pre::-webkit-scrollbar-thumb,
+.code-panel::-webkit-scrollbar-thumb,
+.code-container::-webkit-scrollbar-thumb,
+[class*="SyntaxHighlighter"]::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15) !important; /* Màu xám mờ mượt mà */
+  border-radius: 20px !important;                     /* Bo tròn góc như macOS */
+}
+
+/* Đổi màu đậm hơn khi rê chuột vào thanh cuộn */
+code::-webkit-scrollbar-thumb:hover,
+pre::-webkit-scrollbar-thumb:hover,
+.code-panel::-webkit-scrollbar-thumb:hover,
+.code-container::-webkit-scrollbar-thumb:hover,
+[class*="SyntaxHighlighter"]::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Giữ nguyên các định dạng bổ sung phía dưới của bạn */
 #root {
   width: 1126px;
   max-width: 100%;
   margin: 0 auto;
-  text-align: center;
   border-inline: 1px solid var(--border);
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
 }
 
-h1,
-h2 {
+h1, h2, h3, h4, .card-title {
   font-family: var(--heading);
   font-weight: 500;
-  color: var(--text-h);
-}
-
-h1, .header-title {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  font-family: var(--heading);
-  font-weight: 800;
-  color: var(--text-h);
-  text-align: center;
-
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
-}
-
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
-  }
+  color: var(--text-h) !important;          /* Luôn giữ tiêu đề màu trắng sáng */
 }
 
 p {
   margin: 0;
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+.control-panel, 
+.algorithm-info, 
+.variables-panel, 
+.history-panel {
+  background: var(--card, #141720) !important;
+  background-color: var(--card, #141720) !important;
+  color: var(--text, #9ca3af) !important;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.07)) !important;
+  border-radius: 8px !important;
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* 2. Đảm bảo toàn bộ các phần chữ tiêu đề luôn trắng sáng rõ nét */
+.variables-title, 
+.history-title, 
+.steps-title, 
+.algorithm-info-name,
+.speed-label {
+  color: var(--text-h, #f3f4f6) !important;
 }
 
-/* ==========================================================================
-   BỔ SUNG CSS CHO SORTING ALGORITHM VISUALIZER (DÙNG ĐÚNG VARIABLE CỦA BẠN)
-   ========================================================================== */
-
-/* Khung bọc ứng dụng để đệm khoảng cách với viền màn hình chính */
-.app-container {
-  width: 100%;
-  padding: 20px;
-  box-sizing: border-box;
+/* 3. Ép màu nền tối cho ô Dropdown thuật toán và Ô nhập mảng */
+.algorithm-select, 
+.array-input {
+  background: var(--bg, #0c0e14) !important;
+  background-color: var(--bg, #0c0e14) !important;
+  color: var(--text-h, #f3f4f6) !important;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.07)) !important;
 }
 
-/* Thẻ Card chung - Ép ngược về căn lề trái để trị triệt để lỗi text-align: center của #root */
-.card {
-  background: var(--bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: var(--shadow);
-  text-align: left; 
-  color: var(--text);
-  box-sizing: border-box;
+/* Đảm bảo chữ bên trong các tùy chọn option của thẻ select hiển thị chuẩn */
+.algorithm-select option {
+  background-color: var(--card, #141720) !important;
+  color: var(--text-h, #f3f4f6) !important;
 }
 
-/* Tiêu đề nhỏ bên trong các thẻ Card */
-.card-title {
-  font-family: var(--heading);
-  font-weight: bold;
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: 1.1rem;
-  color: var(--text-h);
+/* 4. Ép các vùng chứa danh sách bên trong chạy nền trong suốt để lộ màu tối */
+.history-list, 
+.variables-content, 
+.algorithm-info-body,
+.steps-list {
+  background: transparent !important;
+  background-color: transparent !important;
 }
 
-/* Phần hiển thị lịch sử các bước thực hiện dưới cùng */
-.history-section {
-  margin-top: 20px;
-}
-
-.history-section p {
-  color: var(--text);
-  opacity: 0.6;
-  font-size: 0.9rem;
-  margin: 0;
+/* 5. Tinh chỉnh nhẹ chữ hiển thị của các bước thuật toán */
+.step-text, .algorithm-info-description {
+  color: var(--text, #9ca3af) !important;
 }
