@@ -1,49 +1,79 @@
-import React, { useEffect, useRef } from 'react';
-import './HistoryPanel.css';
+import "./HistoryPanel.css";
 
-const HistoryPanel = ({ history }) => {
-  const scrollContainerRef = useRef(null);
-  const safeHistory = Array.isArray(history) ? history : [];
+const HistoryPanel = () => {
+    const historyData = [
+        {
+            step: 1,
+            description: "Vòng lặp ngoài i=0: tìm phần tử nhỏ nhất từ vị trí 0",
+            array: "[64, 34, 25, 12, 22, 11, 90]",
+        },
+        {
+            step: 2,
+            description: "So sánh a[1]=34 với a[0]=64",
+            array: "[64, 34, 25, 12, 22, 11, 90]",
+        },
+        {
+            step: 3,
+            description: "So sánh a[2]=25 với a[1]=34",
+            array: "[64, 34, 25, 12, 22, 11, 90]",
+        },
+        {
+            step: 4,
+            description: "So sánh a[3]=12 với a[2]=25",
+            array: "[64, 34, 25, 12, 22, 11, 90]",
+        },
+        {
+            step: 5,
+            description: "Tìm thấy minIdx = 3 (giá trị 12)",
+            array: "[64, 34, 25, 12, 22, 11, 90]",
+        },
+        {
+            step: 6,
+            description: "So sánh a[5]=11 với a[3]=12",
+            array: "[64, 34, 25, 12, 22, 11, 90]",
+        },
+    ];
 
-  useEffect(() => {
-    if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
-    }
-  }, [safeHistory.length]);
+    return (
+        <div className="history-panel">
+            <div className="history-header">
+                <span className="history-title">
+                    Lịch sử
+                </span>
 
-  return (
-    <div className="history-panel">
-      <div className="history-header">
-        <span className="history-title">Lịch sử</span>
-        {safeHistory.length > 0 && (
-          <span className="history-badge">{safeHistory.length} bước</span>
-        )}
-      </div>
-      <div ref={scrollContainerRef} className="history-list">
-        {safeHistory.length === 0 ? (
-          <div className="history-empty">Chưa có bước nào</div>
-        ) : (
-          <div className="history-steps">
-            {safeHistory.map((item, i) => {
-              const isLatest = i === safeHistory.length - 1;
-              const arrayDisplay = item?.array && Array.isArray(item.array) 
-                ? `[${item.array.join(", ")}]` 
-                : '[]';
-              return (
-                <div key={i} className={`history-item ${isLatest ? 'latest' : ''}`}>
-                  <span className="history-step-number">#{item?.step ?? i+1}</span>
-                  <div className="history-content">
-                    <div className="history-description">{item?.description ?? ''}</div>
-                    <div className="history-array">{arrayDisplay}</div>
-                  </div>
+                <span className="history-badge">
+                    {historyData.length} bước
+                </span>
+            </div>
+
+            <div className="history-content">
+                <div className="history-list">
+                    {historyData.map((item, index) => (
+                        <div
+                            key={item.step}
+                            className={`history-item ${index === historyData.length - 1
+                                    ? "active"
+                                    : ""
+                                }`}
+                        >
+                            <span className="history-step">
+                                #{item.step}
+                            </span>
+
+                            <div className="history-info">
+                                <div className="history-description">
+                                    {item.description}
+                                </div>
+
+                                <div className="history-array">
+                                    {item.array}
+                                </div>
+                            </div>
+                        </div>
+                    ))}
                 </div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-
+            </div>
+        </div>
+    );
+}
 export default HistoryPanel;

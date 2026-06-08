@@ -5,7 +5,11 @@ const VAR_COLORS = ["#a5b4fc", "#67e8f9", "#86efac", "#fbbf24", "#f9a8d4", "#c08
 
 const VariablesPanel = ({ variables }) => {
   // Kiểm tra biến variables có phải mảng không, nếu không gán mảng rỗng
-  const safeVariables = Array.isArray(variables) ? variables : [];
+  const safeVariables = [
+  { name: "i", value: 0 },
+  { name: "j", value: 1 },
+  { name: "minIdx", value: 0 },
+];
 
   return (
     <div className="variables-panel">

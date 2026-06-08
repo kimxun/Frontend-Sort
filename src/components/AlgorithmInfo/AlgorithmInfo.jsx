@@ -4,7 +4,6 @@ import './AlgorithmInfo.css';
 const INFO = {
   selection: {
     name: "Selection Sort",
-    emoji: "🎯",
     tagline: "Tìm min, đặt vào vị trí",
     description: "Tìm phần tử nhỏ nhất trong phần chưa sắp xếp, đặt vào đầu danh sách. Lặp lại cho đến hết.",
     time: "O(n²)",
@@ -14,7 +13,6 @@ const INFO = {
   },
   interchange: {
     name: "Interchange Sort",
-    emoji: "🔄",
     tagline: "So sánh mọi cặp, đổi chỗ",
     description: "So sánh từng cặp phần tử theo thứ tự và hoán đổi ngay nếu chúng không đúng vị trí.",
     time: "O(n²)",
@@ -24,7 +22,6 @@ const INFO = {
   },
   quick: {
     name: "Quick Sort",
-    emoji: "⚡",
     tagline: "Chia để trị, chọn pivot",
     description: "Chọn pivot, phân mảng thành 2 phần (nhỏ hơn / lớn hơn pivot), đệ quy sắp xếp từng phần.",
     time: "O(n log n) avg",
@@ -42,7 +39,7 @@ const AlgorithmInfo = ({ algorithm }) => {
     <div className="algorithm-info">
       <div className="algorithm-info-header">
         <div className="algorithm-info-header-content">
-          <span className="algorithm-info-emoji">{info.emoji}</span>
+          {/* <span className="algorithm-info-emoji">{info.emoji}</span> */}
           <div>
             <div className="algorithm-info-name">{info.name}</div>
             <div className="algorithm-info-tagline">{info.tagline}</div>
