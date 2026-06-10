@@ -107,7 +107,7 @@ const SortingLayout = ({
                 <span className="dot yellow"></span>
                 <span className="dot green"></span>
               </div>
-              {/* Đã sửa thành panel-window__title để giống tab phía trên, không bị bo tròn */}
+
               <span className="panel-window__title">{getFileName(algorithm)}</span>
             </div>
             <div className="panel-window__content code-content">
@@ -117,7 +117,7 @@ const SortingLayout = ({
 
         </div>
 
-        {/* Cột phải */}
+
         <div className="layout-column layout-column--right">
           <AlgorithmInfo algorithm={algorithm} />
           <VariablesPanel variables={variables} />

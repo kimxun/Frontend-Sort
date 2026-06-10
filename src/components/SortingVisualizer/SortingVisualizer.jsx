@@ -41,12 +41,11 @@ const SortingVisualizer = ({ array, comparing, swapping, sorted, currentIndex })
         ))}
       </div>
 
-      {/* Bars */}
+      
       <div className="bars-container">
         {array.map((value, index) => {
           const style = getStyle(index);
           const heightPct = (value / maxValue) * 100;
-          // Dynamic bar width based on array length
           const barWidth = Math.max(28, Math.min(56, Math.floor(480 / array.length) - 8));
 
           return (
