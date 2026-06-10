@@ -1,14 +1,14 @@
-/* CodePanel container */
+
 .code-panel {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #141720 !important; /* Đảm bảo màu nền tối chuẩn */
+  background: #141720 !important; 
   border-radius: 8px;
   overflow: hidden;
 }
 
-/* Tab bar / window decorations */
+
 .code-panel-tabbar {
   display: flex;
   align-items: center;
@@ -35,22 +35,19 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* ==========================================================================
-   KHU VỰC CHỨA CODE: CỐ ĐỊNH CHIỀU CAO ĐỂ KÍCH HOẠT THANH KÉO
-   ========================================================================== */
+
 .code-container {
   flex: 1;
-  /* Ép chiều cao cố định hoặc tối đa để nội dung code ngắn/dài đều kích hoạt thanh cuộn */
   height: 320px !important; 
   max-height: 320px !important; 
   
-  overflow-y: scroll !important; /* Luôn luôn giữ lại vùng chiếm chỗ của thanh cuộn */
+  overflow-y: scroll !important; 
   overflow-x: hidden !important; 
   padding: 12px 0;
   box-sizing: border-box;
 }
 
-/* Individual code line */
+
 .code-line {
   display: flex;
   align-items: center;
@@ -58,7 +55,7 @@
   background: transparent;
   border-left: 2px solid transparent;
   transition: background 0.2s, border-left 0.2s;
-  padding-right: 10px; /* Tránh text đè vào đường kẻ cuộn */
+  padding-right: 10px; 
 }
 
 .code-line.active {
@@ -96,39 +93,30 @@
   animation: pulse 1.5s infinite;
 }
 
-/* Animation pulse */
 @keyframes pulse {
   0%, 100% { opacity: 0.8; }
   50% { opacity: 0.3; }
 }
 
-/* ==========================================================================
-   TÙY BIẾN THANH CUỘN THÀNH ĐƯỜNG KẺ DỌC MỜ MẢNH (CHROME / EDGE / SAFARI)
-   ========================================================================== */
 
-/* Độ rộng cực mảnh chỉ 4px giống như một đường kẻ sọc đứng */
 .code-container::-webkit-scrollbar {
   width: 4px !important;
   display: block !important;
 }
 
-/* Nền đường chạy trong suốt để ẩn vào màu nền tối */
 .code-container::-webkit-scrollbar-track {
   background: transparent !important;
 }
 
-/* Cục kéo slider - Đường kẻ dọc mờ màu trắng xám */
 .code-container::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.15) !important; /* Độ mờ vừa phải chuẩn UI */
   border-radius: 4px !important;
 }
 
-/* Khi di chuột vào khu vực này đường kẻ sẽ sáng rõ lên */
 .code-container::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.35) !important;
 }
 
-/* Hỗ trợ cấu hình đường kẻ cho trình duyệt Firefox */
 @supports (scrollbar-width: thin) {
   .code-container {
     scrollbar-width: thin !important;

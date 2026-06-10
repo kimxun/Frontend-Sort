@@ -7,7 +7,7 @@
   box-sizing: border-box;
 }
 
-/* Header UI */
+
 .sorting-layout__header {
   display: flex;
   align-items: center;
@@ -43,7 +43,7 @@
   font-weight: 500;
 }
 
-/* LAYOUT CHÍNH */
+
 .sorting-layout__main {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 340px;
@@ -84,7 +84,7 @@
   flex-shrink: 0;
 }
 
-/* Nút Mac OS */
+
 .mac-dots {
   display: flex;
   gap: 8px;
@@ -113,7 +113,7 @@
   border: 1px solid rgba(99, 102, 241, 0.3);
 }
 
-/* Visualization */
+
 .visualizer-content {
   padding: 24px;
   min-height: 420px;
@@ -123,43 +123,37 @@
   background: #0d111a;
 }
 
-/* ==========================================================================
-   KHUNG CODE & THANH CUỘN ĐẸP (SỬA LỖI THANH TRẮNG NHỎ + KHOẢNG TRỐNG)
-   ========================================================================== */
+
 .code-content {
-    /* Chiều cao cố định để kích hoạt cuộn khi cần */
     height: 280px !important;
-    /* Chỉ hiện thanh cuộn khi nội dung vượt quá chiều cao */
     overflow-y: auto !important;
     overflow-x: hidden !important;
-    /* Loại bỏ mọi padding/margin thừa gây khoảng trống bên phải */
     padding: 0 !important;
     margin: 0 !important;
     background: #0d111a;
-    /* Firefox: thanh cuộn đẹp */
     scrollbar-width: auto;
     scrollbar-color: #7c8ea8 #1e293b;
 }
 
-/* Chrome, Edge, Safari: tùy chỉnh chiều rộng thanh cuộn và màu sắc */
+
 .code-content::-webkit-scrollbar {
-    width: 14px !important;          /* Độ rộng vừa phải, không quá to gây lãng phí */
+    width: 14px !important;          
     height: 14px !important;
 }
 
-/* Đường rãnh (track) */
+
 .code-content::-webkit-scrollbar-track {
-    background: #1e293b !important;   /* Màu nền track tương phản nhẹ */
+    background: #1e293b !important;  
     border-radius: 12px !important;
     margin-block: 2px;
 }
 
-/* Thanh kéo (thumb) - to, bo tròn, dễ kéo */
+
 .code-content::-webkit-scrollbar-thumb {
     background: #7c8ea8 !important;
     border-radius: 12px !important;
     border: 2px solid #1e293b !important;
-    min-height: 48px;                 /* Đảm bảo thumb không quá nhỏ */
+    min-height: 48px;                
 }
 
 .code-content::-webkit-scrollbar-thumb:hover {
@@ -167,18 +161,18 @@
     cursor: pointer;
 }
 
-/* Góc giao nhau giữa hai thanh cuộn */
+
 .code-content::-webkit-scrollbar-corner {
     background-color: #0d111a;
 }
 
-/* Loại bỏ khoảng trống bên phải do overflow tạo ra (đảm bảo nội dung full width) */
+
 .code-content > * {
     width: 100%;
     box-sizing: border-box;
 }
 
-/* Responsive */
+
 @media (max-width: 1100px) {
     .sorting-layout__main {
         grid-template-columns: 1fr;

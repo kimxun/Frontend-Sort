@@ -1,8 +1,8 @@
-/* Control panel container */
+
 .control-panel {
   display: flex;
   flex-direction: column;
-  padding: 16px 20px;           /* Padding ngoài khung */
+  padding: 16px 20px;          
   gap: 12px;
 }
 
@@ -13,14 +13,14 @@
   gap: 10px;
 }
 
-/* === PHẦN NHẬP MẢNG - ROW 2 (ĐÃ SỬA) === */
+
 .control-row:nth-child(2) {
   padding-top: 8px;
   gap: 5px;
   padding-bottom: 8px;
 }
 
-/* Base button styles */
+
 button {
   display: inline-flex;
   align-items: center;
@@ -44,7 +44,7 @@ button:disabled {
   opacity: 0.4;
 }
 
-/* Select wrapper */
+
 .select-wrapper {
   position: relative;
 }
@@ -86,7 +86,7 @@ button:disabled {
   font-size: 10px;
 }
 
-/* Play/Pause button */
+
 .btn-play {
   border: none;
   color: #fff;
@@ -109,7 +109,7 @@ button:disabled {
   background: #d97706;
 }
 
-/* Step button */
+
 .btn-step {
   background: transparent;
   color: var(--muted-foreground, #475569);
@@ -130,7 +130,7 @@ button:disabled {
   background: var(--secondary, #f1f5f9);
 }
 
-/* Reset button */
+
 .btn-reset {
   color: var(--muted-foreground, #475569);
 }
@@ -144,7 +144,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* Order button */
+
 .btn-order.asc {
   color: #10b981;
   border-color: rgba(16, 185, 129, 0.125);
@@ -164,7 +164,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* Speed control */
+
 .speed-control {
   display: flex;
   align-items: center;
@@ -197,7 +197,7 @@ button:disabled {
   text-align: right;
 }
 
-/* Array input - ĐÃ TĂNG PADDING */
+
 .array-input-wrapper {
   position: relative;
   flex: 1;
@@ -223,7 +223,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* Apply & Random buttons - ĐÃ TĂNG PADDING */
+
 .btn-apply,
 .btn-random {
   padding: 9px 16px;
@@ -234,7 +234,7 @@ button:disabled {
   white-space: nowrap;
 }
 
-/* Apply button */
+
 .btn-apply {
   background: var(--secondary, #f1f5f9);
   color: var(--muted-foreground, #475569);
@@ -256,7 +256,7 @@ button:disabled {
   border-color: #6366f1;
 }
 
-/* Random button */
+
 .btn-random {
   color: #a855f7;
   border-color: rgba(168, 85, 247, 0.125);
@@ -271,7 +271,7 @@ button:disabled {
   cursor: not-allowed;
 }
 
-/* Dark mode overrides */
+
 @media (prefers-color-scheme: dark) {
   .algorithm-select,
   .array-input,

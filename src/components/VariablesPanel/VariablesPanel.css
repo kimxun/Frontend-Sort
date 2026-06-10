@@ -5,7 +5,7 @@
   overflow: hidden;
 }
 
-/* Header */
+
 .variables-header {
   padding: 10px 14px;
   border-bottom: 1px solid var(--border, #e2e8f0);
@@ -30,7 +30,7 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Content */
+
 .variables-content {
   padding: 10px 14px;
   min-height: 60px;
@@ -45,7 +45,7 @@
   font-size: 12px;
 }
 
-/* Grid layout */
+
 .variables-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -74,7 +74,7 @@
   font-weight: 600;
 }
 
-/* Dark mode */
+
 @media (prefers-color-scheme: dark) {
   .variables-panel {
     --card: #1e293b;

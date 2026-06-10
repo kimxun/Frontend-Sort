@@ -77,7 +77,7 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
-/* Dark mode support (dựa trên biến toàn cục) */
+
 @media (prefers-color-scheme: dark) {
   .legend-container {
     border-bottom-color: var(--border, #334155);

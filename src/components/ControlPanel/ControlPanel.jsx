@@ -64,7 +64,7 @@ export default function ControlPanel({
           <span className="select-arrow">▼</span>
         </div>
 
-        {/* Start / Pause */}
+     
         <button
           onClick={isRunning ? onPause : onStart}
           {...handleHover("play")}
@@ -83,7 +83,7 @@ export default function ControlPanel({
           )}
         </button>
 
-        {/* Step forward */}
+        
         <button
           onClick={onStepForward}
           disabled={isRunning || !canStepForward}
@@ -95,7 +95,7 @@ export default function ControlPanel({
           <StepIcon /> Bước tiếp
         </button>
 
-        {/* Reset */}
+   
         <button
           onClick={onReset}
           disabled={isRunning}
@@ -107,7 +107,7 @@ export default function ControlPanel({
           <ResetIcon /> Reset
         </button>
 
-        {/* Sort order */}
+        
         <button
           onClick={onSortOrderChange}
           disabled={isRunning}
@@ -120,7 +120,7 @@ export default function ControlPanel({
           {sortOrder === "asc" ? "Tăng dần" : "Giảm dần"}
         </button>
 
-        {/* Speed */}
+        
         <div className="speed-control">
           <SpeedIcon />
           <span className="speed-label">Tốc độ</span>
@@ -138,7 +138,7 @@ export default function ControlPanel({
         </div>
       </div>
 
-      {/* Row 2: array input */}
+      
       <div className="control-row">
         <div className="array-input-wrapper">
           <input

@@ -4,7 +4,7 @@ import './VariablesPanel.css';
 const VAR_COLORS = ["#a5b4fc", "#67e8f9", "#86efac", "#fbbf24", "#f9a8d4", "#c084fc"];
 
 const VariablesPanel = ({ variables }) => {
-  // Kiểm tra biến variables có phải mảng không, nếu không gán mảng rỗng
+
   const safeVariables = [
   { name: "i", value: 0 },
   { name: "j", value: 1 },
