@@ -4,12 +4,7 @@ import './VariablesPanel.css';
 const VAR_COLORS = ["#a5b4fc", "#67e8f9", "#86efac", "#fbbf24", "#f9a8d4", "#c084fc"];
 
 const VariablesPanel = ({ variables }) => {
-
-  const safeVariables = [
-  { name: "i", value: 0 },
-  { name: "j", value: 1 },
-  { name: "minIdx", value: 0 },
-];
+  const safeVariables = Array.isArray(variables) ? variables : [];
 
   return (
     <div className="variables-panel">
@@ -19,7 +14,6 @@ const VariablesPanel = ({ variables }) => {
           <span className="variables-badge">{safeVariables.length}</span>
         )}
       </div>
-
       <div className="variables-content">
         {safeVariables.length === 0 ? (
           <div className="variables-empty">Chưa có biến nào</div>

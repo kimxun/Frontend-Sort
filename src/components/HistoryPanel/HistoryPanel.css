@@ -72,19 +72,34 @@
   font-size: 13px;
   font-family: "JetBrains Mono", monospace;
 }
+
 .history-content::-webkit-scrollbar {
   width: 8px;
 }
-
 .history-content::-webkit-scrollbar-track {
   background: #111827;
 }
-
 .history-content::-webkit-scrollbar-thumb {
   background: #374151;
   border-radius: 999px;
 }
-
 .history-content::-webkit-scrollbar-thumb:hover {
   background: #4b5563;
+}
+
+@media (max-width: 768px) {
+  .history-content {
+    padding: 8px;
+  }
+  .history-item {
+    flex-wrap: wrap;
+  }
+  .history-array {
+    font-size: 10px;
+    white-space: normal;
+    word-break: break-all;
+  }
+  .history-description {
+    font-size: 11px;
+  }
 }

@@ -44,9 +44,7 @@ export default function ControlPanel({
 
   return (
     <div className="control-panel">
-      {/* Row 1: algorithm + playback */}
       <div className="control-row">
-        {/* Algorithm select */}
         <div className="select-wrapper">
           <select
             value={algorithm}
@@ -64,7 +62,6 @@ export default function ControlPanel({
           <span className="select-arrow">▼</span>
         </div>
 
-     
         <button
           onClick={isRunning ? onPause : onStart}
           {...handleHover("play")}
@@ -83,7 +80,6 @@ export default function ControlPanel({
           )}
         </button>
 
-        
         <button
           onClick={onStepForward}
           disabled={isRunning || !canStepForward}
@@ -95,7 +91,6 @@ export default function ControlPanel({
           <StepIcon /> Bước tiếp
         </button>
 
-   
         <button
           onClick={onReset}
           disabled={isRunning}
@@ -107,7 +102,6 @@ export default function ControlPanel({
           <ResetIcon /> Reset
         </button>
 
-        
         <button
           onClick={onSortOrderChange}
           disabled={isRunning}
@@ -120,7 +114,6 @@ export default function ControlPanel({
           {sortOrder === "asc" ? "Tăng dần" : "Giảm dần"}
         </button>
 
-        
         <div className="speed-control">
           <SpeedIcon />
           <span className="speed-label">Tốc độ</span>
@@ -138,7 +131,6 @@ export default function ControlPanel({
         </div>
       </div>
 
-      
       <div className="control-row">
         <div className="array-input-wrapper">
           <input
@@ -178,7 +170,6 @@ export default function ControlPanel({
   );
 }
 
-// Icons
 function PlayIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">

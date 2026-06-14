@@ -102,10 +102,6 @@ const CodePanel = ({ algorithm, currentLine }) => {
 
   return (
     <div className="code-panel">
-     
-    
-
-    
       <div className="code-container">
         {lines.map((line, i) => {
           const isActive = i === currentLine;

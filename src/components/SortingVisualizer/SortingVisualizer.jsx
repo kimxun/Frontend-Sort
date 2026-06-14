@@ -31,7 +31,6 @@ const SortingVisualizer = ({ array, comparing, swapping, sorted, currentIndex })
 
   return (
     <div className="visualizer-container">
-      {/* Legend */}
       <div className="legend-container">
         {LEGEND.map((item) => (
           <div key={item.label} className="legend-item">
@@ -40,8 +39,6 @@ const SortingVisualizer = ({ array, comparing, swapping, sorted, currentIndex })
           </div>
         ))}
       </div>
-
-      
       <div className="bars-container">
         {array.map((value, index) => {
           const style = getStyle(index);

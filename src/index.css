@@ -1,22 +1,18 @@
 :root {
-  --bg: #0c0e14;                  
-  --text: #9ca3af;              
-  --text-h: #f3f4f6;              
-  --border: rgba(255, 255, 255, 0.07); 
-  --code-bg: #141720;             
-  --card: #141720;              
-  
-  --accent: #6366f1;            
+  --bg: #0c0e14;
+  --text: #9ca3af;
+  --text-h: #f3f4f6;
+  --border: rgba(255, 255, 255, 0.07);
+  --code-bg: #141720;
+  --card: #141720;
+  --accent: #6366f1;
   --accent-bg: rgba(99, 102, 241, 0.15);
   --accent-border: rgba(99, 102, 241, 0.5);
   --social-bg: rgba(47, 48, 58, 0.5);
   --shadow: rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
-
-
   --background: var(--bg);
   --foreground: var(--text-h);
   --card-foreground: var(--text-h);
@@ -33,86 +29,72 @@
   --destructive-foreground: #ffffff;
   --ring: var(--accent);
   --radius: 0.5rem;
-
   font: 18px/145% var(--sans);
   letter-spacing: 0.18px;
-  color-scheme: dark;           
+  color-scheme: dark;
   color: var(--text);
   background: var(--bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
 }
-
+@media (max-width: 1024px) {
+  :root { font-size: 16px; }
+}
 
 html, body, #root, .app-container {
   background-color: var(--bg) !important;
   color: var(--text) !important;
   margin: 0;
+  padding: 0;
   box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
 }
 
-
 .card, .layout-header, .panel {
-  background: var(--card) !important;      
-  background-color: var(--card) !important; 
+  background: var(--card) !important;
   border: 1px solid var(--border) !important;
   border-radius: 8px;
   padding: 20px;
   box-shadow: var(--shadow);
-  text-align: left; 
-  color: var(--text-h) !important;         
+  text-align: left;
+  color: var(--text-h) !important;
   box-sizing: border-box;
 }
 
-
 code, pre, .code-panel, .code-container, [class*="SyntaxHighlighter"] {
-  background: var(--code-bg) !important;    
-  background-color: var(--code-bg) !important;
-  color: var(--text-h) !important;          
+  background: var(--code-bg) !important;
+  color: var(--text-h) !important;
   font-family: var(--mono);
   border-radius: 4px;
-}
-
-
-code, pre, .code-panel, .code-container, [class*="SyntaxHighlighter"] {
   scrollbar-width: thin !important;
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent !important;
 }
-
-
 code::-webkit-scrollbar,
 pre::-webkit-scrollbar,
 .code-panel::-webkit-scrollbar,
 .code-container::-webkit-scrollbar,
 [class*="SyntaxHighlighter"]::-webkit-scrollbar {
-  width: 8px !important;  
+  width: 8px !important;
   height: 8px !important;
 }
-
-
 code::-webkit-scrollbar-track,
 pre::-webkit-scrollbar-track,
 .code-panel::-webkit-scrollbar-track,
 .code-container::-webkit-scrollbar-track,
 [class*="SyntaxHighlighter"]::-webkit-scrollbar-track {
-  background: transparent !important; 
+  background: transparent !important;
 }
-
 code::-webkit-scrollbar-thumb,
 pre::-webkit-scrollbar-thumb,
 .code-panel::-webkit-scrollbar-thumb,
 .code-container::-webkit-scrollbar-thumb,
 [class*="SyntaxHighlighter"]::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15) !important; 
-  border-radius: 20px !important;                     
+  background: rgba(255, 255, 255, 0.15) !important;
+  border-radius: 20px !important;
 }
-
 code::-webkit-scrollbar-thumb:hover,
 pre::-webkit-scrollbar-thumb:hover,
 .code-panel::-webkit-scrollbar-thumb:hover,
@@ -122,7 +104,7 @@ pre::-webkit-scrollbar-thumb:hover,
 }
 
 #root {
-    width: 100%;
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -132,53 +114,70 @@ pre::-webkit-scrollbar-thumb:hover,
 h1, h2, h3, h4, .card-title {
   font-family: var(--heading);
   font-weight: 500;
-  color: var(--text-h) !important;         
+  color: var(--text-h) !important;
 }
 
-p {
-  margin: 0;
-}
+p { margin: 0; }
 
-.control-panel, 
-.algorithm-info, 
-.variables-panel, 
-.history-panel {
+.control-panel, .algorithm-info, .variables-panel, .history-panel {
   background: var(--card, #141720) !important;
-  background-color: var(--card, #141720) !important;
   color: var(--text, #9ca3af) !important;
   border: 1px solid var(--border, rgba(255, 255, 255, 0.07)) !important;
   border-radius: 8px !important;
 }
 
-.variables-title, 
-.history-title, 
-.steps-title, 
-.algorithm-info-name,
-.speed-label {
+.variables-title, .history-title, .steps-title, .algorithm-info-name, .speed-label {
   color: var(--text-h, #f3f4f6) !important;
 }
 
-.algorithm-select, 
-.array-input {
+.algorithm-select, .array-input {
   background: var(--bg, #0c0e14) !important;
-  background-color: var(--bg, #0c0e14) !important;
   color: var(--text-h, #f3f4f6) !important;
   border: 1px solid var(--border, rgba(255, 255, 255, 0.07)) !important;
 }
-
 .algorithm-select option {
   background-color: var(--card, #141720) !important;
   color: var(--text-h, #f3f4f6) !important;
 }
-
-.history-list, 
-.variables-content, 
-.algorithm-info-body,
-.steps-list {
+.history-list, .variables-content, .algorithm-info-body, .steps-list {
   background: transparent !important;
-  background-color: transparent !important;
 }
-
 .step-text, .algorithm-info-description {
   color: var(--text, #9ca3af) !important;
+}
+
+/* ========== RESPONSIVE MOBILE ========== */
+@media (max-width: 768px) {
+  body, html, #root, .app-container, .sorting-layout {
+    padding: 0 !important;
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
+  #root {
+    border-inline: none !important;
+  }
+  .layout-mobile, .mobile-layout {
+    width: 100% !important;
+    padding: 0 !important;
+  }
+  .mobile-layout > * {
+    width: 100% !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+  }
+  .array-input-wrapper {
+    max-width: 100% !important;
+  }
+  .control-row select,
+  .control-row button,
+  .speed-control,
+  .array-input,
+  .btn-apply,
+  .btn-random {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
 }

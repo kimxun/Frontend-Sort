@@ -32,24 +32,20 @@ const INFO = {
 };
 
 const AlgorithmInfo = ({ algorithm }) => {
-  const info = INFO[algorithm];
-  if (!info) return null; // hoặc hiển thị thông báo lỗi
+  const info = INFO[algorithm] || INFO.selection;
 
   return (
     <div className="algorithm-info">
       <div className="algorithm-info-header">
         <div className="algorithm-info-header-content">
-          {/* <span className="algorithm-info-emoji">{info.emoji}</span> */}
           <div>
             <div className="algorithm-info-name">{info.name}</div>
             <div className="algorithm-info-tagline">{info.tagline}</div>
           </div>
         </div>
       </div>
-
       <div className="algorithm-info-body">
         <p className="algorithm-info-description">{info.description}</p>
-
         <div className="algorithm-info-badges">
           <div className="badge badge-time">
             <span className="badge-label">time </span>
@@ -63,7 +59,6 @@ const AlgorithmInfo = ({ algorithm }) => {
             <span>{info.stable ? 'stable' : 'unstable'}</span>
           </div>
         </div>
-
         <div className="algorithm-info-steps">
           <div className="steps-title">Các bước</div>
           <div className="steps-list">
