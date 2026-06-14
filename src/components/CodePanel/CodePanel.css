@@ -1,13 +1,11 @@
-
 .code-panel {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #141720 !important; 
+  background: #141720 !important;
   border-radius: 8px;
   overflow: hidden;
 }
-
 
 .code-panel-tabbar {
   display: flex;
@@ -35,18 +33,15 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
-
 .code-container {
   flex: 1;
-  height: 320px !important; 
-  max-height: 320px !important; 
-  
-  overflow-y: scroll !important; 
-  overflow-x: hidden !important; 
+  height: 320px !important;
+  max-height: 320px !important;
+  overflow-y: scroll !important;
+  overflow-x: hidden !important;
   padding: 12px 0;
   box-sizing: border-box;
 }
-
 
 .code-line {
   display: flex;
@@ -55,7 +50,7 @@
   background: transparent;
   border-left: 2px solid transparent;
   transition: background 0.2s, border-left 0.2s;
-  padding-right: 10px; 
+  padding-right: 10px;
 }
 
 .code-line.active {
@@ -98,28 +93,67 @@
   50% { opacity: 0.3; }
 }
 
-
 .code-container::-webkit-scrollbar {
   width: 4px !important;
   display: block !important;
 }
-
 .code-container::-webkit-scrollbar-track {
   background: transparent !important;
 }
-
 .code-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15) !important; /* Độ mờ vừa phải chuẩn UI */
+  background: rgba(255, 255, 255, 0.15) !important;
   border-radius: 4px !important;
 }
-
 .code-container::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.35) !important;
 }
-
 @supports (scrollbar-width: thin) {
   .code-container {
     scrollbar-width: thin !important;
     scrollbar-color: rgba(255, 255, 255, 0.15) transparent !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .code-panel {
+    width: 100%;
+  }
+  .code-container {
+    height: 220px !important;
+    max-height: 220px !important;
+    padding: 8px 0;
+  }
+  .line-number {
+    min-width: 30px;
+    padding-right: 8px;
+    font-size: 10px;
+  }
+  .code-text {
+    font-size: 11px;
+  }
+  .executing-indicator {
+    font-size: 9px;
+    margin-left: 6px;
+  }
+  .code-panel-tabbar {
+    padding: 8px 12px;
+  }
+  .file-label {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .code-container {
+    height: 180px !important;
+    max-height: 180px !important;
+  }
+  .line-number {
+    min-width: 24px;
+    padding-right: 6px;
+    font-size: 9px;
+  }
+  .code-text {
+    font-size: 10px;
   }
 }

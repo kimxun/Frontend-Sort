@@ -5,7 +5,6 @@
   overflow: hidden;
 }
 
-
 .variables-header {
   padding: 10px 14px;
   border-bottom: 1px solid var(--border, #e2e8f0);
@@ -30,7 +29,6 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
-
 .variables-content {
   padding: 10px 14px;
   min-height: 60px;
@@ -44,7 +42,6 @@
   color: var(--muted-foreground, #475569);
   font-size: 12px;
 }
-
 
 .variables-grid {
   display: grid;
@@ -74,7 +71,6 @@
   font-weight: 600;
 }
 
-
 @media (prefers-color-scheme: dark) {
   .variables-panel {
     --card: #1e293b;
@@ -94,5 +90,19 @@
   }
   .variables-empty {
     color: var(--muted-foreground);
+  }
+}
+
+@media (max-width: 768px) {
+  .variables-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .variable-item {
+    padding: 6px 10px;
+  }
+  .variable-name,
+  .variable-value {
+    font-size: 12px;
   }
 }

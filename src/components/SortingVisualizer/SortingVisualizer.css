@@ -5,7 +5,6 @@
   flex-direction: column;
 }
 
-
 .legend-container {
   display: flex;
   justify-content: center;
@@ -35,7 +34,6 @@
   letter-spacing: 0.02em;
 }
 
-/* Bars container */
 .bars-container {
   flex: 1;
   display: flex;
@@ -69,6 +67,11 @@
 .bar {
   border-radius: 4px 4px 2px 2px;
   min-height: 8px;
+  transition: height 0.2s ease, background 0.2s;
+}
+.bar:hover {
+  opacity: 0.9;
+  transform: scaleX(1.02);
 }
 
 .bar-index {
@@ -77,7 +80,6 @@
   font-family: 'JetBrains Mono', monospace;
 }
 
-
 @media (prefers-color-scheme: dark) {
   .legend-container {
     border-bottom-color: var(--border, #334155);
@@ -85,5 +87,30 @@
   .legend-label,
   .bar-index {
     color: var(--muted-foreground, #94a3b8);
+  }
+}
+
+@media (max-width: 768px) {
+  .visualizer-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+  .bars-container {
+    gap: 4px;
+    padding: 12px 8px;
+  }
+  .bar-wrapper {
+    min-width: 28px;
+  }
+  .bar-value,
+  .bar-index {
+    font-size: 10px;
+  }
+  .legend-container {
+    gap: 12px;
+    padding: 6px 8px;
+  }
+  .legend-label {
+    font-size: 10px;
   }
 }
