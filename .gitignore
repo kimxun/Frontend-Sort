@@ -22,3 +22,12 @@ dist-ssr/
 *.sln
 *.sw?
 .vite/
+
+# Môi trường ảo (Tuyệt đối không push vì thư mục này cực kỳ nặng)
+.venv/
+venv/
+ENV/
+
+# File biến môi trường (chứa password, API key, thông tin database)
+.env
+.env
