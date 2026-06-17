@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import '../index.css';
-import SortingLayout from './SortingLayout/SortingLayout.jsx';
+import '../../index.css';
+import SortingLayout from './SortingLayout.jsx';
 
 export default function SortingPage() {
 
