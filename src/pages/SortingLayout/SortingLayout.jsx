@@ -1,37 +1,31 @@
-import React from "react";
-import ControlPanel from "../../components/ControlPanel/ControlPanel";
-import AlgorithmInfo from "../../components/AlgorithmInfo/AlgorithmInfo";
-import VariablesPanel from "../../components/VariablesPanel/VariablesPanel";
-import SortingVisualizer from "../../components/SortingVisualizer/SortingVisualizer";
-import CodePanel from "../../components/CodePanel/CodePanel";
-import HistoryPanel from "../../components/HistoryPanel/HistoryPanel";
-import "./SortingLayout.css";
+import React from 'react';
+import { useSorting } from '../../context/SortingContext';
+import ControlPanel from '../../components/ControlPanel/ControlPanel';
+import AlgorithmInfo from '../../components/AlgorithmInfo/AlgorithmInfo';
+import VariablesPanel from '../../components/VariablesPanel/VariablesPanel';
+import SortingVisualizer from '../../components/SortingVisualizer/SortingVisualizer';
+import CodePanel from '../../components/CodePanel/CodePanel';
+import HistoryPanel from '../../components/HistoryPanel/HistoryPanel';
+import './SortingLayout.css';
 
-const SortingLayout = (props) => {
+const SortingLayout = () => {
   const {
-    isRunning,
-    algorithm,
-    sortOrder,
-    speed,
-    onStart,
-    onPause,
-    onReset,
-    onAlgorithmChange,
-    onSortOrderChange,
-    onSpeedChange,
-    onArrayInput,
-    onRandomArray,
-    onStepForward,
-    canStepForward,
+    algorithms,
+    algorithmId,
+    setAlgorithmId,
     array,
-    comparing,
-    swapping,
-    sorted,
-    currentIndex,
-    currentLine,
-    history,
-    variables,
-  } = props;
+    setArray,
+    steps,
+    currentStep,
+    isRunning,
+    loading,
+    sortOrder,
+    setSortOrder,
+    speed,
+    setSpeed,
+    runAlgorithm,
+    reset,
+  } = useSorting();
 
   const getFileName = (algo) => {
     switch (algo) {
@@ -56,27 +50,33 @@ const SortingLayout = (props) => {
     </div>
   );
 
-  const renderVisualizer = () => (
-    <div className="panel-window">
-      <div className="panel-window__header">
-        <div className="mac-dots">
-          <span className="dot red"></span>
-          <span className="dot yellow"></span>
-          <span className="dot green"></span>
+  const renderVisualizer = () => {
+    const currentArray = steps.length > 0 && currentStep < steps.length
+      ? steps[currentStep]
+      : array;
+
+    return (
+      <div className="panel-window">
+        <div className="panel-window__header">
+          <div className="mac-dots">
+            <span className="dot red"></span>
+            <span className="dot yellow"></span>
+            <span className="dot green"></span>
+          </div>
+          <span className="panel-window__title">Algorithm Animation Studio</span>
         </div>
-        <span className="panel-window__title">Algorithm Animation Studio</span>
+        <div className="panel-window__content">
+          <SortingVisualizer
+            array={currentArray}
+            comparing={[]}
+            swapping={[]}
+            sorted={[]}
+            currentIndex={currentStep}
+          />
+        </div>
       </div>
-      <div className="panel-window__content">
-        <SortingVisualizer
-          array={array}
-          comparing={comparing}
-          swapping={swapping}
-          sorted={sorted}
-          currentIndex={currentIndex}
-        />
-      </div>
-    </div>
-  );
+    );
+  };
 
   const renderCodePanel = () => (
     <div className="panel-window">
@@ -86,73 +86,78 @@ const SortingLayout = (props) => {
           <span className="dot yellow"></span>
           <span className="dot green"></span>
         </div>
-        <span className="panel-window__title">{getFileName(algorithm)}</span>
+        <span className="panel-window__title">{getFileName(algorithmId)}</span>
       </div>
       <div className="panel-window__content code-content">
-        <CodePanel algorithm={algorithm} currentLine={currentLine} />
+        <CodePanel algorithm={algorithmId} currentLine={0} />
       </div>
     </div>
   );
+
+  const handleStart = () => runAlgorithm();
+  const handleReset = () => reset();
+  const handleAlgorithmChange = (e) => setAlgorithmId(Number(e.target.value));
+  const handleArrayInput = (newArray) => setArray(newArray);
+  const handleSortOrderChange = (e) => setSortOrder(e.target.value);
+  const handleSpeedChange = (e) => setSpeed(Number(e.target.value));
 
   return (
     <div className="sorting-layout">
       {renderHeader()}
 
-      {/* Layout dành cho Desktop (≥769px) */}
       <div className="layout-desktop">
         <div className="sorting-layout__main">
           <div className="layout-column layout-column--center">
             {renderVisualizer()}
             <ControlPanel
               isRunning={isRunning}
-              algorithm={algorithm}
+              algorithm={algorithmId}
               sortOrder={sortOrder}
               speed={speed}
-              onStart={onStart}
-              onPause={onPause}
-              onReset={onReset}
-              onAlgorithmChange={onAlgorithmChange}
-              onSortOrderChange={onSortOrderChange}
-              onSpeedChange={onSpeedChange}
-              onArrayInput={onArrayInput}
-              onRandomArray={onRandomArray}
-              onStepForward={onStepForward}
-              canStepForward={canStepForward}
+              onStart={handleStart}
+              onPause={() => {}}
+              onReset={handleReset}
+              onAlgorithmChange={handleAlgorithmChange}
+              onSortOrderChange={handleSortOrderChange}
+              onSpeedChange={handleSpeedChange}
+              onArrayInput={handleArrayInput}
+              onRandomArray={() => setArray([...Array(10)].map(() => Math.floor(Math.random() * 100) + 1))}
+              onStepForward={() => setCurrentStep(prev => Math.min(prev + 1, steps.length - 1))}
+              canStepForward={currentStep < steps.length - 1}
             />
             {renderCodePanel()}
           </div>
           <div className="layout-column layout-column--right">
-            <AlgorithmInfo algorithm={algorithm} />
-            <VariablesPanel variables={variables} />
-            <HistoryPanel history={history} />
+            <AlgorithmInfo algorithmId={algorithmId} />
+            <VariablesPanel variables={{}} />
+            <HistoryPanel history={steps} />
           </div>
         </div>
       </div>
 
-      {/* Layout dành cho Mobile (≤768px) */}
       <div className="layout-mobile">
         <div className="mobile-layout">
-          <AlgorithmInfo algorithm={algorithm} />
+          <AlgorithmInfo algorithmId={algorithmId} />
           {renderVisualizer()}
           <ControlPanel
             isRunning={isRunning}
-            algorithm={algorithm}
+            algorithm={algorithmId}
             sortOrder={sortOrder}
             speed={speed}
-            onStart={onStart}
-            onPause={onPause}
-            onReset={onReset}
-            onAlgorithmChange={onAlgorithmChange}
-            onSortOrderChange={onSortOrderChange}
-            onSpeedChange={onSpeedChange}
-            onArrayInput={onArrayInput}
-            onRandomArray={onRandomArray}
-            onStepForward={onStepForward}
-            canStepForward={canStepForward}
+            onStart={handleStart}
+            onPause={() => {}}
+            onReset={handleReset}
+            onAlgorithmChange={handleAlgorithmChange}
+            onSortOrderChange={handleSortOrderChange}
+            onSpeedChange={handleSpeedChange}
+            onArrayInput={handleArrayInput}
+            onRandomArray={() => setArray([...Array(10)].map(() => Math.floor(Math.random() * 100) + 1))}
+            onStepForward={() => setCurrentStep(prev => Math.min(prev + 1, steps.length - 1))}
+            canStepForward={currentStep < steps.length - 1}
           />
           {renderCodePanel()}
-          <VariablesPanel variables={variables} />
-          <HistoryPanel history={history} />
+          <VariablesPanel variables={{}} />
+          <HistoryPanel history={steps} />
         </div>
       </div>
     </div>
