@@ -1,7 +1,17 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import "./UsersPage.css";
 
+const handleDelete = (user) => {
+    if (
+        window.confirm(
+            `⚠️ Bạn có chắc muốn xóa user "${user.full_name}"?`
+        )
+    ) {
+        alert("Xóa thành công");
+    }
+};
 const users = [
     {
         id: 1,
@@ -160,11 +170,10 @@ export default function UsersPage() {
 
                                 <td>
                                     <span
-                                        className={`role-badge ${
-                                            user.role === 1
-                                                ? "role-admin"
-                                                : "role-user"
-                                        }`}
+                                        className={`role-badge ${user.role === 1
+                                            ? "role-admin"
+                                            : "role-user"
+                                            }`}
                                     >
                                         {user.role === 1
                                             ? "ADMIN"
@@ -178,12 +187,18 @@ export default function UsersPage() {
 
                                 <td>
                                     <div className="action-group">
-                                        <button className="action-btn">
-                                            Edit
+                                        <button
+                                            className="action-btn"
+                                            onClick={() => navigate("/admin/edit-user")}
+                                        >
+                                            <FiEdit2 />
                                         </button>
 
-                                        <button className="action-btn delete">
-                                            Delete
+                                        <button
+                                            className="action-btn delete"
+                                            onClick={() => handleDelete(user)}
+                                        >
+                                            <FiTrash2 />
                                         </button>
                                     </div>
                                 </td>

@@ -1,18 +1,19 @@
 .admin-layout {
-    display: flex;
     min-height: 100vh;
-    background: #0f172a;
+    background: #11131b;
     color: white;
 }
 
 .admin-content {
-    flex: 1;
+    margin-left: 256px; /* bằng width sidebar */
+
+    min-height: 100vh;
+
     display: flex;
     flex-direction: column;
 }
 
 .admin-main {
     flex: 1;
-    padding: 30px;
     overflow-y: auto;
 }
