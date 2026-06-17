@@ -50,9 +50,7 @@ export default function EditUser() {
 
                 <button
                     className="close-btn"
-                    onClick={() =>
-                        navigate("/admin/users")
-                    }
+                    onClick={() => navigate("/admin/users")}
                 >
                     ✕
                 </button>
