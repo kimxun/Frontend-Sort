@@ -47,7 +47,16 @@ const SortingLayout = () => {
         <h1>SORTING VISUALIZER</h1>
         <p>Algorithm Animation Studio</p>
       </div>
+
+      <button
+        className="header-login-btn"
+        onClick={() => window.location.href = "/login"}
+      >
+        Đăng nhập
+      </button>
+
     </div>
+
   );
 
   const renderVisualizer = () => {
@@ -115,7 +124,7 @@ const SortingLayout = () => {
               sortOrder={sortOrder}
               speed={speed}
               onStart={handleStart}
-              onPause={() => {}}
+              onPause={() => { }}
               onReset={handleReset}
               onAlgorithmChange={handleAlgorithmChange}
               onSortOrderChange={handleSortOrderChange}
@@ -145,7 +154,7 @@ const SortingLayout = () => {
             sortOrder={sortOrder}
             speed={speed}
             onStart={handleStart}
-            onPause={() => {}}
+            onPause={() => { }}
             onReset={handleReset}
             onAlgorithmChange={handleAlgorithmChange}
             onSortOrderChange={handleSortOrderChange}
@@ -164,4 +173,4 @@ const SortingLayout = () => {
   );
 };
 
-export default SortingLayout;
+export default SortingLayout; 

@@ -14,6 +14,23 @@
   margin-bottom: 24px;
 }
 
+.header-login-btn {
+ margin-left: auto;
+  padding: 10px 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  background: #1e293b;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* rê chuột vào */
+.header-login-btn:hover {
+  background: #535f7d;
+  transform: translateY(-1px);
+}
+
 .brand-icon {
   width: 44px;
   height: 44px;
