@@ -1,9 +1,9 @@
 .sidebar {
     width: 256px;
-    height: 100vh;
     position: fixed;
     left: 0;
     top: 0;
+    bottom: 0;
     background: #191b23;
     border-right: 1px solid #434654;
     display: flex;
@@ -37,6 +37,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    overflow-y: auto;
 }
 
 .sidebar-menu a {
@@ -49,6 +50,9 @@
     letter-spacing: 1px;
     text-transform: uppercase;
     transition: 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 .sidebar-menu a:hover {
@@ -61,11 +65,11 @@
 }
 
 .sidebar-bottom {
-    border-top: 1px solid #434654;
     padding: 16px;
+    margin-top: auto;
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 16px;
 }
 
 .deploy-btn {
@@ -76,24 +80,52 @@
     color: #00297a;
     font-weight: 700;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.sidebar-bottom-links {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    border-top: 1px solid #434654;
+    padding-top: 16px;
 }
 
 .sidebar-btn {
-    height: 40px;
+    height: 44px;
     background: transparent;
     border: none;
     color: #c3c5d7;
-    text-align: left;
     cursor: pointer;
     border-radius: 8px;
-    padding: 0 12px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    width: 100%;
+    transition: all 0.2s ease;
 }
 
 .sidebar-btn:hover {
     background: rgba(255, 255, 255, 0.05);
+    color: #ffffff;
 }
 
 .logout-btn {
+    color: #ffb4ab;
+}
+
+.sidebar-btn.logout-btn:hover {
+    background: rgba(255, 180, 171, 0.08);
     color: #ffb4ab;
 }
 
