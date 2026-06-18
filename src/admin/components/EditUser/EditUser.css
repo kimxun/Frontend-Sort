@@ -1,10 +1,10 @@
-.add-user-page {
+.add-user-page,
+.edit-user-page {
     padding: 32px;
     width: 100%;
     color: white;
+    box-sizing: border-box;
 }
-
-/* BREADCRUMB */
 
 .breadcrumb {
     color: #8d90a0;
@@ -12,8 +12,6 @@
     letter-spacing: 2px;
     margin-bottom: 10px;
 }
-
-/* HEADER */
 
 .page-header {
     display: flex;
@@ -32,9 +30,7 @@
 .close-btn {
     background: transparent;
     border: none;
-
     color: #8d90a0;
-
     font-size: 28px;
     cursor: pointer;
 }
@@ -43,14 +39,11 @@
     color: white;
 }
 
-/* FORM */
-
-.add-user-form {
+.add-user-form,
+.edit-user-form {
     background: #191b23;
-
     border: 1px solid #2b2f3c;
     border-radius: 16px;
-
     padding: 30px;
 }
 
@@ -70,33 +63,23 @@
 
 .form-group label {
     display: block;
-
     margin-bottom: 10px;
-
     color: #8d90a0;
     font-size: 12px;
     font-weight: 600;
-
     letter-spacing: 1px;
 }
-
-/* INPUT */
 
 .form-group input,
 .form-group select {
     width: 100%;
     box-sizing: border-box;
-
     background: #11131b;
-
     border: 1px solid #3a3f4d;
     border-radius: 10px;
-
     padding: 14px 16px;
-
     color: white;
     font-size: 14px;
-
     outline: none;
     transition: .25s;
 }
@@ -108,31 +91,22 @@
 .form-group input:focus,
 .form-group select:focus {
     border-color: #4f319c;
-
-    box-shadow:
-        0 0 0 3px rgba(79, 49, 156, 0.2);
+    box-shadow: 0 0 0 3px rgba(79, 49, 156, 0.2);
 }
-
-/* BUTTONS */
 
 .button-group {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
-
     margin-top: 30px;
 }
 
 .cancel-btn {
     background: transparent;
-
     border: 1px solid #3a3f4d;
-
     color: white;
-
     padding: 12px 20px;
     border-radius: 8px;
-
     cursor: pointer;
 }
 
@@ -143,14 +117,10 @@
 .save-btn {
     background: #4f319c;
     border: none;
-
     color: white;
-
     padding: 12px 20px;
     border-radius: 8px;
-
     cursor: pointer;
-
     transition: .25s;
 }
 
@@ -158,18 +128,41 @@
     background: #6240bb;
 }
 
-/* RESPONSIVE */
-
 @media (max-width: 900px) {
     .form-row {
         flex-direction: column;
     }
-
     .form-group.large {
         flex: 1;
     }
-
-    .add-user-page {
+    .add-user-page,
+    .edit-user-page {
         padding: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .add-user-page,
+    .edit-user-page {
+        padding: 16px 20px;
+    }
+    .add-user-form,
+    .edit-user-form {
+        padding: 20px 16px;
+    }
+    .button-group {
+        flex-direction: column;
+    }
+    .button-group button {
+        width: 100%;
+        text-align: center;
+    }
+    .page-header h1 {
+        font-size: 28px;
+    }
+    .form-group input,
+    .form-group select {
+        padding: 12px 14px;
+        font-size: 13px;
     }
 }

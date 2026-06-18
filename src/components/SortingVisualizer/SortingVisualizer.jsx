@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { useSorting } from '../../context/SortingContext';
 import './SortingVisualizer.css';
 
 const BAR_COLORS = {
@@ -18,8 +19,20 @@ const LEGEND = [
   { color: BAR_COLORS.sorted.bg,    label: "Đã sắp xếp" },
 ];
 
-const SortingVisualizer = ({ array, comparing, swapping, sorted, currentIndex }) => {
-  const maxValue = Math.max(...array, 1);
+const SortingVisualizer = () => {
+  const { steps, currentStep, array } = useSorting();
+
+  
+  const currentArray = steps.length > 0 && currentStep < steps.length
+    ? steps[currentStep]
+    : array;
+
+  const comparing = [];
+  const swapping = [];
+  const sorted = [];
+  const currentIndex = -1;
+
+  const maxValue = Math.max(...currentArray, 1);
 
   const getStyle = (index) => {
     if (sorted.includes(index)) return BAR_COLORS.sorted;
@@ -40,10 +53,10 @@ const SortingVisualizer = ({ array, comparing, swapping, sorted, currentIndex })
         ))}
       </div>
       <div className="bars-container">
-        {array.map((value, index) => {
+        {currentArray.map((value, index) => {
           const style = getStyle(index);
           const heightPct = (value / maxValue) * 100;
-          const barWidth = Math.max(28, Math.min(56, Math.floor(480 / array.length) - 8));
+          const barWidth = Math.max(28, Math.min(56, Math.floor(480 / currentArray.length) - 8));
 
           return (
             <div key={`bar-${index}`} className="bar-wrapper">

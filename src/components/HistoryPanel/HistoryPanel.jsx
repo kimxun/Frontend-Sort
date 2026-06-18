@@ -1,9 +1,11 @@
 import React, { useEffect, useRef } from 'react';
+import { useSorting } from '../../context/SortingContext';
 import './HistoryPanel.css';
 
-const HistoryPanel = ({ history }) => {
+const HistoryPanel = () => {
+  const { steps } = useSorting();
   const scrollContainerRef = useRef(null);
-  const safeHistory = Array.isArray(history) ? history : [];
+  const safeHistory = Array.isArray(steps) ? steps : [];
 
   useEffect(() => {
     if (scrollContainerRef.current) {
@@ -24,16 +26,13 @@ const HistoryPanel = ({ history }) => {
           <div className="history-empty">Chưa có bước nào</div>
         ) : (
           <div className="history-steps">
-            {safeHistory.map((item, i) => {
+            {safeHistory.map((array, i) => {
               const isLatest = i === safeHistory.length - 1;
-              const arrayDisplay = item?.array && Array.isArray(item.array) 
-                ? `[${item.array.join(", ")}]` 
-                : '[]';
+              const arrayDisplay = Array.isArray(array) ? `[${array.join(", ")}]` : '[]';
               return (
                 <div key={i} className={`history-item ${isLatest ? 'latest' : ''}`}>
-                  <span className="history-step">#{item?.step ?? i+1}</span>
+                  <span className="history-step">Bước {i + 1}</span>
                   <div className="history-info">
-                    <div className="history-description">{item?.description ?? ''}</div>
                     <div className="history-array">{arrayDisplay}</div>
                   </div>
                 </div>
