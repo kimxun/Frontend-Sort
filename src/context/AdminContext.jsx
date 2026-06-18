@@ -91,10 +91,12 @@ export const AdminProvider = ({ children }) => {
   }, []);
 
   const toggleSidebar = () => setSidebarOpen(prev => !prev);
+  const closeSidebar = () => setSidebarOpen(false);
 
   const value = {
     sidebarOpen,
     toggleSidebar,
+    closeSidebar,
     isMobile,
     users,
     simulations,

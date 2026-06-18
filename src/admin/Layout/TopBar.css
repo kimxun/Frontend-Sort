@@ -125,12 +125,20 @@
     font-size: 13px;
 }
 
+/* --- ĐÃ SỬA LẠI RESPONSIVE MOBILE TẠI ĐÂY --- */
 @media (max-width: 768px) {
     .hamburger-btn {
         display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: -8px; /* Kéo nút menu lùi sát ra mép trái */
     }
     .topbar {
-        padding: 0 32px;
+        padding-left: 12px !important; /* Ép giảm khoảng trống viền trái */
+        padding-right: 16px !important;
+    }
+    .topbar-left {
+        gap: 8px !important; /* Thu hẹp khoảng cách giữa nút menu và chữ Logo */
     }
     .search-box {
         width: 140px;
@@ -154,7 +162,8 @@
         font-size: 16px;
     }
     .topbar {
-        padding: 0 16px !important;
+        padding-left: 8px !important; /* Ép sát tối đa viền trái trên điện thoại nhỏ */
+        padding-right: 12px !important;
     }
     .topbar-right {
         padding-right: 0 !important;
