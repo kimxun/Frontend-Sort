@@ -1,5 +1,5 @@
 import "./Topbar.css";
-import {FiBell,FiSettings} from "react-icons/fi";
+import { FiBell, FiSettings } from "react-icons/fi";
 
 export default function Topbar() {
     return (
@@ -21,11 +21,11 @@ export default function Topbar() {
             <div className="topbar-right">
 
                 <button className="icon-btn">
-                    <FiBell size={20} />
+                    <FiBell  />
                 </button>
 
                 <button className="icon-btn">
-                    <FiSettings size={20} />
+                    <FiSettings />
                 </button>
 
                 <div className="divider"></div>
