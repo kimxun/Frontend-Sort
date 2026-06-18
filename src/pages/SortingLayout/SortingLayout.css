@@ -15,7 +15,7 @@
 }
 
 .header-login-btn {
- margin-left: auto;
+  margin-left: auto;
   padding: 10px 20px;
   border: 1px solid rgba(255,255,255,0.1);
   border-radius: 10px;
@@ -25,7 +25,6 @@
   transition: all 0.2s ease;
 }
 
-/* rê chuột vào */
 .header-login-btn:hover {
   background: #535f7d;
   transform: translateY(-1px);
@@ -195,16 +194,17 @@
   }
 }
 
-/* ========== THAY THẾ TOÀN BỘ MEDIA QUERY MOBILE ========== */
 @media (max-width: 768px) {
   .sorting-layout {
-    padding: 0 !important;
+    padding: 16px 20px !important;
   }
   .sorting-layout__header {
-    justify-content: center;
-    text-align: center;
+    display: flex;
     flex-wrap: wrap;
-    padding: 12px !important;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    padding: 0 !important;
     margin-bottom: 16px !important;
   }
   .brand-icon {
@@ -216,6 +216,11 @@
   }
   .brand-title p {
     font-size: 11px;
+  }
+  .header-login-btn {
+    margin-left: auto;
+    padding: 8px 16px;
+    font-size: 13px;
   }
   .layout-desktop {
     display: none;
@@ -240,10 +245,14 @@
 
 @media (max-width: 480px) {
   .sorting-layout {
-    padding: 8px;
+    padding: 12px 16px !important;
   }
   .brand-title h1 {
     font-size: 16px;
+  }
+  .header-login-btn {
+    padding: 6px 12px;
+    font-size: 12px;
   }
   .visualizer-content {
     padding: 12px;

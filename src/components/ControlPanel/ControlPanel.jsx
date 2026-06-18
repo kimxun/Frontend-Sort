@@ -1,28 +1,28 @@
 import { useState } from "react";
+import { useSorting } from "../../context/SortingContext";
 import "./ControlPanel.css";
 
 const ALGORITHMS = [
-  { value: "selection", label: "Selection Sort" },
-  { value: "interchange", label: "Interchange Sort" },
-  { value: "quick", label: "Quick Sort" },
+  { value: 1, label: "Selection Sort" },
+  { value: 2, label: "Quick Sort" },
+  { value: 3, label: "Interchange Sort" },
 ];
 
-export default function ControlPanel({
-  isRunning,
-  algorithm,
-  sortOrder,
-  speed,
-  onStart,
-  onPause,
-  onReset,
-  onAlgorithmChange,
-  onSortOrderChange,
-  onSpeedChange,
-  onArrayInput,
-  onRandomArray,
-  onStepForward,
-  canStepForward,
-}) {
+export default function ControlPanel() {
+  const {
+    algorithmId,
+    setAlgorithmId,
+    setArray,
+    speed,
+    setSpeed,
+    isRunning,
+    runAlgorithm,
+    reset,
+    steps,
+    currentStep,
+    setCurrentStep,
+  } = useSorting();
+
   const [inputValue, setInputValue] = useState("");
   const [hovered, setHovered] = useState(null);
 
@@ -32,26 +32,43 @@ export default function ControlPanel({
       .map((v) => parseInt(v.trim()))
       .filter((v) => !isNaN(v) && v > 0);
     if (values.length > 0) {
-      onArrayInput(values);
+      setArray(values);
       setInputValue("");
     }
   };
+
+  const handleRandomArray = () => {
+    const newArray = Array.from({ length: 10 }, () =>
+      Math.floor(Math.random() * 100) + 1
+    );
+    setArray(newArray);
+  };
+
+  const handleStepForward = () => {
+    if (currentStep < steps.length - 1) {
+      setCurrentStep(currentStep + 1);
+    }
+  };
+
+  const handlePause = () => {};
 
   const handleHover = (id) => ({
     onMouseEnter: () => setHovered(id),
     onMouseLeave: () => setHovered(null),
   });
 
+  const sortOrder = "asc";
+  const onSortOrderChange = () => {};
+
   return (
     <div className="control-panel">
       <div className="control-row">
         <div className="select-wrapper">
           <select
-            value={algorithm}
-            onChange={(e) => onAlgorithmChange(e.target.value)}
+            value={algorithmId}
+            onChange={(e) => setAlgorithmId(Number(e.target.value))}
             disabled={isRunning}
             className={`algorithm-select ${isRunning ? "disabled" : ""}`}
-            data-active={algorithm !== "selection"}
           >
             {ALGORITHMS.map((a) => (
               <option key={a.value} value={a.value}>
@@ -63,7 +80,7 @@ export default function ControlPanel({
         </div>
 
         <button
-          onClick={isRunning ? onPause : onStart}
+          onClick={isRunning ? handlePause : runAlgorithm}
           {...handleHover("play")}
           className={`btn-play ${isRunning ? "pause" : "play"} ${
             hovered === "play" ? "hover" : ""
@@ -81,18 +98,20 @@ export default function ControlPanel({
         </button>
 
         <button
-          onClick={onStepForward}
-          disabled={isRunning || !canStepForward}
+          onClick={handleStepForward}
+          disabled={isRunning || !steps.length || currentStep >= steps.length - 1}
           {...handleHover("step")}
           className={`btn-step ${
-            canStepForward && !isRunning ? "active" : "inactive"
-          } ${hovered === "step" && canStepForward && !isRunning ? "hover" : ""}`}
+            !isRunning && steps.length && currentStep < steps.length - 1
+              ? "active"
+              : "inactive"
+          } ${hovered === "step" && !isRunning && steps.length && currentStep < steps.length - 1 ? "hover" : ""}`}
         >
           <StepIcon /> Bước tiếp
         </button>
 
         <button
-          onClick={onReset}
+          onClick={reset}
           disabled={isRunning}
           {...handleHover("reset")}
           className={`btn-reset ${isRunning ? "disabled" : ""} ${
@@ -123,7 +142,7 @@ export default function ControlPanel({
             max={10}
             step={1}
             value={speed}
-            onChange={(e) => onSpeedChange(Number(e.target.value))}
+            onChange={(e) => setSpeed(Number(e.target.value))}
             disabled={isRunning}
             className={`speed-slider ${isRunning ? "disabled" : ""}`}
           />
@@ -156,7 +175,7 @@ export default function ControlPanel({
         </button>
 
         <button
-          onClick={onRandomArray}
+          onClick={handleRandomArray}
           disabled={isRunning}
           {...handleHover("random")}
           className={`btn-random ${isRunning ? "disabled" : ""} ${
@@ -177,6 +196,7 @@ function PlayIcon() {
     </svg>
   );
 }
+
 function PauseIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
@@ -185,6 +205,7 @@ function PauseIcon() {
     </svg>
   );
 }
+
 function StepIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -193,6 +214,7 @@ function StepIcon() {
     </svg>
   );
 }
+
 function ResetIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -201,6 +223,7 @@ function ResetIcon() {
     </svg>
   );
 }
+
 function AscIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -209,6 +232,7 @@ function AscIcon() {
     </svg>
   );
 }
+
 function DescIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -217,6 +241,7 @@ function DescIcon() {
     </svg>
   );
 }
+
 function ShuffleIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -228,6 +253,7 @@ function ShuffleIcon() {
     </svg>
   );
 }
+
 function SpeedIcon() {
   return (
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2">

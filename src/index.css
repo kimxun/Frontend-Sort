@@ -43,14 +43,18 @@
   :root { font-size: 16px; }
 }
 
+* {
+  box-sizing: border-box;
+}
+
 html, body, #root, .app-container {
   background-color: var(--bg) !important;
   color: var(--text) !important;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   width: 100%;
   max-width: 100%;
+  overflow-x: hidden;
 }
 
 .card, .layout-header, .panel {
@@ -148,7 +152,7 @@ p { margin: 0; }
 
 /* ========== RESPONSIVE MOBILE ========== */
 @media (max-width: 768px) {
-  body, html, #root, .app-container, .sorting-layout {
+  body, html, #root, .app-container {
     padding: 0 !important;
     margin: 0 !important;
     width: 100% !important;
@@ -179,5 +183,12 @@ p { margin: 0; }
   .btn-random {
     width: 100% !important;
     box-sizing: border-box !important;
+  }
+  .admin-content, .admin-main, .users-page, .add-user-page, .edit-user-page {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 16px !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden !important;
   }
 }

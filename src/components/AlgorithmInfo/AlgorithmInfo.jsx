@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSorting } from '../../context/SortingContext';
 import './AlgorithmInfo.css';
 
 const INFO = {
@@ -9,7 +10,13 @@ const INFO = {
     time: "O(n²)",
     space: "O(1)",
     stable: false,
-    steps: ["Đặt i = 0, minIdx = i", "Duyệt j từ i+1 đến cuối", "Nếu a[j] < a[minIdx] → minIdx = j", "Hoán đổi a[i] ↔ a[minIdx]", "Tăng i, lặp lại"],
+    steps: [
+      "Đặt i = 0, minIdx = i",
+      "Duyệt j từ i+1 đến cuối",
+      "Nếu a[j] < a[minIdx] → minIdx = j",
+      "Hoán đổi a[i] ↔ a[minIdx]",
+      "Tăng i, lặp lại"
+    ],
   },
   interchange: {
     name: "Interchange Sort",
@@ -18,7 +25,12 @@ const INFO = {
     time: "O(n²)",
     space: "O(1)",
     stable: false,
-    steps: ["Duyệt i từ 0 đến n-2", "Duyệt j từ i+1 đến n-1", "Nếu a[i] > a[j] → hoán đổi a[i] ↔ a[j]", "Tăng i, lặp lại"],
+    steps: [
+      "Duyệt i từ 0 đến n-2",
+      "Duyệt j từ i+1 đến n-1",
+      "Nếu a[i] > a[j] → hoán đổi a[i] ↔ a[j]",
+      "Tăng i, lặp lại"
+    ],
   },
   quick: {
     name: "Quick Sort",
@@ -27,12 +39,25 @@ const INFO = {
     time: "O(n log n) avg",
     space: "O(log n)",
     stable: false,
-    steps: ["Chọn pivot = a[right]", "Phân vùng: đưa phần tử ≤ pivot sang trái", "Đặt pivot vào đúng vị trí", "Đệ quy với 2 nửa"],
+    steps: [
+      "Chọn pivot = a[right]",
+      "Phân vùng: đưa phần tử ≤ pivot sang trái",
+      "Đặt pivot vào đúng vị trí",
+      "Đệ quy với 2 nửa"
+    ],
   },
 };
 
-const AlgorithmInfo = ({ algorithm }) => {
-  const info = INFO[algorithm] || INFO.selection;
+const ID_TO_KEY = {
+  1: 'selection',
+  2: 'quick',
+  3: 'interchange',
+};
+
+const AlgorithmInfo = () => {
+  const { algorithmId } = useSorting();
+  const key = ID_TO_KEY[algorithmId] || 'selection';
+  const info = INFO[key];
 
   return (
     <div className="algorithm-info">

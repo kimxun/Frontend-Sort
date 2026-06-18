@@ -1,16 +1,15 @@
 .sidebar {
     width: 256px;
     height: 100vh;
-
     position: fixed;
     left: 0;
     top: 0;
-
     background: #191b23;
     border-right: 1px solid #434654;
-
     display: flex;
     flex-direction: column;
+    z-index: 1000;
+    transition: transform 0.3s ease;
 }
 
 .sidebar-logo {
@@ -35,7 +34,6 @@
 .sidebar-menu {
     flex: 1;
     padding: 16px;
-
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -43,23 +41,18 @@
 
 .sidebar-menu a {
     text-decoration: none;
-
     padding: 14px 16px;
-
     border-radius: 8px;
-
     color: #c3c5d7;
-
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 1px;
     text-transform: uppercase;
-
-    transition: .3s;
+    transition: 0.3s;
 }
 
 .sidebar-menu a:hover {
-    background: rgba(255,255,255,.05);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .sidebar-menu a.active {
@@ -70,7 +63,6 @@
 .sidebar-bottom {
     border-top: 1px solid #434654;
     padding: 16px;
-
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -78,37 +70,52 @@
 
 .deploy-btn {
     height: 46px;
-
     border: none;
     border-radius: 8px;
-
     background: #b5c4ff;
     color: #00297a;
-
     font-weight: 700;
-
     cursor: pointer;
 }
 
 .sidebar-btn {
     height: 40px;
-
     background: transparent;
     border: none;
-
     color: #c3c5d7;
-
     text-align: left;
     cursor: pointer;
-
     border-radius: 8px;
     padding: 0 12px;
 }
 
 .sidebar-btn:hover {
-    background: rgba(255,255,255,.05);
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .logout-btn {
     color: #ffb4ab;
+}
+
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 999;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    .sidebar.open {
+        transform: translateX(0);
+    }
+    .sidebar-overlay.active {
+        display: block;
+    }
 }

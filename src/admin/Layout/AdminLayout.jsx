@@ -1,20 +1,21 @@
 import { Outlet } from "react-router-dom";
+import { useAdmin } from "../../context/AdminContext";
 import Sidebar from "./SideBar";
-import Topbar from "./Topbar";
+import Topbar from "./TopBar";
 import "./AdminLayout.css";
 
 export default function AdminLayout() {
-    return (
-        <div className="admin-layout">
-            <Sidebar />
+  const { sidebarOpen, isMobile, toggleSidebar } = useAdmin();
 
-            <div className="admin-content">
-                <Topbar />
-
-                <main className="admin-main">
-                    <Outlet />
-                </main>
-            </div>
-        </div>
-    );
+  return (
+    <div className="admin-layout">
+      <Sidebar isOpen={sidebarOpen} isMobile={isMobile} onClose={toggleSidebar} />
+      <div className="admin-content">
+        <Topbar toggleSidebar={toggleSidebar} isMobile={isMobile} />
+        <main className="admin-main">
+          <Outlet />
+        </main>
+      </div>
+    </div>
+  );
 }

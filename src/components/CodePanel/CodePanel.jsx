@@ -1,4 +1,5 @@
 import React from 'react';
+import { useSorting } from '../../context/SortingContext';
 import './CodePanel.css';
 
 const codes = {
@@ -97,8 +98,17 @@ function highlight(line) {
   return parts;
 }
 
-const CodePanel = ({ algorithm, currentLine }) => {
-  const { label, lines } = codes[algorithm] ?? codes.selection;
+const ID_TO_KEY = {
+  1: 'selection',
+  2: 'quick',
+  3: 'interchange',
+};
+
+const CodePanel = () => {
+  const { algorithmId, currentStep } = useSorting();
+  const key = ID_TO_KEY[algorithmId] || 'selection';
+  const { label, lines } = codes[key];
+  const currentLine = currentStep || 0;
 
   return (
     <div className="code-panel">
