@@ -1,6 +1,7 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
 import { getUsers, deleteUser, createUser, updateUser } from '../services/userService';
 import { getSimulations } from '../services/simulationService';
+import { getAlgorithms, createAlgorithm, deleteAlgorithm, updateAlgorithm } from '../services/algorithmService';
 
 const AdminContext = createContext();
 
@@ -12,6 +13,7 @@ export const AdminProvider = ({ children }) => {
 
   const [users, setUsers] = useState([]);
   const [simulations, setSimulations] = useState([]);
+  const [algorithms, setAlgorithms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -36,6 +38,19 @@ export const AdminProvider = ({ children }) => {
       setError(null);
     } catch (err) {
       setError(err.message || 'Không thể tải lịch sử mô phỏng');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchAlgorithms = async () => {
+    setLoading(true);
+    try {
+      const data = await getAlgorithms();
+      setAlgorithms(data);
+      setError(null);
+    } catch (err) {
+      setError(err.message || 'Không thể tải danh sách thuật toán');
     } finally {
       setLoading(false);
     }
@@ -73,6 +88,38 @@ export const AdminProvider = ({ children }) => {
     }
   };
 
+  const addAlgorithm = async (data) => {
+    try {
+      const newAlgo = await createAlgorithm(data);
+      setAlgorithms(prev => [...prev, newAlgo]);
+      return newAlgo;
+    } catch (err) {
+      setError(err.message || 'Không thể thêm thuật toán');
+      throw err;
+    }
+  };
+
+  const editAlgorithm = async (id, data) => {
+    try {
+      const updated = await updateAlgorithm(id, data);
+      setAlgorithms(prev => prev.map(a => a.id === id ? updated : a));
+      return updated;
+    } catch (err) {
+      setError(err.message || 'Không thể cập nhật thuật toán');
+      throw err;
+    }
+  };
+
+  const removeAlgorithm = async (id) => {
+    try {
+      await deleteAlgorithm(id);
+      setAlgorithms(prev => prev.filter(a => a.id !== id));
+    } catch (err) {
+      setError(err.message || 'Không thể xóa thuật toán');
+      throw err;
+    }
+  };
+
   useEffect(() => {
     const handleResize = () => {
       const mobile = window.innerWidth < 768;
@@ -88,6 +135,7 @@ export const AdminProvider = ({ children }) => {
   useEffect(() => {
     fetchUsers();
     fetchSimulations();
+    fetchAlgorithms();
   }, []);
 
   const toggleSidebar = () => setSidebarOpen(prev => !prev);
@@ -100,13 +148,18 @@ export const AdminProvider = ({ children }) => {
     isMobile,
     users,
     simulations,
+    algorithms,
     loading,
     error,
     fetchUsers,
     fetchSimulations,
+    fetchAlgorithms,
     addUser,
     editUser,
     removeUser,
+    addAlgorithm,
+    editAlgorithm,
+    removeAlgorithm,
   };
 
   return (

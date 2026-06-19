@@ -14,6 +14,7 @@ export const SortingProvider = ({ children }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [infoLoading, setInfoLoading] = useState(false);
   const [sortOrder, setSortOrder] = useState('asc');
   const [speed, setSpeed] = useState(50);
 
@@ -35,31 +36,21 @@ export const SortingProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-
-  const fetchAlgorithmInfo = async () => {
-
-    try {
-
-      const data = await getAlgorithmById(
-        algorithmId
-      );
-
-      setAlgorithmInfo(data);
-
-    } catch (error) {
-
-      console.error(
-        'Lỗi lấy thông tin thuật toán:',
-        error
-      );
-    }
-  };
-
-  if (algorithmId) {
+    const fetchAlgorithmInfo = async () => {
+      if (!algorithmId) return;
+      setInfoLoading(true);
+      try {
+        const data = await getAlgorithmById(algorithmId);
+        setAlgorithmInfo(data);
+      } catch (error) {
+        console.error('Lỗi lấy thông tin thuật toán:', error);
+        setAlgorithmInfo(null);
+      } finally {
+        setInfoLoading(false);
+      }
+    };
     fetchAlgorithmInfo();
-  }
-
-}, [algorithmId]);
+  }, [algorithmId]);
 
   const runAlgorithm = async () => {
     if (!array.length) return;
@@ -85,7 +76,6 @@ export const SortingProvider = ({ children }) => {
       setIsRunning(true);
     } catch (error) {
       console.error('Lỗi lấy steps:', error);
-      // Nếu có token nhưng vẫn 401 → token hết hạn
       if (error.response && error.response.status === 401 && token) {
         alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
         localStorage.removeItem('token');
@@ -115,6 +105,7 @@ export const SortingProvider = ({ children }) => {
     isRunning,
     setIsRunning,
     loading,
+    infoLoading,
     sortOrder,
     setSortOrder,
     speed,
@@ -123,7 +114,6 @@ export const SortingProvider = ({ children }) => {
     reset,
     freeUsageCount,
     algorithmInfo,
-    setAlgorithmInfo,
   };
 
   return (

@@ -7,6 +7,9 @@ import AdminLayout from "./admin/Layout/AdminLayout";
 import UsersPage from "./admin/components/User/UsersPage";
 import AddUser from "./admin/components/AddUser/AddUser";
 import EditUser from "./admin/components/EditUser/EditUser";
+import AlgorithmsPage from "./admin/components/Algorithms/AlgorithmsPage";
+import AddAlgorithm from "./admin/components/Algorithms/AddAlgorithm";
+import EditAlgorithm from './admin/components/Algorithms/EditAlgorithm';
 
 function App() {
   return (
@@ -23,6 +26,9 @@ function App() {
             <Route path="users" element={<UsersPage />} />
             <Route path="add-user" element={<AddUser />} />
             <Route path="edit-user/:id" element={<EditUser />} />
+            <Route path="algorithms" element={<AlgorithmsPage />} />
+            <Route path="add-algorithm" element={<AddAlgorithm />} />
+            <Route path="edit-algorithm/:id" element={<EditAlgorithm />} />
           </Route>
         </Routes>
       </BrowserRouter>
