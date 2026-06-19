@@ -50,6 +50,8 @@
   margin: 0;
 }
 
+/* Badge */
+
 .algorithm-info-badges {
   display: flex;
   gap: 8px;
@@ -61,20 +63,17 @@
   border-radius: 6px;
   font-size: 12px;
   font-family: 'JetBrains Mono', monospace;
-  transition: all 0.2s;
 }
-.badge:hover {
-  transform: translateY(-1px);
-  filter: brightness(1.05);
+
+.badge-label {
+  color: var(--muted-foreground);
 }
 
 .badge-time {
   background: rgba(99, 102, 241, 0.12);
   border: 1px solid rgba(99, 102, 241, 0.2);
 }
-.badge-time .badge-label {
-  color: var(--muted-foreground);
-}
+
 .badge-time .badge-value {
   color: #a5b4fc;
 }
@@ -83,9 +82,7 @@
   background: rgba(6, 182, 212, 0.1);
   border: 1px solid rgba(6, 182, 212, 0.2);
 }
-.badge-space .badge-label {
-  color: var(--muted-foreground);
-}
+
 .badge-space .badge-value {
   color: #67e8f9;
 }
@@ -95,16 +92,18 @@
   border: 1px solid rgba(16, 185, 129, 0.2);
   color: #6ee7b7;
 }
+
 .badge-unstable {
   background: rgba(239, 68, 68, 0.1);
   border: 1px solid rgba(239, 68, 68, 0.2);
   color: #fca5a5;
 }
 
+/* Steps */
+
 .algorithm-info-steps {
   display: flex;
   flex-direction: column;
-  gap: 6px;
 }
 
 .steps-title {
@@ -142,37 +141,34 @@
   line-height: 1.5;
 }
 
+/* Responsive */
+
 @media (max-width: 768px) {
   .algorithm-info-header {
     padding: 10px 12px;
   }
-  .algorithm-info-name {
-    font-size: 13px;
-  }
-  .algorithm-info-tagline {
-    font-size: 10px;
-  }
+
   .algorithm-info-body {
     padding: 10px 12px;
     gap: 10px;
   }
-  .algorithm-info-description {
+
+  .algorithm-info-name {
+    font-size: 13px;
+  }
+
+  .algorithm-info-tagline {
+    font-size: 10px;
+  }
+
+  .algorithm-info-description,
+  .step-text {
     font-size: 11px;
   }
+
   .badge {
     font-size: 10px;
     padding: 3px 8px;
-  }
-  .steps-title {
-    font-size: 10px;
-    margin-bottom: 6px;
-  }
-  .step-number {
-    font-size: 10px;
-    min-width: 16px;
-  }
-  .step-text {
-    font-size: 11px;
   }
 }
 
@@ -180,24 +176,29 @@
   .algorithm-info-header {
     padding: 8px 10px;
   }
-  .algorithm-info-name {
-    font-size: 12px;
-  }
-  .algorithm-info-tagline {
-    font-size: 9px;
-  }
+
   .algorithm-info-body {
     padding: 8px 10px;
     gap: 8px;
   }
+
+  .algorithm-info-name {
+    font-size: 12px;
+  }
+
+  .algorithm-info-tagline {
+    font-size: 9px;
+  }
+
   .badge {
     font-size: 9px;
     padding: 2px 6px;
   }
+
   .step-number {
     font-size: 9px;
-    min-width: 14px;
   }
+
   .step-text {
     font-size: 10px;
   }
