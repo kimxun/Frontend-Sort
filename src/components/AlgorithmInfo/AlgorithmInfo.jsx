@@ -3,9 +3,9 @@ import { useSorting } from '../../context/SortingContext';
 import './AlgorithmInfo.css';
 
 const AlgorithmInfo = () => {
-  const { algorithmInfo, loading } = useSorting();
+  const { algorithmInfo, infoLoading } = useSorting();
 
-  if (loading) {
+  if (infoLoading) {
     return (
       <div className="algorithm-info">
         Đang tải...
@@ -58,7 +58,6 @@ const AlgorithmInfo = () => {
           </div>
         </div>
 
-        {/* Các bước thực hiện */}
         {algorithmInfo.steps?.length > 0 && (
           <div className="algorithm-info-steps">
             <div className="steps-title">
@@ -66,7 +65,7 @@ const AlgorithmInfo = () => {
             </div>
 
             <div className="steps-list">
-              {algorithmInfo.steps?.map((step, index) => (
+              {algorithmInfo.steps.map((step, index) => (
                 <div className="step-item" key={index}>
                   <span className="step-number">
                     {index + 1}.
