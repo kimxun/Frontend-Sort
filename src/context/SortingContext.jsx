@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getAlgorithms, getAlgorithmSteps } from '../services/algorithmService';
+import { getAlgorithms, getAlgorithmSteps, getAlgorithmById } from '../services/algorithmService';
 
 const SortingContext = createContext();
 
@@ -8,6 +8,7 @@ export const useSorting = () => useContext(SortingContext);
 export const SortingProvider = ({ children }) => {
   const [algorithms, setAlgorithms] = useState([]);
   const [algorithmId, setAlgorithmId] = useState(1);
+  const [algorithmInfo, setAlgorithmInfo] = useState(null);
   const [array, setArray] = useState([5, 3, 8, 1, 2]);
   const [steps, setSteps] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
@@ -32,6 +33,33 @@ export const SortingProvider = ({ children }) => {
     };
     fetchAlgorithms();
   }, []);
+
+  useEffect(() => {
+
+  const fetchAlgorithmInfo = async () => {
+
+    try {
+
+      const data = await getAlgorithmById(
+        algorithmId
+      );
+
+      setAlgorithmInfo(data);
+
+    } catch (error) {
+
+      console.error(
+        'Lỗi lấy thông tin thuật toán:',
+        error
+      );
+    }
+  };
+
+  if (algorithmId) {
+    fetchAlgorithmInfo();
+  }
+
+}, [algorithmId]);
 
   const runAlgorithm = async () => {
     if (!array.length) return;
@@ -94,6 +122,8 @@ export const SortingProvider = ({ children }) => {
     runAlgorithm,
     reset,
     freeUsageCount,
+    algorithmInfo,
+    setAlgorithmInfo,
   };
 
   return (
