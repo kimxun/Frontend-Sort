@@ -21,7 +21,7 @@ export const AdminProvider = ({ children }) => {
     setLoading(true);
     try {
       const data = await getUsers();
-      setUsers(data.data || []);
+     setUsers((data.data || []).filter(u => u.status === 1));
       setError(null);
     } catch (err) {
       setError(err.message || 'Không thể tải danh sách người dùng');
@@ -47,7 +47,7 @@ export const AdminProvider = ({ children }) => {
     setLoading(true);
     try {
       const data = await getAlgorithms();
-      setAlgorithms(data);
+      setAlgorithms(data.filter(a => a.status === 1));
       setError(null);
     } catch (err) {
       setError(err.message || 'Không thể tải danh sách thuật toán');
@@ -70,7 +70,6 @@ export const AdminProvider = ({ children }) => {
   const editUser = async (id, userData) => {
     try {
       const updated = await updateUser(id, userData);
-      await fetchUsers(); // Refresh the users list after editing
       setUsers(prev => prev.map(u => u.id === id ? updated.data || updated : u));
       return updated;
     } catch (err) {
