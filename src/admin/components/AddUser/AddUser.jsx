@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AddUser.css";
-
+import { useAdmin } from "../../../context/AdminContext";
 export default function AddUser() {
     const navigate = useNavigate();
-
+    const { addUser } = useAdmin();
     const [formData, setFormData] = useState({
         username: "",
         password: "",
@@ -21,20 +21,26 @@ export default function AddUser() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (
-            formData.password !==
-            formData.confirmPassword
-        ) {
+        if (formData.password !== formData.confirmPassword) {
             alert("Passwords do not match");
             return;
         }
-
-        console.log(formData);
-
-        alert("Create User Success");
+        try {
+            const payload = {
+            username: formData.username,
+            password: formData.password,
+            full_name: formData.full_name,
+            email: formData.email,
+            role: Number(formData.role),
+        };
+            await addUser(payload);
+            alert("User created successfully");
+            navigate("/admin/users");
+        } catch (err) {
+            alert("Failed to create user: " + err.message);
+        }
     };
 
     return (

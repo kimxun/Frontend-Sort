@@ -7,7 +7,7 @@ import SortingVisualizer from '../../components/SortingVisualizer/SortingVisuali
 import CodePanel from '../../components/CodePanel/CodePanel';
 import HistoryPanel from '../../components/HistoryPanel/HistoryPanel';
 import './SortingLayout.css';
-
+import { logout, getCurrentUser } from '../../services/authService';
 const SortingLayout = () => {
   const {
     algorithms,
@@ -26,7 +26,7 @@ const SortingLayout = () => {
     runAlgorithm,
     reset,
   } = useSorting();
-
+  const user = getCurrentUser();
   const getFileName = (algo) => {
     switch (algo) {
       case "selection": return "selectionSort.js";
@@ -48,12 +48,55 @@ const SortingLayout = () => {
         <p>Algorithm Animation Studio</p>
       </div>
 
-      <button
-        className="header-login-btn"
-        onClick={() => window.location.href = "/login"}
-      >
-        Đăng nhập
-      </button>
+      <div className="header-actions">
+
+        {
+          user?.role === 1 && (
+
+            <button
+              className="header-admin-btn"
+              onClick={() =>
+                window.location.href = "/admin"
+              }
+            >
+              Admin
+            </button>
+
+          )
+        }
+
+        {
+          user ? (
+
+            <div className="header-user">
+
+              <span className="header-username">
+                Xin chào, {user.username}
+              </span>
+
+              <button
+                className="header-login-btn"
+                onClick={logout}
+              >
+                Đăng xuất
+              </button>
+
+            </div>
+
+          ) : (
+
+            <button
+              className="header-login-btn"
+              onClick={() =>
+                window.location.href = "/login"
+              }
+            >
+              Đăng nhập
+            </button>
+
+          )
+        }
+      </div>
 
     </div>
 

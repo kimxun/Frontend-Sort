@@ -14,10 +14,25 @@
   margin-bottom: 24px;
 }
 
+.header-actions {
+  margin-left: auto;
+
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.header-username {
+  font-size: 14px;
+  color: #cbd5e1;
+  font-weight: 500;
+  margin-right: 6px;
+}
+
 .header-login-btn {
   margin-left: auto;
   padding: 10px 20px;
-  border: 1px solid rgba(255,255,255,0.1);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 10px;
   background: #1e293b;
   color: white;
@@ -128,9 +143,18 @@
   height: 12px;
   border-radius: 50%;
 }
-.dot.red { background-color: #ef4444; }
-.dot.yellow { background-color: #f59e0b; }
-.dot.green { background-color: #10b981; }
+
+.dot.red {
+  background-color: #ef4444;
+}
+
+.dot.yellow {
+  background-color: #f59e0b;
+}
+
+.dot.green {
+  background-color: #10b981;
+}
 
 .panel-window__title {
   color: #64748b;
@@ -162,25 +186,30 @@
   width: 14px !important;
   height: 14px !important;
 }
+
 .code-content::-webkit-scrollbar-track {
   background: #1e293b !important;
   border-radius: 12px !important;
   margin-block: 2px;
 }
+
 .code-content::-webkit-scrollbar-thumb {
   background: #7c8ea8 !important;
   border-radius: 12px !important;
   border: 2px solid #1e293b !important;
   min-height: 48px;
 }
+
 .code-content::-webkit-scrollbar-thumb:hover {
   background: #a0b3cf !important;
   cursor: pointer;
 }
+
 .code-content::-webkit-scrollbar-corner {
   background-color: #0d111a;
 }
-.code-content > * {
+
+.code-content>* {
   width: 100%;
   box-sizing: border-box;
 }
@@ -189,6 +218,7 @@
   .layout-desktop {
     display: block;
   }
+
   .layout-mobile {
     display: none;
   }
@@ -198,6 +228,7 @@
   .sorting-layout {
     padding: 16px 20px !important;
   }
+
   .sorting-layout__header {
     display: flex;
     flex-wrap: wrap;
@@ -207,37 +238,47 @@
     padding: 0 !important;
     margin-bottom: 16px !important;
   }
+
   .brand-icon {
     width: 36px;
     height: 36px;
   }
+
   .brand-title h1 {
     font-size: 18px;
   }
+
   .brand-title p {
     font-size: 11px;
   }
+
   .header-login-btn {
     margin-left: auto;
     padding: 8px 16px;
     font-size: 13px;
   }
+
   .layout-desktop {
     display: none;
   }
+
   .layout-mobile {
     display: block;
   }
+
   .mobile-layout {
     gap: 16px;
   }
+
   .panel-window__header {
     padding: 10px 12px;
   }
+
   .visualizer-content {
     padding: 16px;
     min-height: 280px;
   }
+
   .code-content {
     height: 220px !important;
   }
@@ -247,20 +288,25 @@
   .sorting-layout {
     padding: 12px 16px !important;
   }
+
   .brand-title h1 {
     font-size: 16px;
   }
+
   .header-login-btn {
     padding: 6px 12px;
     font-size: 12px;
   }
+
   .visualizer-content {
     padding: 12px;
     min-height: 240px;
   }
+
   .code-content {
     height: 180px !important;
   }
+
   .panel-window__title {
     font-size: 12px;
   }
