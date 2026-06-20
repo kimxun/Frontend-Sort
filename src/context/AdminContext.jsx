@@ -21,7 +21,7 @@ export const AdminProvider = ({ children }) => {
     setLoading(true);
     try {
       const data = await getUsers();
-      setUsers(data);
+      setUsers(data.data || []);
       setError(null);
     } catch (err) {
       setError(err.message || 'Không thể tải danh sách người dùng');
@@ -59,7 +59,7 @@ export const AdminProvider = ({ children }) => {
   const addUser = async (userData) => {
     try {
       const newUser = await createUser(userData);
-      setUsers(prev => [...prev, newUser]);
+      setUsers(prev => [...prev, newUser.data || newUser]);
       return newUser;
     } catch (err) {
       setError(err.message || 'Không thể thêm người dùng');
@@ -70,7 +70,8 @@ export const AdminProvider = ({ children }) => {
   const editUser = async (id, userData) => {
     try {
       const updated = await updateUser(id, userData);
-      setUsers(prev => prev.map(u => u.id === id ? updated : u));
+      await fetchUsers(); // Refresh the users list after editing
+      setUsers(prev => prev.map(u => u.id === id ? updated.data || updated : u));
       return updated;
     } catch (err) {
       setError(err.message || 'Không thể cập nhật người dùng');

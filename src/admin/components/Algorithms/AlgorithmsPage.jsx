@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '../../../context/AdminContext';
 import './AlgorithmsPage.css';
-
+import { FiEdit2, FiTrash2 } from "react-icons/fi";
 const AlgorithmsPage = () => {
     const { algorithms, fetchAlgorithms, loading, removeAlgorithm } = useAdmin();
     const [search, setSearch] = useState('');
@@ -77,13 +77,13 @@ const AlgorithmsPage = () => {
                                         className="action-btn edit"
                                         onClick={() => navigate(`/admin/edit-algorithm/${algo.id}`)}
                                     >
-                                        Sửa
+                                        <FiEdit2 />
                                     </button>
                                     <button
                                         className="action-btn delete"
                                         onClick={() => handleDelete(algo.id, algo.name)}
                                     >
-                                        Xóa
+                                        <FiTrash2 />
                                     </button>
                                 </td>
                             </tr>
