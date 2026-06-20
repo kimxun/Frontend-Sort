@@ -8,17 +8,20 @@ const VariablesPanel = () => {
   const { array, steps, currentStep } = useSorting();
 
   const safeSteps = Array.isArray(steps) ? steps : [];
-  const currentArray = safeSteps.length > 0 && currentStep < safeSteps.length
+  const currentStepData = safeSteps.length > 0 && currentStep < safeSteps.length
     ? safeSteps[currentStep]
-    : array;
+    : null;
+
+  const currentArray = currentStepData?.array || array;
+  const safeArray = Array.isArray(currentArray) ? currentArray : [];
 
   const variables = [
-    { name: "Độ dài mảng", value: currentArray.length },
-    { name: "Bước hiện tại", value: `${currentStep + 1} / ${safeSteps.length || 1}` },
-    { name: "Mảng", value: `[${currentArray.join(", ")}]` },
+    { name: "Độ dài mảng", value: safeArray.length },
+    { name: "Bước hiện tại", value: `${Math.min(currentStep + 1, safeSteps.length)} / ${safeSteps.length || 1}` },
+    { name: "Mảng", value: safeArray.length ? `[${safeArray.join(", ")}]` : "[]" },
     { name: "Số bước", value: safeSteps.length },
-    { name: "Phần tử nhỏ nhất", value: currentArray.length ? Math.min(...currentArray) : '-' },
-    { name: "Phần tử lớn nhất", value: currentArray.length ? Math.max(...currentArray) : '-' },
+    { name: "Phần tử nhỏ nhất", value: safeArray.length ? Math.min(...safeArray) : '-' },
+    { name: "Phần tử lớn nhất", value: safeArray.length ? Math.max(...safeArray) : '-' },
   ];
 
   return (

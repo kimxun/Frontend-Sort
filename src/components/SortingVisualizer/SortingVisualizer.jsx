@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'motion/react';
 import { useSorting } from '../../context/SortingContext';
 import './SortingVisualizer.css';
 
@@ -19,56 +18,58 @@ const LEGEND = [
   { color: BAR_COLORS.sorted.bg,    label: "Đã sắp xếp" },
 ];
 
+const getBarColor = (index, stepData) => {
+  if (!stepData) return BAR_COLORS.default;
+  
+  const { comparing = [], swapping = [], pivot, sorted = [] } = stepData;
+  
+  if (swapping.includes(index)) return BAR_COLORS.swapping;
+  if (comparing.includes(index)) return BAR_COLORS.comparing;
+  if (pivot === index) return BAR_COLORS.current;
+  if (sorted.includes(index)) return BAR_COLORS.sorted;
+  
+  return BAR_COLORS.default;
+};
+
 const SortingVisualizer = () => {
   const { steps, currentStep, array } = useSorting();
 
-  
-  const currentArray = steps.length > 0 && currentStep < steps.length
+  const currentStepData = steps.length > 0 && currentStep < steps.length
     ? steps[currentStep]
-    : array;
+    : null;
 
-  const comparing = [];
-  const swapping = [];
-  const sorted = [];
-  const currentIndex = -1;
-
-  const maxValue = Math.max(...currentArray, 1);
-
-  const getStyle = (index) => {
-    if (sorted.includes(index)) return BAR_COLORS.sorted;
-    if (swapping.includes(index)) return BAR_COLORS.swapping;
-    if (comparing.includes(index)) return BAR_COLORS.comparing;
-    if (index === currentIndex) return BAR_COLORS.current;
-    return BAR_COLORS.default;
-  };
+  const currentArray = currentStepData?.array || array;
+  const safeArray = Array.isArray(currentArray) ? currentArray : [];
+  const maxValue = safeArray.length > 0 ? Math.max(...safeArray, 1) : 1;
 
   return (
     <div className="visualizer-container">
       <div className="legend-container">
         {LEGEND.map((item) => (
           <div key={item.label} className="legend-item">
-            <div className="legend-color" style={{ background: item.color, boxShadow: `0 0 6px ${item.color}80` }} />
+            <div className="legend-color" style={{ background: item.color }} />
             <span className="legend-label">{item.label}</span>
           </div>
         ))}
       </div>
       <div className="bars-container">
-        {currentArray.map((value, index) => {
-          const style = getStyle(index);
+        {safeArray.map((value, index) => {
           const heightPct = (value / maxValue) * 100;
-          const barWidth = Math.max(28, Math.min(56, Math.floor(480 / currentArray.length) - 8));
+          const barHeight = Math.max(heightPct * 2, 20);
+          const barWidth = Math.max(28, Math.min(56, Math.floor(480 / safeArray.length) - 8));
+
+          const colorScheme = getBarColor(index, currentStepData);
 
           return (
             <div key={`bar-${index}`} className="bar-wrapper">
-              <span className="bar-value" style={{ color: style.bg }}>{value}</span>
-              <motion.div
+              <span className="bar-value">{value}</span>
+              <div
                 className="bar"
-                animate={{ height: `${Math.max(heightPct * 2, 8)}px` }}
-                transition={{ duration: 0.25, ease: "easeInOut" }}
                 style={{
-                  width: barWidth,
-                  background: `linear-gradient(180deg, ${style.bg}ee, ${style.bg}99)`,
-                  boxShadow: style.glow,
+                  height: `${barHeight}px`,
+                  width: `${barWidth}px`,
+                  background: `linear-gradient(180deg, ${colorScheme.bg}ee, ${colorScheme.bg}99)`,
+                  boxShadow: colorScheme.glow,
                 }}
               />
               <span className="bar-index">{index}</span>
