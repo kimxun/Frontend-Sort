@@ -33,6 +33,7 @@ export default function ControlPanel() {
       .filter((v) => !isNaN(v) && v > 0);
     if (values.length > 0) {
       setArray(values);
+      reset();
       setInputValue("");
     }
   };
@@ -42,6 +43,7 @@ export default function ControlPanel() {
       Math.floor(Math.random() * 100) + 1
     );
     setArray(newArray);
+    reset();
   };
 
   const handleStepForward = () => {

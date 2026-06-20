@@ -29,7 +29,7 @@ export const SortingProvider = ({ children }) => {
         setAlgorithms(data);
         if (data.length > 0) setAlgorithmId(data[0].id);
       } catch (error) {
-        console.error('Lỗi lấy danh sách thuật toán:', error);
+        console.error(error);
       }
     };
     fetchAlgorithms();
@@ -43,7 +43,6 @@ export const SortingProvider = ({ children }) => {
         const data = await getAlgorithmById(algorithmId);
         setAlgorithmInfo(data);
       } catch (error) {
-        console.error('Lỗi lấy thông tin thuật toán:', error);
         setAlgorithmInfo(null);
       } finally {
         setInfoLoading(false);
@@ -52,14 +51,33 @@ export const SortingProvider = ({ children }) => {
     fetchAlgorithmInfo();
   }, [algorithmId]);
 
+  useEffect(() => {
+    let timer;
+    if (isRunning && steps.length > 0) {
+      timer = setInterval(() => {
+        setCurrentStep((prevStep) => {
+          const nextStep = prevStep + 1;
+          if (nextStep < steps.length) {
+            setArray(steps[nextStep]);
+            return nextStep;
+          } else {
+            setIsRunning(false);
+            clearInterval(timer);
+            return prevStep;
+          }
+        });
+      }, Math.max(50, 1000 - speed * 8));
+    }
+    return () => clearInterval(timer);
+  }, [isRunning, steps, speed]);
+
   const runAlgorithm = async () => {
     if (!array.length) return;
 
     const token = localStorage.getItem('token');
-
     if (!token) {
       if (freeUsageCount >= 3) {
-        alert('Bạn đã sử dụng hết 3 lần miễn phí. Vui lòng đăng nhập để tiếp tục.');
+        alert('Bạn đã sử dụng hết 3 lần miễn phí.');
         window.location.href = '/login';
         return;
       }
@@ -71,13 +89,20 @@ export const SortingProvider = ({ children }) => {
     setLoading(true);
     try {
       const data = await getAlgorithmSteps(algorithmId, array);
-      setSteps(data.step_by_step || []);
+      const stepData = data.step_by_step || data.steps || data.data || (Array.isArray(data) ? data : []);
+      
+      if (!stepData || stepData.length === 0) {
+        alert("Không nhận được dữ liệu bước thực hiện.");
+        setLoading(false);
+        return;
+      }
+
+      setSteps(stepData);
+      setArray(stepData[0]);
       setCurrentStep(0);
       setIsRunning(true);
     } catch (error) {
-      console.error('Lỗi lấy steps:', error);
       if (error.response && error.response.status === 401 && token) {
-        alert('Phiên đăng nhập đã hết hạn. Vui lòng đăng nhập lại.');
         localStorage.removeItem('token');
         localStorage.removeItem('user');
         window.location.href = '/login';
@@ -88,6 +113,14 @@ export const SortingProvider = ({ children }) => {
   };
 
   const reset = () => {
+    setSteps([]);
+    setCurrentStep(0);
+    setIsRunning(false);
+  };
+
+  const generateRandomArray = () => {
+    const newArray = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100) + 1);
+    setArray(newArray);
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
@@ -114,6 +147,7 @@ export const SortingProvider = ({ children }) => {
     reset,
     freeUsageCount,
     algorithmInfo,
+    generateRandomArray,
   };
 
   return (
