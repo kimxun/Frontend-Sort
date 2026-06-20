@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { login } from '../../services/authService';
+import { getCurrentUser } from '../../services/authService';
 import './Login.css';
 
 const Login = () => {
@@ -14,7 +15,17 @@ const Login = () => {
   const [error, setError] = useState('');
 
   const navigate = useNavigate();
+  useEffect(() => {
+    const user = getCurrentUser();
 
+    if (user) {
+      if (user.role === 1) {
+        navigate('/admin');
+      } else {
+        navigate('/');
+      }
+    }
+  }, [navigate]);
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await login(

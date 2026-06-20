@@ -10,7 +10,8 @@ import EditUser from "./admin/components/EditUser/EditUser";
 import AlgorithmsPage from "./admin/components/Algorithms/AlgorithmsPage";
 import AddAlgorithm from "./admin/components/Algorithms/AddAlgorithm";
 import EditAlgorithm from './admin/components/Algorithms/EditAlgorithm';
-
+import AdminRoute from "./admin/components/Route/AdminRoute";
+import Forbidden from "./pages/Forbidden/Forbidden";
 function App() {
   return (
     <SortingProvider>
@@ -18,10 +19,13 @@ function App() {
         <Routes>
           <Route path="/" element={<SortingPage />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/403" element={<Forbidden />} />
           <Route path="/admin" element={
-            <AdminProvider>
-              <AdminLayout />
-            </AdminProvider>
+            <AdminRoute>
+              <AdminProvider>
+                <AdminLayout />
+              </AdminProvider>
+            </AdminRoute>
           }>
             <Route path="users" element={<UsersPage />} />
             <Route path="add-user" element={<AddUser />} />
@@ -29,6 +33,7 @@ function App() {
             <Route path="algorithms" element={<AlgorithmsPage />} />
             <Route path="add-algorithm" element={<AddAlgorithm />} />
             <Route path="edit-algorithm/:id" element={<EditAlgorithm />} />
+
           </Route>
         </Routes>
       </BrowserRouter>
