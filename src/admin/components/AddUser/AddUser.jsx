@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AddUser.css";
 import { useAdmin } from "../../../context/AdminContext";
+
 export default function AddUser() {
     const navigate = useNavigate();
     const { addUser } = useAdmin();
@@ -29,12 +30,12 @@ export default function AddUser() {
         }
         try {
             const payload = {
-            username: formData.username,
-            password: formData.password,
-            full_name: formData.full_name,
-            email: formData.email,
-            role: Number(formData.role),
-        };
+                username: formData.username,
+                password: formData.password,
+                full_name: formData.full_name,
+                email: formData.email,
+                role: Number(formData.role),
+            };
             await addUser(payload);
             alert("User created successfully");
             navigate("/admin/users");
@@ -45,19 +46,15 @@ export default function AddUser() {
 
     return (
         <div className="add-user-page">
-
             <div className="breadcrumb">
                 MANAGEMENT › USERS › NEW USER
             </div>
 
             <div className="page-header">
                 <h1>New User</h1>
-
                 <button
                     className="close-btn"
-                    onClick={() =>
-                        navigate("/admin/users")
-                    }
+                    onClick={() => navigate("/admin/users")}
                 >
                     ✕
                 </button>
@@ -66,36 +63,36 @@ export default function AddUser() {
             <form
                 className="add-user-form"
                 onSubmit={handleSubmit}
+                autoComplete="off"
             >
+                {/* ─── MẸO ĐÁNH LỪA TRÌNH DUYỆT ───────────────────────────────── */}
+                {/* Trình duyệt sẽ tự động điền tài khoản admin vào 2 ô ẩn này và bỏ qua các ô bên dưới */}
+                <input type="text" style={{ display: "none" }} aria-hidden="true" />
+                <input type="password" style={{ display: "none" }} aria-hidden="true" />
+                {/* ──────────────────────────────────────────────────────────── */}
 
                 <div className="form-row">
                     <div className="form-group large">
                         <label>USERNAME</label>
-
                         <input
                             type="text"
                             name="username"
                             placeholder="e.g. alexdev"
                             value={formData.username}
                             onChange={handleChange}
+                            autoComplete="nopermission" 
                         />
                     </div>
 
                     <div className="form-group">
                         <label>ROLE</label>
-
                         <select
                             name="role"
                             value={formData.role}
                             onChange={handleChange}
                         >
-                            <option value={0}>
-                                USER
-                            </option>
-
-                            <option value={1}>
-                                ADMIN
-                            </option>
+                            <option value={0}>USER</option>
+                            <option value={1}>ADMIN</option>
                         </select>
                     </div>
                 </div>
@@ -103,7 +100,6 @@ export default function AddUser() {
                 <div className="form-row">
                     <div className="form-group">
                         <label>FULL NAME</label>
-
                         <input
                             type="text"
                             name="full_name"
@@ -115,13 +111,13 @@ export default function AddUser() {
 
                     <div className="form-group">
                         <label>EMAIL</label>
-
                         <input
                             type="email"
                             name="email"
                             placeholder="e.g. alex@gmail.com"
                             value={formData.email}
                             onChange={handleChange}
+                            autoComplete="nopermission"
                         />
                     </div>
                 </div>
@@ -129,52 +125,44 @@ export default function AddUser() {
                 <div className="form-row">
                     <div className="form-group">
                         <label>PASSWORD</label>
-
                         <input
                             type="password"
                             name="password"
                             placeholder="Enter password..."
                             value={formData.password}
                             onChange={handleChange}
+                            autoComplete="new-password" 
                         />
                     </div>
 
                     <div className="form-group">
                         <label>CONFIRM PASSWORD</label>
-
                         <input
                             type="password"
                             name="confirmPassword"
                             placeholder="Confirm password..."
-                            value={
-                                formData.confirmPassword
-                            }
+                            value={formData.confirmPassword}
                             onChange={handleChange}
+                            autoComplete="new-password" 
                         />
                     </div>
                 </div>
 
                 <div className="button-group">
-
                     <button
                         type="button"
                         className="cancel-btn"
-                        onClick={() =>
-                            navigate("/admin/users")
-                        }
+                        onClick={() => navigate("/admin/users")}
                     >
                         Cancel
                     </button>
-
                     <button
                         type="submit"
                         className="save-btn"
                     >
                         Create User
                     </button>
-
                 </div>
-
             </form>
         </div>
     );
