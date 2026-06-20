@@ -71,7 +71,7 @@ export default function EditUser() {
             formData.password &&
             formData.password !== formData.confirmPassword
         ) {
-            alert("Passwords do not match");
+            alert("Mật khẩu mới không trùng khớp!");
             return;
         }
 
@@ -93,7 +93,7 @@ export default function EditUser() {
                 payload
             );
 
-            alert("Update User Success");
+            alert("Cập nhật thông tin người dùng thành công!");
 
             navigate("/admin/users");
 
@@ -103,26 +103,26 @@ export default function EditUser() {
 
             alert(
                 err?.response?.data?.message ||
-                "Update User Failed"
+                "Cập nhật thông tin thất bại!"
             );
 
         }
     };
 
     if (loading) {
-        return <div>Loading...</div>;
+        return <div>Đang tải dữ liệu...</div>;
     }
 
     return (
         <div className="edit-user-page">
 
             <div className="breadcrumb">
-                MANAGEMENT › USERS › EDIT USER
+                QUẢN LÝ › NGƯỜI DÙNG › CHỈNH SỬA NGƯỜI DÙNG
             </div>
 
             <div className="page-header">
 
-                <h1>Edit User</h1>
+                <h1>Chỉnh sửa người dùng</h1>
 
                 <button
                     className="close-btn"
@@ -144,7 +144,7 @@ export default function EditUser() {
 
                     <div className="form-group large">
 
-                        <label>USERNAME</label>
+                        <label>TÊN ĐĂNG NHẬP</label>
 
                         <input
                             type="text"
@@ -156,7 +156,7 @@ export default function EditUser() {
 
                     <div className="form-group">
 
-                        <label>ROLE</label>
+                        <label>VAI TRÒ</label>
 
                         <select
                             name="role"
@@ -164,18 +164,18 @@ export default function EditUser() {
                             onChange={handleChange}
                         >
                             <option value={0}>
-                                USER
+                                NGƯỜI DÙNG (USER)
                             </option>
 
                             <option value={1}>
-                                ADMIN
+                                QUẢN TRỊ VIÊN (ADMIN)
                             </option>
                         </select>
 
                     </div>
                     <div className="form-group">
 
-                        <label>STATUS</label>
+                        <label>TRẠNG THÁI</label>
 
                         <select
                             name="status"
@@ -183,11 +183,11 @@ export default function EditUser() {
                             onChange={handleChange}
                         >
                             <option value={1}>
-                                ACTIVE
+                                HOẠT ĐỘNG
                             </option>
 
                             <option value={0}>
-                                INACTIVE
+                                TẠM KHÓA
                             </option>
                         </select>
 
@@ -199,7 +199,7 @@ export default function EditUser() {
 
                     <div className="form-group">
 
-                        <label>FULL NAME</label>
+                        <label>HỌ VÀ TÊN</label>
 
                         <input
                             type="text"
@@ -230,13 +230,13 @@ export default function EditUser() {
                     <div className="form-group">
 
                         <label>
-                            NEW PASSWORD
+                            MẬT KHẨU MỚI
                         </label>
 
                         <input
                             type="password"
                             name="password"
-                            placeholder="Leave blank if unchanged"
+                            placeholder="Để trống nếu không muốn thay đổi"
                             value={formData.password}
                             onChange={handleChange}
                         />
@@ -246,13 +246,13 @@ export default function EditUser() {
                     <div className="form-group">
 
                         <label>
-                            CONFIRM PASSWORD
+                            XÁC NHẬN MẬT KHẨU MỚI
                         </label>
 
                         <input
                             type="password"
                             name="confirmPassword"
-                            placeholder="Confirm new password"
+                            placeholder="Xác nhận lại mật khẩu mới"
                             value={formData.confirmPassword}
                             onChange={handleChange}
                         />
@@ -270,14 +270,14 @@ export default function EditUser() {
                             navigate("/admin/users")
                         }
                     >
-                        Cancel
+                        Hủy bỏ
                     </button>
 
                     <button
                         type="submit"
                         className="save-btn"
                     >
-                        Update User
+                        Cập nhật
                     </button>
 
                 </div>

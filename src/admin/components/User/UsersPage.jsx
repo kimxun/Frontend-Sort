@@ -46,7 +46,7 @@ export default function UsersPage() {
     const handleDelete = async (user) => {
 
         const confirmDelete = window.confirm(
-            ` Bạn có chắc muốn khóa tài khoản "${user.username}"?`
+            `Bạn có chắc muốn khóa tài khoản "${user.username}"?`
         );
 
         if (!confirmDelete) return;
@@ -84,13 +84,13 @@ export default function UsersPage() {
 
             <div className="header">
 
-                <h1>User Management</h1>
+                <h1>Quản lý người dùng</h1>
 
                 <button
                     className="invite-btn"
                     onClick={() => navigate("/admin/add-user")}
                 >
-                    + Invite User
+                    + Thêm người dùng
                 </button>
 
             </div>
@@ -98,17 +98,17 @@ export default function UsersPage() {
             <div className="stats">
 
                 <div className="card">
-                    <span>TOTAL USERS</span>
+                    <span>TỔNG SỐ NGƯỜI DÙNG</span>
                     <h2>{users.length}</h2>
                 </div>
 
                 <div className="card">
-                    <span>ACTIVE USERS</span>
+                    <span>ĐANG HOẠT ĐỘNG</span>
                     <h2>{users.filter((u) => u.status === 1).length}</h2>
                 </div>
 
                 <div className="card">
-                    <span>ADMINS</span>
+                    <span>QUẢN TRỊ VIÊN</span>
                     <h2>
                         {
                             users.filter((u) => u.role === 1).length
@@ -124,7 +124,7 @@ export default function UsersPage() {
 
                     <input
                         type="text"
-                        placeholder="Search user..."
+                        placeholder="Tìm kiếm người dùng..."
                         value={search}
                         onChange={(e) => setSearch(e.target.value)}
                     />
@@ -150,13 +150,13 @@ export default function UsersPage() {
 
                             <thead>
                                 <tr>
-                                    <th>User</th>
-                                    <th>Username</th>
+                                    <th>Người dùng</th>
+                                    <th>Tên đăng nhập</th>
                                     <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th>Created At</th>
-                                    <th>Actions</th>
+                                    <th>Vai trò</th>
+                                    <th>Trạng thái</th>
+                                    <th>Ngày tạo</th>
+                                    <th>Thao tác</th>
                                 </tr>
                             </thead>
 
@@ -205,8 +205,8 @@ export default function UsersPage() {
                                                         }`}
                                                 >
                                                     {user.role === 1
-                                                        ? "ADMIN"
-                                                        : "USER"}
+                                                        ? "QUẢN TRỊ VIÊN"
+                                                        : "NGƯỜI DÙNG"}
                                                 </span>
 
                                             </td>
@@ -220,8 +220,8 @@ export default function UsersPage() {
                                                         }`}
                                                 >
                                                     {user.status === 1
-                                                        ? "ACTIVE"
-                                                        : "INACTIVE"}
+                                                        ? "HOẠT ĐỘNG"
+                                                        : "TẠM KHÓA"}
                                                 </span>
 
                                             </td>
