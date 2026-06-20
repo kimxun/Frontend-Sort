@@ -25,7 +25,7 @@ export default function AddUser() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) {
-            alert("Passwords do not match");
+            alert("Mật khẩu không trùng khớp!");
             return;
         }
         try {
@@ -37,21 +37,22 @@ export default function AddUser() {
                 role: Number(formData.role),
             };
             await addUser(payload);
-            alert("User created successfully");
+            alert("Tạo người dùng thành công!");
             navigate("/admin/users");
         } catch (err) {
-            alert("Failed to create user: " + err.message);
+            alert("Tạo người dùng thất bại: " + err.message);
         }
     };
 
     return (
         <div className="add-user-page">
             <div className="breadcrumb">
-                MANAGEMENT › USERS › NEW USER
+                QUẢN LÝ › NGƯỜI DÙNG › THÊM NGƯỜI DÙNG
             </div>
 
             <div className="page-header">
-                <h1>New User</h1>
+                <h1>Thêm người dùng mới</h1>
+
                 <button
                     className="close-btn"
                     onClick={() => navigate("/admin/users")}
@@ -73,11 +74,12 @@ export default function AddUser() {
 
                 <div className="form-row">
                     <div className="form-group large">
-                        <label>USERNAME</label>
+                        <label>TÊN ĐĂNG NHẬP</label>
+
                         <input
                             type="text"
                             name="username"
-                            placeholder="e.g. alexdev"
+                            placeholder="Ví dụ: alexdev"
                             value={formData.username}
                             onChange={handleChange}
                             autoComplete="nopermission" 
@@ -85,25 +87,32 @@ export default function AddUser() {
                     </div>
 
                     <div className="form-group">
-                        <label>ROLE</label>
+                        <label>VAI TRÒ</label>
+
                         <select
                             name="role"
                             value={formData.role}
                             onChange={handleChange}
                         >
-                            <option value={0}>USER</option>
-                            <option value={1}>ADMIN</option>
+                            <option value={0}>
+                                NGƯỜI DÙNG (USER)
+                            </option>
+
+                            <option value={1}>
+                                QUẢN TRỊ VIÊN (ADMIN)
+                            </option>
                         </select>
                     </div>
                 </div>
 
                 <div className="form-row">
                     <div className="form-group">
-                        <label>FULL NAME</label>
+                        <label>HỌ VÀ TÊN</label>
+
                         <input
                             type="text"
                             name="full_name"
-                            placeholder="e.g. Alex Dev"
+                            placeholder="Ví dụ: Alex Dev"
                             value={formData.full_name}
                             onChange={handleChange}
                         />
@@ -114,7 +123,7 @@ export default function AddUser() {
                         <input
                             type="email"
                             name="email"
-                            placeholder="e.g. alex@gmail.com"
+                            placeholder="Ví dụ: alex@gmail.com"
                             value={formData.email}
                             onChange={handleChange}
                             autoComplete="nopermission"
@@ -124,11 +133,12 @@ export default function AddUser() {
 
                 <div className="form-row">
                     <div className="form-group">
-                        <label>PASSWORD</label>
+                        <label>MẬT KHẨU</label>
+
                         <input
                             type="password"
                             name="password"
-                            placeholder="Enter password..."
+                            placeholder="Nhập mật khẩu..."
                             value={formData.password}
                             onChange={handleChange}
                             autoComplete="new-password" 
@@ -136,12 +146,15 @@ export default function AddUser() {
                     </div>
 
                     <div className="form-group">
-                        <label>CONFIRM PASSWORD</label>
+                        <label>XÁC NHẬN MẬT KHẨU</label>
+
                         <input
                             type="password"
                             name="confirmPassword"
-                            placeholder="Confirm password..."
-                            value={formData.confirmPassword}
+                            placeholder="Xác nhận lại mật khẩu..."
+                            value={
+                                formData.confirmPassword
+                            }
                             onChange={handleChange}
                             autoComplete="new-password" 
                         />
@@ -154,13 +167,13 @@ export default function AddUser() {
                         className="cancel-btn"
                         onClick={() => navigate("/admin/users")}
                     >
-                        Cancel
+                        Hủy bỏ
                     </button>
                     <button
                         type="submit"
                         className="save-btn"
                     >
-                        Create User
+                        Tạo người dùng
                     </button>
                 </div>
             </form>

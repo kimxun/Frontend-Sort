@@ -34,12 +34,12 @@ export default function Topbar({
         )}
 
         <div className="brand">
-          AlgoStudio Admin
+          Quản trị AlgoStudio
         </div>
 
         <input
           className="search-box"
-          placeholder="Search algorithms..."
+          placeholder="Tìm kiếm thuật toán..."
         />
 
       </div>
@@ -63,7 +63,7 @@ export default function Topbar({
             {
               user?.username
                 ?.charAt(0)
-                ?.toUpperCase() || "A"
+                ?.toUpperCase() || "Q"
             }
 
           </div>
@@ -71,11 +71,11 @@ export default function Topbar({
           <div className="profile-info">
 
             <span>
-              ADMIN
+              QUẢN TRỊ VIÊN
             </span>
 
             <strong>
-              {user?.username || "Admin"}
+              {user?.username || "Quản trị viên"}
             </strong>
 
           </div>

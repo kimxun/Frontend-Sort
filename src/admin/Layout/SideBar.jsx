@@ -32,43 +32,43 @@ export default function Sidebar() {
         <nav className="sidebar-menu">
           <NavLink to="/admin/dashboard">
             <FiLayout size={20} />
-            <span>Dashboard</span>
+            <span>Tổng quan</span>
           </NavLink>
           <NavLink to="/admin/algorithms">
             <FiCode size={20} />
-            <span>Algorithms</span>
+            <span>Thuật toán</span>
           </NavLink>
           <NavLink to="/admin/visualizer">
             <FiBarChart2 size={20} />
-            <span>Visualizer</span>
+            <span>Trực quan hóa</span>
           </NavLink>
           <NavLink to="/admin/analytics">
             <FiTrendingUp size={20} />
-            <span>Analytics</span>
+            <span>Phân tích</span>
           </NavLink>
           <NavLink to="/admin/users">
             <FiUsers size={20} />
-            <span>Users</span>
+            <span>Người dùng</span>
           </NavLink>
         </nav>
 
         <div className="sidebar-bottom">
           <button className="deploy-btn">
             <FiPlus size={20} />
-            <span>Deploy New</span>
+            <span>Triển khai mới</span>
           </button>
 
           <div className="sidebar-bottom-links">
             <button className="sidebar-btn">
               <FiFileText size={20} />
-              <span>Docs</span>
+              <span>Tài liệu</span>
             </button>
             <button className="sidebar-btn logout-btn" onClick={() => {
               if (window.confirm("Bạn có chắc muốn đăng xuất?")) {
                 logout();
               }}}>
               <FiLogOut size={20} />
-              <span>Logout</span>
+              <span>Đăng xuất</span>
             </button>
           </div>
         </div>
