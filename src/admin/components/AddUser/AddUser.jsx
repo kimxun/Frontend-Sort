@@ -46,7 +46,6 @@ export default function AddUser() {
 
     return (
         <div className="add-user-page">
-
             <div className="breadcrumb">
                 QUẢN LÝ › NGƯỜI DÙNG › THÊM NGƯỜI DÙNG
             </div>
@@ -56,9 +55,7 @@ export default function AddUser() {
 
                 <button
                     className="close-btn"
-                    onClick={() =>
-                        navigate("/admin/users")
-                    }
+                    onClick={() => navigate("/admin/users")}
                 >
                     ✕
                 </button>
@@ -67,7 +64,13 @@ export default function AddUser() {
             <form
                 className="add-user-form"
                 onSubmit={handleSubmit}
+                autoComplete="off"
             >
+                {/* ─── MẸO ĐÁNH LỪA TRÌNH DUYỆT ───────────────────────────────── */}
+                {/* Trình duyệt sẽ tự động điền tài khoản admin vào 2 ô ẩn này và bỏ qua các ô bên dưới */}
+                <input type="text" style={{ display: "none" }} aria-hidden="true" />
+                <input type="password" style={{ display: "none" }} aria-hidden="true" />
+                {/* ──────────────────────────────────────────────────────────── */}
 
                 <div className="form-row">
                     <div className="form-group large">
@@ -79,6 +82,7 @@ export default function AddUser() {
                             placeholder="Ví dụ: alexdev"
                             value={formData.username}
                             onChange={handleChange}
+                            autoComplete="nopermission" 
                         />
                     </div>
 
@@ -116,13 +120,13 @@ export default function AddUser() {
 
                     <div className="form-group">
                         <label>EMAIL</label>
-
                         <input
                             type="email"
                             name="email"
                             placeholder="Ví dụ: alex@gmail.com"
                             value={formData.email}
                             onChange={handleChange}
+                            autoComplete="nopermission"
                         />
                     </div>
                 </div>
@@ -137,6 +141,7 @@ export default function AddUser() {
                             placeholder="Nhập mật khẩu..."
                             value={formData.password}
                             onChange={handleChange}
+                            autoComplete="new-password" 
                         />
                     </div>
 
@@ -151,31 +156,26 @@ export default function AddUser() {
                                 formData.confirmPassword
                             }
                             onChange={handleChange}
+                            autoComplete="new-password" 
                         />
                     </div>
                 </div>
 
                 <div className="button-group">
-
                     <button
                         type="button"
                         className="cancel-btn"
-                        onClick={() =>
-                            navigate("/admin/users")
-                        }
+                        onClick={() => navigate("/admin/users")}
                     >
                         Hủy bỏ
                     </button>
-
                     <button
                         type="submit"
                         className="save-btn"
                     >
                         Tạo người dùng
                     </button>
-
                 </div>
-
             </form>
         </div>
     );

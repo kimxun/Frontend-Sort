@@ -1,14 +1,15 @@
 import { NavLink } from "react-router-dom";
 import { useAdmin } from "../../context/AdminContext";
-import { 
-  FiLayout, 
-  FiCode, 
-  FiBarChart2, 
-  FiTrendingUp, 
-  FiUsers, 
-  FiPlus, 
-  FiFileText, 
-  FiLogOut 
+import { logout } from "../../services/authService";
+import {
+  FiLayout,
+  FiCode,
+  FiBarChart2,
+  FiTrendingUp,
+  FiUsers,
+  FiPlus,
+  FiFileText,
+  FiLogOut
 } from "react-icons/fi";
 import "./SideBar.css";
 
@@ -56,13 +57,16 @@ export default function Sidebar() {
             <FiPlus size={20} />
             <span>Triển khai mới</span>
           </button>
-          
+
           <div className="sidebar-bottom-links">
             <button className="sidebar-btn">
               <FiFileText size={20} />
               <span>Tài liệu</span>
             </button>
-            <button className="sidebar-btn logout-btn">
+            <button className="sidebar-btn logout-btn" onClick={() => {
+              if (window.confirm("Bạn có chắc muốn đăng xuất?")) {
+                logout();
+              }}}>
               <FiLogOut size={20} />
               <span>Đăng xuất</span>
             </button>
