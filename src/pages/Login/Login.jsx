@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { login } from '../../services/authService';
 import { getCurrentUser } from '../../services/authService';
 import './Login.css';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
 
@@ -120,7 +121,13 @@ const Login = () => {
           >
             Đăng nhập
           </button>
-
+          
+          <Link
+            to="/register"
+            className="register-btn"
+          >
+            Đăng ký
+          </Link>
         </form>
 
       </div>
