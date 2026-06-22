@@ -9,7 +9,9 @@ const AddAlgorithm = () => {
   const [formData, setFormData] = useState({
     name: '',
     slug: '',
+    code: '',
     description: '',
+    steps: '',
     time_complexity: '',
     space_complexity: '',
     category_id: 1,
@@ -25,7 +27,12 @@ const AddAlgorithm = () => {
     e.preventDefault();
     setError('');
     try {
-      await addAlgorithm(formData);
+      const stepsArray = formData.steps.split('\n').filter(s => s.trim() !== '');
+      const submitData = {
+        ...formData,
+        steps: stepsArray.length ? JSON.stringify(stepsArray) : null
+      };
+      await addAlgorithm(submitData);
       alert('Thêm thuật toán thành công');
       navigate('/admin/algorithms');
     } catch (err) {
@@ -38,10 +45,10 @@ const AddAlgorithm = () => {
       <div className="breadcrumb">QUẢN LÝ › THUẬT TOÁN › THÊM MỚI</div>
       <div className="page-header">
         <h1>Thêm thuật toán</h1>
-        <button className="close-btn" onClick={() => navigate('/admin/algorithms')}>✕</button>
+        <button type="button" className="close-btn" onClick={() => navigate('/admin/algorithms')}>✕</button>
       </div>
       <form className="add-algorithm-form" onSubmit={handleSubmit}>
-        <div className="form-row">
+        <div className="form-grid">
           <div className="form-group">
             <label>Tên thuật toán</label>
             <input type="text" name="name" placeholder="e.g. Bubble Sort" value={formData.name} onChange={handleChange} required />
@@ -50,21 +57,13 @@ const AddAlgorithm = () => {
             <label>Slug</label>
             <input type="text" name="slug" placeholder="e.g. bubble-sort" value={formData.slug} onChange={handleChange} required />
           </div>
-        </div>
-        <div className="form-row">
+
           <div className="form-group">
-            <label>Mô tả</label>
-            <input type="text" name="description" placeholder="Mô tả thuật toán" value={formData.description} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label>Độ phức tạp thời gian</label>
-            <input type="text" name="time_complexity" placeholder="e.g. O(n^2)" value={formData.time_complexity} onChange={handleChange} />
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group">
-            <label>Độ phức tạp bộ nhớ</label>
-            <input type="text" name="space_complexity" placeholder="e.g. O(1)" value={formData.space_complexity} onChange={handleChange} />
+            <label>Loại thuật toán</label>
+            <select name="category_id" value={formData.category_id} onChange={handleChange}>
+              <option value={1}>Sắp xếp</option>
+              <option value={2}>Tìm kiếm</option>
+            </select>
           </div>
           <div className="form-group">
             <label>Trạng thái</label>
@@ -73,8 +72,34 @@ const AddAlgorithm = () => {
               <option value={0}>Không hoạt động</option>
             </select>
           </div>
+
+          <div className="form-group">
+            <label>Độ phức tạp thời gian</label>
+            <input type="text" name="time_complexity" placeholder="e.g. O(n^2)" value={formData.time_complexity} onChange={handleChange} />
+          </div>
+          <div className="form-group">
+            <label>Độ phức tạp bộ nhớ</label>
+            <input type="text" name="space_complexity" placeholder="e.g. O(1)" value={formData.space_complexity} onChange={handleChange} />
+          </div>
+
+          <div className="form-group full-width">
+            <label>Mã nguồn (Code)</label>
+            <textarea name="code" placeholder="void bubbleSort(int arr[], int n) { ... }" value={formData.code} onChange={handleChange} rows="6" className="code-font" />
+          </div>
+
+          <div className="form-group full-width">
+            <label>Mô tả</label>
+            <textarea name="description" placeholder="Mô tả thuật toán" value={formData.description} onChange={handleChange} rows="3" />
+          </div>
+
+          <div className="form-group full-width">
+            <label>Các bước thực hiện</label>
+            <textarea name="steps" placeholder="Mỗi bước trên một dòng..." value={formData.steps} onChange={handleChange} rows="5" />
+          </div>
         </div>
+
         {error && <div className="error-message">{error}</div>}
+        
         <div className="button-group">
           <button type="button" className="cancel-btn" onClick={() => navigate('/admin/algorithms')}>Hủy</button>
           <button type="submit" className="save-btn" disabled={loading}>{loading ? 'Đang xử lý...' : 'Thêm thuật toán'}</button>
