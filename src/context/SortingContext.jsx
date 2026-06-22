@@ -58,7 +58,7 @@ export const SortingProvider = ({ children }) => {
         setCurrentStep((prevStep) => {
           const nextStep = prevStep + 1;
           if (nextStep < steps.length) {
-            setArray(steps[nextStep]);
+            setArray(steps[nextStep].array);
             return nextStep;
           } else {
             setIsRunning(false);
@@ -88,7 +88,7 @@ export const SortingProvider = ({ children }) => {
 
     setLoading(true);
     try {
-      const data = await getAlgorithmSteps(algorithmId, array);
+      const data = await getAlgorithmSteps(algorithmId, array, sortOrder);
       const stepData = data.step_by_step || data.steps || data.data || (Array.isArray(data) ? data : []);
       
       if (!stepData || stepData.length === 0) {
@@ -98,7 +98,7 @@ export const SortingProvider = ({ children }) => {
       }
 
       setSteps(stepData);
-      setArray(stepData[0]);
+      setArray(stepData[0].array);
       setCurrentStep(0);
       setIsRunning(true);
     } catch (error) {
@@ -126,6 +126,13 @@ export const SortingProvider = ({ children }) => {
     setIsRunning(false);
   };
 
+  const toggleSortOrder = () => {
+    setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
+    setSteps([]);
+    setCurrentStep(0);
+    setIsRunning(false);
+  };
+
   const value = {
     algorithms,
     algorithmId,
@@ -148,6 +155,7 @@ export const SortingProvider = ({ children }) => {
     freeUsageCount,
     algorithmInfo,
     generateRandomArray,
+    toggleSortOrder,
   };
 
   return (

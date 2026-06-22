@@ -5,8 +5,8 @@ export const getAlgorithms = async () => {
   return response.data;
 };
 
-export const getAlgorithmSteps = async (algorithmId, array) => {
-  const response = await api.post(`/algorithms/${algorithmId}/steps`, { array });
+export const getAlgorithmSteps = async (algorithmId, array, sortOrder) => {
+  const response = await api.post(`/algorithms/${algorithmId}/steps`, { array, sortOrder });
   return response.data;
 };
 
