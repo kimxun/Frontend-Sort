@@ -16,19 +16,29 @@ export const AdminProvider = ({ children }) => {
   const [algorithms, setAlgorithms] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [pagination, setPagination] = useState({});
+  const [page, setPage] = useState(1);
+  const [limit] = useState(5);
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (p = page) => {
     setLoading(true);
     try {
-      const data = await getUsers();
-      setUsers(data.data || []);
+      const res = await getUsers(p, limit);
+
+      setUsers(res.data || []);
+      setPagination(res.pagination || {});
+      setPage(p);
+
       setError(null);
     } catch (err) {
-      setError(err.message || 'Không thể tải danh sách người dùng');
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
+  useEffect(() => {
+    fetchUsers(page);
+  }, [page]);
 
   const fetchSimulations = async () => {
     setLoading(true);
@@ -160,6 +170,8 @@ export const AdminProvider = ({ children }) => {
     addAlgorithm,
     editAlgorithm,
     removeAlgorithm,
+    pagination,
+    page,
   };
 
   return (

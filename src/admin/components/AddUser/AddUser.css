@@ -55,6 +55,7 @@
 
 .form-group {
     flex: 1;
+    position: relative; /* QUAN TRỌNG */
 }
 
 .form-group.large {
@@ -127,7 +128,25 @@
 .save-btn:hover {
     background: #6240bb;
 }
+.eye-icon {
+    position: absolute;
+    right: 14px;
+    bottom: 14px; /* thay vì top: 50% */
 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    cursor: pointer;
+    color: #8d90a0;
+
+    font-size: 18px;
+    transition: 0.2s;
+}
+
+.eye-icon:hover {
+    color: white;
+}
 @media (max-width: 900px) {
     .form-row {
         flex-direction: column;
@@ -164,5 +183,6 @@
     .form-group select {
         padding: 12px 14px;
         font-size: 13px;
+        padding-right: 42px;
     }
 }

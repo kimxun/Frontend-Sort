@@ -76,38 +76,23 @@ const Login = () => {
           </div>
 
           <div className="input-group">
-
             <input
-              type={
-                showPassword
-                  ? 'text'
-                  : 'password'
-              }
+              type={showPassword ? 'text' : 'password'}
               placeholder="Mật khẩu"
               value={password}
-              onChange={(e) =>
-                setPassword(e.target.value)
-              }
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
-
-            <label className="show-password">
-
-              <input
-                type="checkbox"
-                checked={showPassword}
-                onChange={() =>
-                  setShowPassword(
-                    !showPassword
-                  )
-                }
-              />
-
-              Hiện mật khẩu
-
-            </label>
-
           </div>
+
+          <label className="show-password">
+            <input
+              type="checkbox"
+              checked={showPassword}
+              onChange={() => setShowPassword(!showPassword)}
+            />
+            <span>Hiện mật khẩu</span>
+          </label>
 
           {error && (
             <p className="error-text">
@@ -121,10 +106,10 @@ const Login = () => {
           >
             Đăng nhập
           </button>
-          
+
           <Link
             to="/register"
-            className="register-btn"
+            className="register-link"
           >
             Đăng ký
           </Link>

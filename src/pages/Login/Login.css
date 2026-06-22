@@ -53,9 +53,28 @@
   margin-top: 10px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+
   color: #cbd5e1;
   font-size: 14px;
+
+  cursor: pointer;
+  user-select: none;
+}
+
+.show-password input {
+  width: 16px;
+  height: 16px;
+  accent-color: #3b82f6; /* màu xanh đồng bộ login */
+  cursor: pointer;
+}
+
+.show-password span {
+  transition: 0.2s;
+}
+
+.show-password:hover span {
+  color: #60a5fa;
 }
 
 .error-text {
@@ -94,4 +113,21 @@
   .login-card h2 {
     font-size: 24px;
   }
+}
+.register-link {
+  display: block;
+  text-align: center;
+  margin-top: 14px;
+
+  color: #60a5fa;
+  font-size: 14px;
+  font-weight: 500;
+
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.register-link:hover {
+  color: #93c5fd;
+  text-decoration: underline;
 }

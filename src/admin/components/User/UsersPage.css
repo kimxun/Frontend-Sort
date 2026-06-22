@@ -1,3 +1,6 @@
+/* ==========================================
+   BỐ CỤC CHUNG (LAYOUT)
+========================================== */
 .users-page {
     padding: 32px;
     width: 100%;
@@ -34,6 +37,9 @@
     background: #6240bb;
 }
 
+/* ==========================================
+   THẺ THỐNG KÊ (STATS CARDS)
+========================================== */
 .stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -54,6 +60,7 @@
     font-size: 12px;
     letter-spacing: 1px;
     margin-bottom: 12px;
+    text-transform: uppercase;
 }
 
 .card h2 {
@@ -62,6 +69,15 @@
     color: #bea8ff;
 }
 
+/* Class dùng để hiển thị các số liệu đẹp như code */
+.number-mono {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================
+   BẢNG VÀ THANH CÔNG CỤ (TABLE & TOOLBAR)
+========================================== */
 .table-container {
     background: #191b23;
     border: 1px solid #2b2f3c;
@@ -72,16 +88,43 @@
 .toolbar {
     padding: 20px;
     border-bottom: 1px solid #2b2f3c;
+    display: flex;
+    justify-content: space-between; /* Đẩy Title sang trái, Filter sang phải */
+    align-items: center;
+}
+
+/* Tiêu đề góc trái bảng */
+.toolbar h3 {
+    margin: 0;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.toolbar h3 .badge {
+    background: #2b2f3c;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #8d90a0;
+}
+
+/* Khu vực Search và Filter góc phải bảng */
+.toolbar-actions {
+    display: flex;
+    gap: 16px;
+    align-items: center;
 }
 
 .toolbar input {
-    width: 320px;
+    width: 300px;
     max-width: 100%;
     background: #11131b;
     border: 1px solid #3a3f4d;
     color: white;
-    padding: 12px 16px;
-    border-radius: 10px;
+    padding: 10px 16px;
+    border-radius: 8px;
     outline: none;
     box-sizing: border-box;
 }
@@ -94,6 +137,38 @@
     color: #6b7280;
 }
 
+.filter-group {
+    display: flex;
+    background: #11131b;
+    border: 1px solid #2b2f3c;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.filter-btn {
+    background: transparent;
+    border: none;
+    color: #8d90a0;
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    border-right: 1px solid #2b2f3c;
+    transition: 0.2s;
+}
+
+.filter-btn:last-child {
+    border-right: none;
+}
+
+.filter-btn:hover, .filter-btn.active {
+    background: #2b2f3c;
+    color: white;
+}
+
+/* ==========================================
+   CHI TIẾT BẢNG (TABLE ELEMENTS)
+========================================== */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -107,8 +182,10 @@ thead th {
     text-align: left;
     padding: 18px 22px;
     color: #8d90a0;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
 
 tbody tr {
@@ -122,8 +199,11 @@ tbody tr:hover {
 
 tbody td {
     padding: 20px 22px;
+    font-size: 14px;
+    color: #d1d5db;
 }
 
+/* Cột thông tin User (Avatar + Tên) */
 .user-info {
     display: flex;
     align-items: center;
@@ -131,19 +211,21 @@ tbody td {
 }
 
 .avatar {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     color: white;
     font-weight: 700;
+    font-size: 14px;
 }
 
 .name {
     font-weight: 600;
     margin-bottom: 4px;
+    color: #fff;
 }
 
 .email {
@@ -151,44 +233,61 @@ tbody td {
     font-size: 13px;
 }
 
+/* Nhãn Vai Trò (Role Badges Outline) */
 .role-badge {
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
     font-weight: 600;
+    display: inline-block;
+    letter-spacing: 0.5px;
 }
 
 .role-admin {
     color: #bea8ff;
     border: 1px solid #4f319c;
-    background: rgba(79, 49, 156, 0.2);
+    background: rgba(79, 49, 156, 0.15);
 }
 
 .role-user {
     color: #93c5fd;
     border: 1px solid #2563eb;
-    background: rgba(37, 99, 235, 0.15);
+    background: rgba(37, 99, 235, 0.12);
+}
+.status-active {
+    color: #24b258;
+    border: 1px solid #22c55e;
+    background: rgba(34, 197, 94, 0.12);
 }
 
+.status-inactive {
+    color: #8d90a0;
+    border: 1px solid #3a3f4d;
+    background: rgba(58, 63, 77, 0.2);
+}
+/* Cột Thao tác (Action Buttons Square) */
 .action-group {
     display: flex;
-    gap: 10px;
+    gap: 8px;
 }
 
 .action-btn {
-    min-width: 70px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: transparent;
     border: 1px solid #3a3f4d;
-    color: #d1d5db;
-    border-radius: 8px;
+    color: #8d90a0;
+    border-radius: 6px;
     cursor: pointer;
-    transition: .25s;
+    transition: .2s;
 }
 
 .action-btn:hover {
-    border-color: #4f319c;
-    background: rgba(79, 49, 156, 0.15);
+    border-color: #8d90a0;
+    color: white;
 }
 
 .delete:hover {
@@ -196,6 +295,42 @@ tbody td {
     color: #ef4444;
 }
 
+/* ==========================================
+   PHÂN TRANG (PAGINATION)
+========================================== */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border-top: 1px solid #2b2f3c;
+    background: #191b23;
+}
+
+.pagination button {
+    padding: 8px 14px;
+    border: 1px solid #3a3f4d;
+    border-radius: 8px;
+    background: #11131b;
+    color: #d1d5db;
+    cursor: pointer;
+    transition: 0.25s;
+}
+
+.pagination button:hover:not(:disabled) {
+    border-color: #4f319c;
+    background: rgba(79, 49, 156, 0.15);
+}
+
+.pagination button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* ==========================================
+   RESPONSIVE CHO ĐIỆN THOẠI / TABLET
+========================================== */
 @media (max-width: 1000px) {
     .stats {
         grid-template-columns: 1fr;
@@ -215,6 +350,29 @@ tbody td {
         width: 100%;
         text-align: center;
     }
+    
+    /* Toolbar rớt dòng trên Mobile */
+    .toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+    .toolbar-actions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .toolbar input {
+        width: 100%;
+    }
+    .filter-group {
+        width: 100%;
+        display: flex;
+    }
+    .filter-btn {
+        flex: 1; /* Các nút filter chia đều nhau */
+    }
+
     .table-container {
         overflow-x: auto;
     }
@@ -222,17 +380,12 @@ tbody td {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
-        min-width: 600px;
+        min-width: 800px;
     }
     thead th,
     tbody td {
         padding: 12px 16px;
         font-size: 13px;
-    }
-    .action-btn {
-        min-width: 40px;
-        padding: 0 8px;
-        font-size: 12px;
     }
     .card {
         padding: 16px;
@@ -258,21 +411,9 @@ tbody td {
     .card h2 {
         font-size: 24px;
     }
-    .toolbar {
-        padding: 12px;
-    }
-    .toolbar input {
-        width: 100%;
-        padding: 10px 14px;
-    }
     thead th,
     tbody td {
         padding: 10px 12px;
         font-size: 12px;
-    }
-    .action-btn {
-        min-width: 32px;
-        height: 32px;
-        font-size: 11px;
     }
 }

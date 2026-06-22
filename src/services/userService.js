@@ -1,7 +1,7 @@
 import api from './api';
 
-export const getUsers = async () => {
-  const response = await api.get('/users');
+export const getUsers = async (page = 1, limit = 5) => {
+  const response = await api.get( `/users?page=${page}&limit=${limit}`);
   return response.data;
 };
 
