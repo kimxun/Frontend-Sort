@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./AddUser.css";
 import { useAdmin } from "../../../context/AdminContext";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 export default function AddUser() {
     const navigate = useNavigate();
@@ -14,7 +15,8 @@ export default function AddUser() {
         email: "",
         role: 0,
     });
-
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -35,6 +37,7 @@ export default function AddUser() {
                 full_name: formData.full_name,
                 email: formData.email,
                 role: Number(formData.role),
+                status: 1,
             };
             await addUser(payload);
             alert("Tạo người dùng thành công!");
@@ -82,7 +85,7 @@ export default function AddUser() {
                             placeholder="Ví dụ: alexdev"
                             value={formData.username}
                             onChange={handleChange}
-                            autoComplete="nopermission" 
+                            autoComplete="nopermission"
                         />
                     </div>
 
@@ -136,28 +139,40 @@ export default function AddUser() {
                         <label>MẬT KHẨU</label>
 
                         <input
-                            type="password"
+                            type={showPassword ? 'text' : 'password'}
                             name="password"
                             placeholder="Nhập mật khẩu..."
                             value={formData.password}
                             onChange={handleChange}
-                            autoComplete="new-password" 
+                            autoComplete="new-password"
                         />
+                        <span
+                            className="eye-icon"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? <FiEyeOff /> : <FiEye />}
+                        </span>
                     </div>
 
                     <div className="form-group">
                         <label>XÁC NHẬN MẬT KHẨU</label>
 
                         <input
-                            type="password"
+                            type={showConfirmPassword ? 'text' : 'password'}
                             name="confirmPassword"
                             placeholder="Xác nhận lại mật khẩu..."
                             value={
                                 formData.confirmPassword
                             }
                             onChange={handleChange}
-                            autoComplete="new-password" 
+                            autoComplete="new-password"
                         />
+                        <span
+                            className="eye-icon"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        >
+                            {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+                        </span>
                     </div>
                 </div>
 

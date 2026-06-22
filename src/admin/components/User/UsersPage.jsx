@@ -4,19 +4,12 @@ import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import { useAdmin } from "../../../context/AdminContext";
 import "./UsersPage.css";
 
-const avatarColors = [
-    "#6d4aff",
-    "#3b82f6",
-    "#22c55e",
-    "#ef4444",
-];
+const avatarColors = ["#6d4aff", "#3b82f6", "#22c55e", "#ef4444"];
 
 function Avatar({ name, idx }) {
     const initials = name
-        ?.split(" ")
-        .map((n) => n[0])
-        .join("")
-        .toUpperCase();
+        ? name.split(" ").map(n => n[0]).join("").toUpperCase()
+        : "";
 
     return (
         <div
@@ -31,20 +24,35 @@ function Avatar({ name, idx }) {
 }
 
 export default function UsersPage() {
-
     const navigate = useNavigate();
 
     const {
-        users,
+        users = [],
         loading,
         error,
         removeUser,
+        fetchUsers,
+        pagination,
     } = useAdmin();
 
     const [search, setSearch] = useState("");
 
-    const handleDelete = async (user) => {
+    // ================= CURRENT PAGE FROM BACKEND =================
+    const currentPage = pagination?.page || 1;
+    const totalPages = pagination?.totalPages || 1;
 
+    // ================= SEARCH (TEMP FRONTEND) =================
+    const filteredUsers = users.filter((u) => {
+        const keyword = search.toLowerCase();
+        return (
+            u.full_name?.toLowerCase().includes(keyword) ||
+            u.email?.toLowerCase().includes(keyword) ||
+            u.username?.toLowerCase().includes(keyword)
+        );
+    });
+
+    // ================= HANDLE DELETE =================
+    const handleDelete = async (user) => {
         const confirmDelete = window.confirm(
             `Bạn có chắc muốn khóa tài khoản "${user.username}"?`
         );
@@ -52,38 +60,25 @@ export default function UsersPage() {
         if (!confirmDelete) return;
 
         try {
-
             await removeUser(user.id);
-
+            await fetchUsers(currentPage); // reload đúng page
             alert("Khóa tài khoản thành công");
-
         } catch (err) {
-
             alert("Khóa tài khoản thất bại");
-
         }
     };
 
-    const filtered = users.filter(
-        (u) =>
-            u.full_name
-                ?.toLowerCase()
-                .includes(search.toLowerCase()) ||
-
-            u.email
-                ?.toLowerCase()
-                .includes(search.toLowerCase()) ||
-
-            u.username
-                ?.toLowerCase()
-                .includes(search.toLowerCase())
-    );
+    // ================= CHANGE PAGE =================
+    const goToPage = (page) => {
+        if (page < 1 || page > totalPages) return;
+        fetchUsers(page);
+    };
 
     return (
         <div className="users-page">
 
+            {/* HEADER */}
             <div className="header">
-
                 <h1>Quản lý người dùng</h1>
 
                 <button
@@ -92,66 +87,53 @@ export default function UsersPage() {
                 >
                     + Thêm người dùng
                 </button>
-
             </div>
 
+            {/* STATS */}
             <div className="stats">
-
                 <div className="card">
                     <span>TỔNG SỐ NGƯỜI DÙNG</span>
-                    <h2>{users.length}</h2>
+                    <h2>{pagination?.total || 0}</h2>
                 </div>
 
                 <div className="card">
                     <span>ĐANG HOẠT ĐỘNG</span>
-                    <h2>{users.filter((u) => u.status === 1).length}</h2>
+                    <h2>{pagination?.totalActive || 0}</h2>
                 </div>
 
                 <div className="card">
                     <span>QUẢN TRỊ VIÊN</span>
-                    <h2>
-                        {
-                            users.filter((u) => u.role === 1).length
-                        }
-                    </h2>
+                    <h2>{pagination?.totalAdmin || 0}</h2>
                 </div>
-
             </div>
 
+            {/* TABLE */}
             <div className="table-container">
 
+                {/* SEARCH */}
                 <div className="toolbar">
-
                     <input
                         type="text"
                         placeholder="Tìm kiếm người dùng..."
                         value={search}
-                        onChange={(e) => setSearch(e.target.value)}
+                        onChange={(e) => {
+                            setSearch(e.target.value);
+                        }}
                     />
-
                 </div>
 
-                {
-                    loading ? (
-
-                        <p className="loading-text">
-                            Đang tải dữ liệu...
-                        </p>
-
-                    ) : error ? (
-
-                        <p className="error-text">
-                            {error}
-                        </p>
-
-                    ) : (
-
+                {/* LOADING */}
+                {loading ? (
+                    <p>Đang tải...</p>
+                ) : error ? (
+                    <p>{error}</p>
+                ) : (
+                    <>
                         <table>
-
                             <thead>
                                 <tr>
                                     <th>Người dùng</th>
-                                    <th>Tên đăng nhập</th>
+                                    <th>Username</th>
                                     <th>Email</th>
                                     <th>Vai trò</th>
                                     <th>Trạng thái</th>
@@ -161,117 +143,78 @@ export default function UsersPage() {
                             </thead>
 
                             <tbody>
-
-                                {
-                                    filtered.map((user, idx) => (
-
-                                        <tr key={user.id}>
-
-                                            <td>
-
-                                                <div className="user-info">
-
-                                                    <Avatar
-                                                        name={user.full_name}
-                                                        idx={idx}
-                                                    />
-
-                                                    <div>
-
-                                                        <div className="name">
-                                                            {user.full_name}
-                                                        </div>
-
-                                                        <div className="email">
-                                                            {user.email}
-                                                        </div>
-
-                                                    </div>
-
+                                {filteredUsers.map((user, idx) => (
+                                    <tr key={user.id}>
+                                        <td>
+                                            <div className="user-info">
+                                                <Avatar name={user.full_name} idx={idx} />
+                                                <div>
+                                                    <div>{user.full_name}</div>
+                                                    <div>{user.email}</div>
                                                 </div>
+                                            </div>
+                                        </td>
 
-                                            </td>
+                                        <td>{user.username}</td>
+                                        <td>{user.email}</td>
 
-                                            <td>{user.username}</td>
+                                        <td>
+                                            <span className={`role-badge ${user.role === 1 ? "role-admin" : "role-user"}`}>
+                                                {user.role === 1 ? "ADMIN" : "USER"}
+                                            </span>
+                                        </td>
 
-                                            <td>{user.email}</td>
+                                        <td>
+                                            <span className={`role-badge ${user.status === 1 ? "status-active" : "status-inactive"}`}>
+                                                {user.status === 1 ? "ACTIVE" : "LOCKED"}
+                                            </span>
+                                        </td>
 
-                                            <td>
+                                        <td>{user.created_at}</td>
 
-                                                <span
-                                                    className={`role-badge ${user.role === 1
-                                                            ? "role-admin"
-                                                            : "role-user"
-                                                        }`}
-                                                >
-                                                    {user.role === 1
-                                                        ? "QUẢN TRỊ VIÊN"
-                                                        : "NGƯỜI DÙNG"}
-                                                </span>
+                                        <td>
+                                            <button
+                                                onClick={() =>
+                                                    navigate(`/admin/edit-user/${user.id}`)
+                                                }
+                                            >
+                                                <FiEdit2 />
+                                            </button>
 
-                                            </td>
-
-                                            <td>
-
-                                                <span
-                                                    className={`status-badge ${user.status === 1
-                                                            ? "status-active"
-                                                            : "status-inactive"
-                                                        }`}
-                                                >
-                                                    {user.status === 1
-                                                        ? "HOẠT ĐỘNG"
-                                                        : "TẠM KHÓA"}
-                                                </span>
-
-                                            </td>
-
-                                            <td>
-                                                {user.created_at}
-                                            </td>
-
-                                            <td>
-
-                                                <div className="action-group">
-
-                                                    <button
-                                                        className="action-btn"
-                                                        onClick={() =>
-                                                            navigate(
-                                                                `/admin/edit-user/${user.id}`
-                                                            )
-                                                        }
-                                                    >
-                                                        <FiEdit2 />
-                                                    </button>
-
-                                                    <button
-                                                        className="action-btn delete"
-                                                        onClick={() =>
-                                                            handleDelete(user)
-                                                        }
-                                                    >
-                                                        <FiTrash2 />
-                                                    </button>
-
-                                                </div>
-
-                                            </td>
-
-                                        </tr>
-
-                                    ))
-                                }
-
+                                            <button
+                                                onClick={() => handleDelete(user)}
+                                            >
+                                                <FiTrash2 />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
                             </tbody>
-
                         </table>
 
-                    )
-                }
+                        {/* PAGINATION */}
+                        <div className="pagination">
+                            <button
+                                disabled={currentPage <= 1}
+                                onClick={() => goToPage(currentPage - 1)}
+                            >
+                                ← Trước
+                            </button>
 
+                            <span>
+                                Trang {currentPage} / {totalPages}
+                            </span>
+
+                            <button
+                                disabled={currentPage >= totalPages}
+                                onClick={() => goToPage(currentPage + 1)}
+                            >
+                                Sau →
+                            </button>
+                        </div>
+                    </>
+                )}
             </div>
-
         </div>
     );
 }
