@@ -16,11 +16,14 @@ export default function ControlPanel() {
     speed,
     setSpeed,
     isRunning,
+    setIsRunning,
     runAlgorithm,
     reset,
     steps,
     currentStep,
     setCurrentStep,
+    sortOrder,
+    toggleSortOrder,
   } = useSorting();
 
   const [inputValue, setInputValue] = useState("");
@@ -52,15 +55,24 @@ export default function ControlPanel() {
     }
   };
 
-  const handlePause = () => {};
+  const handleStartOrContinue = () => {
+    if (steps.length > 0 && !isRunning) {
+      setIsRunning(true);
+    } else {
+      runAlgorithm();
+    }
+  };
+
+  const handlePause = () => {
+    setIsRunning(false);
+  };
 
   const handleHover = (id) => ({
     onMouseEnter: () => setHovered(id),
     onMouseLeave: () => setHovered(null),
   });
 
-  const sortOrder = "asc";
-  const onSortOrderChange = () => {};
+  const isPaused = steps.length > 0 && !isRunning;
 
   return (
     <div className="control-panel">
@@ -82,7 +94,7 @@ export default function ControlPanel() {
         </div>
 
         <button
-          onClick={isRunning ? handlePause : runAlgorithm}
+          onClick={isRunning ? handlePause : handleStartOrContinue}
           {...handleHover("play")}
           className={`btn-play ${isRunning ? "pause" : "play"} ${
             hovered === "play" ? "hover" : ""
@@ -91,6 +103,10 @@ export default function ControlPanel() {
           {isRunning ? (
             <>
               <PauseIcon /> Tạm dừng
+            </>
+          ) : isPaused ? (
+            <>
+              <PlayIcon /> Tiếp tục
             </>
           ) : (
             <>
@@ -124,7 +140,7 @@ export default function ControlPanel() {
         </button>
 
         <button
-          onClick={onSortOrderChange}
+          onClick={toggleSortOrder}
           disabled={isRunning}
           {...handleHover("order")}
           className={`btn-order ${sortOrder === "asc" ? "asc" : "desc"} ${
