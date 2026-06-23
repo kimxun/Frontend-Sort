@@ -1,7 +1,7 @@
 import api from './api';
 
-export const getAlgorithms = async () => {
-  const response = await api.get('/algorithms');
+export const getAlgorithms = async (page=1, limit=5) => {
+  const response = await api.get(`/algorithms?page=${page}&limit=${limit}`);
   return response.data;
 };
 

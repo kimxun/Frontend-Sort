@@ -4,10 +4,11 @@ import { useAdmin } from '../../../context/AdminContext';
 import './AlgorithmsPage.css';
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 const AlgorithmsPage = () => {
-    const { algorithms, fetchAlgorithms, loading, removeAlgorithm } = useAdmin();
+    const { algorithms, fetchAlgorithms, loading, removeAlgorithm, algorithmPagination } = useAdmin();
     const [search, setSearch] = useState('');
     const navigate = useNavigate();
-
+    const currentPage = algorithmPagination?.page || 1;
+    const totalPages = algorithmPagination?.totalPages || 1;
     useEffect(() => {
         fetchAlgorithms();
     }, []);
@@ -16,6 +17,7 @@ const AlgorithmsPage = () => {
         if (window.confirm(`Bạn có chắc muốn xóa thuật toán "${name}"?`)) {
             try {
                 await removeAlgorithm(id);
+                await fetchAlgorithms(currentPage); // Tải lại danh sách thuật toán sau khi xóa
                 alert('Xóa thành công');
             } catch (err) {
                 alert('Xóa thất bại: ' + err.message);
@@ -29,7 +31,10 @@ const AlgorithmsPage = () => {
     );
 
     if (loading) return <div className="loading">Đang tải...</div>;
-
+    const goToPage = (page) => {
+        if (page < 1 || page > totalPages) return;
+        fetchAlgorithms(page);
+    };
     return (
         <div className="algorithms-page">
             <div className="header">
@@ -48,49 +53,70 @@ const AlgorithmsPage = () => {
                         onChange={(e) => setSearch(e.target.value)}
                     />
                 </div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Tên</th>
-                            <th>Slug</th>
-                            <th>Độ phức tạp</th>
-                            <th>Trạng thái</th>
-                            <th>Hành động</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filtered.map(algo => (
-                            <tr key={algo.id}>
-                                <td>{algo.id}</td>
-                                <td>{algo.name}</td>
-                                <td>{algo.slug}</td>
-                                <td>{algo.time_complexity}</td>
-                                <td>
-                                    <span className={`status-badge ${algo.status === 1 ? 'active' : 'inactive'}`}>
-                                        {algo.status === 1 ? 'Hoạt động' : 'Không hoạt động'}
-                                    </span>
-                                </td>
-                                <td>
-                                    <button
-                                        className="action-btn edit"
-                                        onClick={() => navigate(`/admin/edit-algorithm/${algo.id}`)}
-                                    >
-                                        <FiEdit2 />
-                                    </button>
-                                    <button
-                                        className="action-btn delete"
-                                        onClick={() => handleDelete(algo.id, algo.name)}
-                                    >
-                                        <FiTrash2 />
-                                    </button>
-                                </td>
+                <>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Tên</th>
+                                <th>Slug</th>
+                                <th>Độ phức tạp</th>
+                                <th>Trạng thái</th>
+                                <th>Hành động</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {filtered.map(algo => (
+                                <tr key={algo.id}>
+                                    <td>{algo.id}</td>
+                                    <td>{algo.name}</td>
+                                    <td>{algo.slug}</td>
+                                    <td>{algo.time_complexity}</td>
+                                    <td>
+                                        <span className={`status-badge ${algo.status === 1 ? 'active' : 'inactive'}`}>
+                                            {algo.status === 1 ? 'Hoạt động' : 'Không hoạt động'}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <button
+                                            className="action-btn edit"
+                                            onClick={() => navigate(`/admin/edit-algorithm/${algo.id}`)}
+                                        >
+                                            <FiEdit2 />
+                                        </button>
+                                        <button
+                                            className="action-btn delete"
+                                            onClick={() => handleDelete(algo.id, algo.name)}
+                                        >
+                                            <FiTrash2 />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                    <div className="pagination">
+                        <button
+                            disabled={currentPage <= 1}
+                            onClick={() => goToPage(currentPage - 1)}
+                        >
+                            ← Trước
+                        </button>
+
+                        <span>
+                            Trang {currentPage} / {totalPages}
+                        </span>
+
+                        <button
+                            disabled={currentPage >= totalPages}
+                            onClick={() => goToPage(currentPage + 1)}
+                        >
+                            Sau →
+                        </button>
+                    </div>
+                </>
             </div>
+
         </div>
     );
 };
