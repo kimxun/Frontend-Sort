@@ -6,10 +6,11 @@ const SortingContext = createContext();
 export const useSorting = () => useContext(SortingContext);
 
 export const SortingProvider = ({ children }) => {
+  const initialArray = [5, 3, 8, 1, 2];
   const [algorithms, setAlgorithms] = useState([]);
   const [algorithmId, setAlgorithmId] = useState(1);
   const [algorithmInfo, setAlgorithmInfo] = useState(null);
-  const [array, setArray] = useState([5, 3, 8, 1, 2]);
+  const [array, setArray] = useState(initialArray);
   const [steps, setSteps] = useState([]);
   const [currentStep, setCurrentStep] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -18,6 +19,7 @@ export const SortingProvider = ({ children }) => {
   const [sortOrder, setSortOrder] = useState('asc');
   const [speed, setSpeed] = useState(50);
 
+  const [originalArray, setOriginalArray] = useState(initialArray);
   const [freeUsageCount, setFreeUsageCount] = useState(() => {
     return parseInt(localStorage.getItem('freeUsageCount')) || 0;
   });
@@ -25,13 +27,18 @@ export const SortingProvider = ({ children }) => {
   useEffect(() => {
     const fetchAlgorithms = async () => {
       try {
-        const data = await getAlgorithms();
-        setAlgorithms(data);
-        if (data.length > 0) setAlgorithmId(data[0].id);
+        const res = await getAlgorithms();
+
+        setAlgorithms(res.data || []);
+
+        if (res.data?.length > 0) {
+          setAlgorithmId(res.data[0].id);
+        }
       } catch (error) {
         console.error(error);
       }
     };
+
     fetchAlgorithms();
   }, []);
 
@@ -70,57 +77,68 @@ export const SortingProvider = ({ children }) => {
     }
     return () => clearInterval(timer);
   }, [isRunning, steps, speed]);
+  const generateSteps = async () => {
+    if (!array.length) return false;
+
+    const data = await getAlgorithmSteps(
+      algorithmId,
+      array,
+      sortOrder
+    );
+
+    const stepData =
+      data.step_by_step ||
+      data.steps ||
+      data.data ||
+      (Array.isArray(data) ? data : []);
+
+    if (!stepData.length) return false;
+
+    setSteps(stepData);
+    setArray(stepData[0].array);
+    setCurrentStep(0);
+
+    return true;
+  };
 
   const runAlgorithm = async () => {
-    if (!array.length) return;
-
-    const token = localStorage.getItem('token');
-    if (!token) {
-      if (freeUsageCount >= 3) {
-        alert('Bạn đã sử dụng hết 3 lần miễn phí.');
-        window.location.href = '/login';
-        return;
-      }
-      const newCount = freeUsageCount + 1;
-      setFreeUsageCount(newCount);
-      localStorage.setItem('freeUsageCount', newCount);
-    }
-
     setLoading(true);
-    try {
-      const data = await getAlgorithmSteps(algorithmId, array, sortOrder);
-      const stepData = data.step_by_step || data.steps || data.data || (Array.isArray(data) ? data : []);
-      
-      if (!stepData || stepData.length === 0) {
-        alert("Không nhận được dữ liệu bước thực hiện.");
-        setLoading(false);
-        return;
-      }
 
-      setSteps(stepData);
-      setArray(stepData[0].array);
-      setCurrentStep(0);
-      setIsRunning(true);
-    } catch (error) {
-      if (error.response && error.response.status === 401 && token) {
-        localStorage.removeItem('token');
-        localStorage.removeItem('user');
-        window.location.href = '/login';
+    try {
+      const success = await generateSteps();
+
+      if (success) {
+        setIsRunning(true);
       }
     } finally {
       setLoading(false);
     }
   };
-
-  const reset = () => {
+  const setArrayWithMemory = (newArr) => {
+    setOriginalArray([...newArr]);
+    setArray(newArr);
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
   };
 
+
+  const reset = () => {
+    setSteps([]);
+    setCurrentStep(0);
+    setIsRunning(false);
+
+    if (originalArray.length) {
+      setArray([...originalArray]);
+    }
+  };
+
   const generateRandomArray = () => {
     const newArray = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100) + 1);
+
+    setOriginalArray([...newArray]); // 👈 lưu bản gốc
     setArray(newArray);
+
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
@@ -131,14 +149,18 @@ export const SortingProvider = ({ children }) => {
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
+    if (originalArray.length) {
+      setArray([...originalArray]);
+    }
   };
+
 
   const value = {
     algorithms,
     algorithmId,
     setAlgorithmId,
     array,
-    setArray,
+    setArray: setArrayWithMemory,
     steps,
     currentStep,
     setCurrentStep,
@@ -156,6 +178,7 @@ export const SortingProvider = ({ children }) => {
     algorithmInfo,
     generateRandomArray,
     toggleSortOrder,
+    generateSteps,
   };
 
   return (
