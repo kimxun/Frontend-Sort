@@ -121,29 +121,53 @@ tbody td {
     color: #f87171;
 }
 
+/* Tìm và thay thế đoạn `.action-btn` cũ của bạn bằng đoạn này */
 .action-btn {
-    padding: 6px 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;  /* Tăng nhẹ kích thước nút cho cân đối */
+    height: 34px;
     border: none;
     border-radius: 6px;
-    font-size: 12px;
     cursor: pointer;
     margin-right: 6px;
     background: transparent;
-    color: #c3c5d7;
+    color: #848589;
     border: 1px solid #3a3f4d;
     transition: all 0.2s;
+    padding: 0;   /* Khử padding mặc định của button để không bóp nghẹt icon */
+}
+
+/* 🎯 ĐOẠN QUAN TRỌNG: Ép icon SVG bên trong bung đúng kích thước */
+.action-btn svg {
+    width: 18px !important;
+    height: 18px !important;
+    display: block;
 }
 
 .action-btn.edit:hover {
     border-color: #4f319c;
     color: #bea8ff;
+    background: rgba(79, 49, 156, 0.15);
 }
 
 .action-btn.delete:hover {
     border-color: #ef4444;
     color: #ef4444;
+    background: rgba(239, 68, 68, 0.15);
 }
 
+@media (max-width: 768px) {
+    .action-btn {
+        width: 30px;
+        height: 30px;
+    }
+    .action-btn svg {
+        width: 15px !important;
+        height: 15px !important;
+    }
+}
 @media (max-width: 768px) {
     .algorithms-page {
         padding: 16px;
@@ -171,6 +195,7 @@ tbody td {
     .action-btn {
         padding: 4px 10px;
         font-size: 11px;
+       
     }
     .table-container {
         overflow-x: auto;

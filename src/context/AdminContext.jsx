@@ -19,7 +19,8 @@ export const AdminProvider = ({ children }) => {
   const [pagination, setPagination] = useState({});
   const [page, setPage] = useState(1);
   const [limit] = useState(5);
-
+  const [algorithmPagination, setAlgorithmPagination] = useState({});
+  const [algorithmPage, setAlgorithmPage] = useState(1);
   const fetchUsers = async (p = page) => {
     setLoading(true);
     try {
@@ -53,11 +54,31 @@ export const AdminProvider = ({ children }) => {
     }
   };
 
-  const fetchAlgorithms = async () => {
+  // const fetchAlgorithms = async ( p) => {
+  //   setLoading(true);
+  //   try {
+  //     const data = await getAlgorithms();
+  //     setAlgorithms(data.filter(a => a.status !== -1));
+  //     setError(null);
+  //   } catch (err) {
+  //     setError(err.message || 'Không thể tải danh sách thuật toán');
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
+  const fetchAlgorithms = async (p = page) => {
     setLoading(true);
+
     try {
-      const data = await getAlgorithms();
-      setAlgorithms(data.filter(a => a.status !== -1));
+      const res = await getAlgorithms(p, limit);
+
+      setAlgorithms(
+        (res.data || [])
+      );
+
+      setAlgorithmPagination(res.pagination || {});
+      setAlgorithmPage(p);
+
       setError(null);
     } catch (err) {
       setError(err.message || 'Không thể tải danh sách thuật toán');
@@ -65,6 +86,9 @@ export const AdminProvider = ({ children }) => {
       setLoading(false);
     }
   };
+  // useEffect(() => {
+  //   fetchAlgorithms(page);
+  // }, [page]);
 
   const addUser = async (userData) => {
     try {
@@ -172,6 +196,9 @@ export const AdminProvider = ({ children }) => {
     removeAlgorithm,
     pagination,
     page,
+    algorithmPagination,
+    algorithmPage,
+    limit,
   };
 
   return (
