@@ -2,12 +2,6 @@ import { useState } from "react";
 import { useSorting } from "../../context/SortingContext";
 import "./ControlPanel.css";
 
-const ALGORITHMS = [
-  { value: 1, label: "Selection Sort" },
-  { value: 2, label: "Quick Sort" },
-  { value: 3, label: "Interchange Sort" },
-];
-
 export default function ControlPanel() {
   const {
     algorithmId,
@@ -24,6 +18,9 @@ export default function ControlPanel() {
     setCurrentStep,
     sortOrder,
     toggleSortOrder,
+    algorithms,
+    generateSteps,
+    generateRandomArray,
   } = useSorting();
 
   const [inputValue, setInputValue] = useState("");
@@ -36,24 +33,28 @@ export default function ControlPanel() {
       .filter((v) => !isNaN(v) && v > 0);
     if (values.length > 0) {
       setArray(values);
-      reset();
       setInputValue("");
     }
   };
 
   const handleRandomArray = () => {
-    const newArray = Array.from({ length: 10 }, () =>
-      Math.floor(Math.random() * 100) + 1
-    );
-    setArray(newArray);
-    reset();
+    generateRandomArray();
   };
 
-  const handleStepForward = () => {
-    if (currentStep < steps.length - 1) {
-      setCurrentStep(currentStep + 1);
+  const handleStepForward = async () => {
+    if (steps.length === 0) {
+      await generateSteps();
+      return;
+    }
+
+    const nextStep = currentStep + 1;
+
+    if (nextStep < steps.length) {
+      setCurrentStep(nextStep);
+      setArray(steps[nextStep].array);
     }
   };
+  const canStepForward = !isRunning && (steps.length === 0 || currentStep < steps.length - 1);
 
   const handleStartOrContinue = () => {
     if (steps.length > 0 && !isRunning) {
@@ -84,11 +85,13 @@ export default function ControlPanel() {
             disabled={isRunning}
             className={`algorithm-select ${isRunning ? "disabled" : ""}`}
           >
-            {ALGORITHMS.map((a) => (
-              <option key={a.value} value={a.value}>
-                {a.label}
-              </option>
-            ))}
+            {(algorithms || [])
+              .filter((a) => a.status === 1)
+              .map((a) => (
+                <option key={a.id} value={a.id}>
+                  {a.name}
+                </option>
+              ))}
           </select>
           <span className="select-arrow">▼</span>
         </div>
@@ -96,9 +99,8 @@ export default function ControlPanel() {
         <button
           onClick={isRunning ? handlePause : handleStartOrContinue}
           {...handleHover("play")}
-          className={`btn-play ${isRunning ? "pause" : "play"} ${
-            hovered === "play" ? "hover" : ""
-          }`}
+          className={`btn-play ${isRunning ? "pause" : "play"} ${hovered === "play" ? "hover" : ""
+            }`}
         >
           {isRunning ? (
             <>
@@ -117,24 +119,18 @@ export default function ControlPanel() {
 
         <button
           onClick={handleStepForward}
-          disabled={isRunning || !steps.length || currentStep >= steps.length - 1}
+          disabled={!canStepForward}
           {...handleHover("step")}
-          className={`btn-step ${
-            !isRunning && steps.length && currentStep < steps.length - 1
-              ? "active"
-              : "inactive"
-          } ${hovered === "step" && !isRunning && steps.length && currentStep < steps.length - 1 ? "hover" : ""}`}
+          className={`btn-step ${canStepForward ? "active" : "inactive"} ${hovered === "step" && canStepForward ? "hover" : ""
+            }`}
         >
           <StepIcon /> Bước tiếp
         </button>
-
         <button
           onClick={reset}
-          disabled={isRunning}
           {...handleHover("reset")}
-          className={`btn-reset ${isRunning ? "disabled" : ""} ${
-            hovered === "reset" && !isRunning ? "hover" : ""
-          }`}
+          className={`btn-reset  ${hovered === "reset" && !isRunning ? "hover" : ""
+            }`}
         >
           <ResetIcon /> Reset
         </button>
@@ -143,9 +139,8 @@ export default function ControlPanel() {
           onClick={toggleSortOrder}
           disabled={isRunning}
           {...handleHover("order")}
-          className={`btn-order ${sortOrder === "asc" ? "asc" : "desc"} ${
-            isRunning ? "disabled" : ""
-          } ${hovered === "order" && !isRunning ? "hover" : ""}`}
+          className={`btn-order ${sortOrder === "asc" ? "asc" : "desc"} ${isRunning ? "disabled" : ""
+            } ${hovered === "order" && !isRunning ? "hover" : ""}`}
         >
           {sortOrder === "asc" ? <AscIcon /> : <DescIcon />}
           {sortOrder === "asc" ? "Tăng dần" : "Giảm dần"}
@@ -185,9 +180,8 @@ export default function ControlPanel() {
           onClick={handleSubmit}
           disabled={isRunning || !inputValue.trim()}
           {...handleHover("apply")}
-          className={`btn-apply ${
-            !isRunning && inputValue.trim() ? "active" : "inactive"
-          } ${hovered === "apply" && !isRunning && inputValue.trim() ? "hover" : ""}`}
+          className={`btn-apply ${!isRunning && inputValue.trim() ? "active" : "inactive"
+            } ${hovered === "apply" && !isRunning && inputValue.trim() ? "hover" : ""}`}
         >
           Áp dụng
         </button>
@@ -196,9 +190,8 @@ export default function ControlPanel() {
           onClick={handleRandomArray}
           disabled={isRunning}
           {...handleHover("random")}
-          className={`btn-random ${isRunning ? "disabled" : ""} ${
-            hovered === "random" && !isRunning ? "hover" : ""
-          }`}
+          className={`btn-random ${isRunning ? "disabled" : ""} ${hovered === "random" && !isRunning ? "hover" : ""
+            }`}
         >
           <ShuffleIcon /> Mảng ngẫu nhiên
         </button>
