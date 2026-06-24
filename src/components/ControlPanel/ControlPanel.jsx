@@ -6,7 +6,6 @@ export default function ControlPanel() {
   const {
     algorithmId,
     setAlgorithmId,
-    setArray,
     speed,
     setSpeed,
     isRunning,
@@ -15,14 +14,12 @@ export default function ControlPanel() {
     reset,
     steps,
     currentStep,
-    setCurrentStep,
     sortOrder,
     toggleSortOrder,
     algorithms,
-    generateSteps,
     generateRandomArray,
-    setArray,
     goToNextStep,
+    setArrayWithMemory, 
   } = useSorting();
 
   const [inputValue, setInputValue] = useState("");
@@ -34,7 +31,7 @@ export default function ControlPanel() {
       .map((v) => parseInt(v.trim()))
       .filter((v) => !isNaN(v) && v > 0);
     if (values.length > 0) {
-      setArray(values);
+      setArrayWithMemory(values); 
       setInputValue("");
     }
   };

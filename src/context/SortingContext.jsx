@@ -97,13 +97,10 @@ export const SortingProvider = ({ children }) => {
         sortOrder
       );
 
-      // TẠM THỜI: Thêm dòng log này để bạn nhìn thấy cấu trúc thực tế từ Flask trả về
       console.log("Dữ liệu thực tế từ Flask trả về:", data);
 
-      // 🔴 SỬA DÒNG NÀY: Móc đúng vào data.metrics.steps
       const stepData = data?.metrics?.steps || data?.steps || (Array.isArray(data) ? data : []);
 
-      // Nếu vẫn không có dữ liệu bước, thông báo lên màn hình để biết đường debug
       if (!stepData || !stepData.length) {
         console.warn("Cảnh báo: Không tìm thấy mảng các bước (steps) trong dữ liệu trả về.");
         return false;
@@ -111,18 +108,15 @@ export const SortingProvider = ({ children }) => {
 
       setSteps(stepData);
 
-      // Kiểm tra xem phần tử đầu tiên có thuộc tính .array không (tùy thuộc vào cấu trúc sort_service của bạn)
       if (stepData[0] && stepData[0].array) {
         setArray(stepData[0].array);
       } else if (Array.isArray(stepData[0])) {
-        // Nếu từng step chỉ là một mảng thuần [5, 3, 1...] chứ không phải object {array: [...]}
         setArray(stepData[0]);
       }
 
       setCurrentStep(0);
       setRequireLogin(false);
       return true;
-      return stepData;
     } catch (error) {
       const response = error.response;
       if (response && response.status === 401 && response.data?.error === "Free limit exceeded") {
@@ -178,6 +172,18 @@ export const SortingProvider = ({ children }) => {
     }
   };
 
+  const goToNextStep = () => {
+    if (steps.length === 0) return;
+    setCurrentStep((prevStep) => {
+      const nextStep = prevStep + 1;
+      if (nextStep < steps.length) {
+        setArray(steps[nextStep].array || steps[nextStep]);
+        return nextStep;
+      }
+      return prevStep;
+    });
+  };
+
   const value = {
     algorithms,
     algorithmId,
@@ -201,10 +207,10 @@ export const SortingProvider = ({ children }) => {
     generateRandomArray,
     toggleSortOrder,
     generateSteps,
-    goToNextStep,
+    goToNextStep,       
     requireLogin,
     setRequireLogin,
-    changeInputArray,
+    setArrayWithMemory, 
   };
 
   return (
