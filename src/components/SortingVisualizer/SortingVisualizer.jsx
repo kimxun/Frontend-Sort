@@ -11,11 +11,11 @@ const BAR_COLORS = {
 };
 
 const LEGEND = [
-  { color: BAR_COLORS.default.bg,   label: "Chưa xử lý" },
-  { color: BAR_COLORS.comparing.bg, label: "Đang so sánh" },
-  { color: BAR_COLORS.swapping.bg,  label: "Đang hoán đổi" },
-  { color: BAR_COLORS.current.bg,   label: "Phần tử chốt" },
-  { color: BAR_COLORS.sorted.bg,    label: "Đã sắp xếp" },
+  { id: "default", color: BAR_COLORS.default.bg, label: "Chưa xử lý" },
+  { id: "comparing", color: BAR_COLORS.comparing.bg, label: "Đang so sánh" },
+  { id: "swapping", color: BAR_COLORS.swapping.bg, label: "Đang hoán đổi" },
+  { id: "pivot", color: BAR_COLORS.current.bg, label: "Phần tử chốt" },
+  { id: "sorted", color: BAR_COLORS.sorted.bg, label: "Đã sắp xếp" },
 ];
 
 const getBarColor = (index, stepData) => {
@@ -32,7 +32,7 @@ const getBarColor = (index, stepData) => {
 };
 
 const SortingVisualizer = () => {
-  const { steps, currentStep, array } = useSorting();
+  const { steps, currentStep, array, algorithmInfo } = useSorting();
 
   const currentStepData = steps.length > 0 && currentStep < steps.length
     ? steps[currentStep]
@@ -42,10 +42,18 @@ const SortingVisualizer = () => {
   const safeArray = Array.isArray(currentArray) ? currentArray : [];
   const maxValue = safeArray.length > 0 ? Math.max(...safeArray, 1) : 1;
 
+  const currentSlug = algorithmInfo?.slug || '';
+  const filteredLegend = LEGEND.filter(item => {
+    if (item.id === 'pivot') {
+      return currentSlug === 'quick-sort';
+    }
+    return true;
+  });
+
   return (
     <div className="visualizer-container">
       <div className="legend-container">
-        {LEGEND.map((item) => (
+        {filteredLegend.map((item) => (
           <div key={item.label} className="legend-item">
             <div className="legend-color" style={{ background: item.color }} />
             <span className="legend-label">{item.label}</span>

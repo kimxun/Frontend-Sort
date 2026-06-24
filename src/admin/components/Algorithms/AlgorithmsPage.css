@@ -47,6 +47,9 @@
     border: 1px solid #2b2f3c;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: auto;
+    scroll-behavior: smooth;
+    touch-action: pan-x;
     width: 100%;
 }
 
@@ -90,6 +93,13 @@ thead th {
     font-weight: 600;
 }
 
+thead th:last-child,
+tbody td:last-child {
+    width: 130px;
+    min-width: 130px;
+    text-align: center;
+}
+
 tbody tr {
     border-top: 1px solid #2b2f3c;
     transition: background 0.2s;
@@ -121,12 +131,11 @@ tbody td {
     color: #f87171;
 }
 
-/* Tìm và thay thế đoạn `.action-btn` cũ của bạn bằng đoạn này */
 .action-btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 34px;  /* Tăng nhẹ kích thước nút cho cân đối */
+    width: 34px;
     height: 34px;
     border: none;
     border-radius: 6px;
@@ -136,10 +145,9 @@ tbody td {
     color: #848589;
     border: 1px solid #3a3f4d;
     transition: all 0.2s;
-    padding: 0;   /* Khử padding mặc định của button để không bóp nghẹt icon */
+    padding: 0;
 }
 
-/* 🎯 ĐOẠN QUAN TRỌNG: Ép icon SVG bên trong bung đúng kích thước */
 .action-btn svg {
     width: 18px !important;
     height: 18px !important;
@@ -168,6 +176,7 @@ tbody td {
         height: 15px !important;
     }
 }
+
 @media (max-width: 768px) {
     .algorithms-page {
         padding: 16px;
@@ -195,7 +204,6 @@ tbody td {
     .action-btn {
         padding: 4px 10px;
         font-size: 11px;
-       
     }
     .table-container {
         overflow-x: auto;

@@ -26,9 +26,7 @@ export const SortingProvider = ({ children }) => {
     const fetchAlgorithms = async () => {
       try {
         const res = await getAlgorithms();
-
         setAlgorithms(res.data || []);
-
         if (res.data?.length > 0) {
           setAlgorithmId(res.data[0].id);
         }
@@ -36,7 +34,6 @@ export const SortingProvider = ({ children }) => {
         console.error(error);
       }
     };
-
     fetchAlgorithms();
   }, []);
 
@@ -139,19 +136,13 @@ export const SortingProvider = ({ children }) => {
   };
 
   const runAlgorithm = async () => {
-    setLoading(true);
-
-    try {
-      const success = await generateSteps();
-
-      if (success) {
-        setIsRunning(true);
-      }
-    } finally {
-      setLoading(false);
+    const success = await generateSteps();
+    if (success) {
+      setIsRunning(true);
     }
   };
-  const changeInputArray = (newArr) => {
+
+  const setArrayWithMemory = (newArr) => {
     setOriginalArray([...newArr]);
     setArray(newArr);
     setSteps([]);
@@ -159,12 +150,10 @@ export const SortingProvider = ({ children }) => {
     setIsRunning(false);
   };
 
-
   const reset = () => {
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
-
     if (originalArray.length) {
       setArray([...originalArray]);
     }
@@ -172,10 +161,8 @@ export const SortingProvider = ({ children }) => {
 
   const generateRandomArray = () => {
     const newArray = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100) + 1);
-
-    setOriginalArray([...newArray]); // lưu bản gốc
+    setOriginalArray([...newArray]);
     setArray(newArray);
-
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
@@ -190,7 +177,6 @@ export const SortingProvider = ({ children }) => {
       setArray([...originalArray]);
     }
   };
-
 
   const value = {
     algorithms,
@@ -215,6 +201,7 @@ export const SortingProvider = ({ children }) => {
     generateRandomArray,
     toggleSortOrder,
     generateSteps,
+    goToNextStep,
     requireLogin,
     setRequireLogin,
     changeInputArray,

@@ -21,7 +21,8 @@ export default function ControlPanel() {
     algorithms,
     generateSteps,
     generateRandomArray,
-    changeInputArray
+    setArray,
+    goToNextStep,
   } = useSorting();
 
   const [inputValue, setInputValue] = useState("");
@@ -33,7 +34,7 @@ export default function ControlPanel() {
       .map((v) => parseInt(v.trim()))
       .filter((v) => !isNaN(v) && v > 0);
     if (values.length > 0) {
-     changeInputArray(values);
+      setArray(values);
       setInputValue("");
     }
   };
@@ -42,36 +43,8 @@ export default function ControlPanel() {
     generateRandomArray();
   };
 
-  const handleStepForward = async () => {
-    let currentSteps = steps;
-    let activeStep = currentStep;
-
-    // 1. Nếu chưa có dữ liệu các bước (người dùng bấm thủ công ngay từ đầu)
-    if (steps.length === 0) {
-      // Gọi hàm generateSteps vừa sửa ở bước 1 để lấy mảng dữ liệu về
-      const fetchedSteps = await generateSteps();
-
-      // Nếu gọi API thất bại hoặc hết lượt dùng thử (Redis chặn), dừng lại luôn
-      if (!fetchedSteps || fetchedSteps.length === 0) return;
-
-      currentSteps = fetchedSteps;
-      activeStep = 0; // Ép trạng thái ban đầu ảo đang ở bước số 0
-    }
-
-    // 2. Tính toán nhảy sang bước tiếp theo
-    const nextStep = activeStep + 1;
-
-    if (nextStep < currentSteps.length) {
-      setCurrentStep(nextStep);
-
-      const targetStep = currentSteps[nextStep];
-      // Đọc dữ liệu an toàn tương thích cả Object lẫn Mảng số thuần túy
-      if (targetStep && targetStep.array) {
-        setArray(targetStep.array);
-      } else if (Array.isArray(targetStep)) {
-        setArray(targetStep);
-      }
-    }
+  const handleStepForward = () => {
+    goToNextStep();
   };
   const canStepForward = !isRunning && (steps.length === 0 || currentStep < steps.length - 1);
 
