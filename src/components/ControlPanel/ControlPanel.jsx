@@ -6,7 +6,6 @@ export default function ControlPanel() {
   const {
     algorithmId,
     setAlgorithmId,
-    setArray,
     speed,
     setSpeed,
     isRunning,
@@ -15,12 +14,12 @@ export default function ControlPanel() {
     reset,
     steps,
     currentStep,
-    setCurrentStep,
     sortOrder,
     toggleSortOrder,
     algorithms,
-    generateSteps,
     generateRandomArray,
+    setArray,
+    goToNextStep,
   } = useSorting();
 
   const [inputValue, setInputValue] = useState("");
@@ -41,19 +40,10 @@ export default function ControlPanel() {
     generateRandomArray();
   };
 
-  const handleStepForward = async () => {
-    if (steps.length === 0) {
-      await generateSteps();
-      return;
-    }
-
-    const nextStep = currentStep + 1;
-
-    if (nextStep < steps.length) {
-      setCurrentStep(nextStep);
-      setArray(steps[nextStep].array);
-    }
+  const handleStepForward = () => {
+    goToNextStep();
   };
+
   const canStepForward = !isRunning && (steps.length === 0 || currentStep < steps.length - 1);
 
   const handleStartOrContinue = () => {
@@ -99,8 +89,7 @@ export default function ControlPanel() {
         <button
           onClick={isRunning ? handlePause : handleStartOrContinue}
           {...handleHover("play")}
-          className={`btn-play ${isRunning ? "pause" : "play"} ${hovered === "play" ? "hover" : ""
-            }`}
+          className={`btn-play ${isRunning ? "pause" : "play"} ${hovered === "play" ? "hover" : ""}`}
         >
           {isRunning ? (
             <>
@@ -121,16 +110,15 @@ export default function ControlPanel() {
           onClick={handleStepForward}
           disabled={!canStepForward}
           {...handleHover("step")}
-          className={`btn-step ${canStepForward ? "active" : "inactive"} ${hovered === "step" && canStepForward ? "hover" : ""
-            }`}
+          className={`btn-step ${canStepForward ? "active" : "inactive"} ${hovered === "step" && canStepForward ? "hover" : ""}`}
         >
           <StepIcon /> Bước tiếp
         </button>
+
         <button
           onClick={reset}
           {...handleHover("reset")}
-          className={`btn-reset  ${hovered === "reset" && !isRunning ? "hover" : ""
-            }`}
+          className={`btn-reset  ${hovered === "reset" && !isRunning ? "hover" : ""}`}
         >
           <ResetIcon /> Reset
         </button>
@@ -139,8 +127,7 @@ export default function ControlPanel() {
           onClick={toggleSortOrder}
           disabled={isRunning}
           {...handleHover("order")}
-          className={`btn-order ${sortOrder === "asc" ? "asc" : "desc"} ${isRunning ? "disabled" : ""
-            } ${hovered === "order" && !isRunning ? "hover" : ""}`}
+          className={`btn-order ${sortOrder === "asc" ? "asc" : "desc"} ${isRunning ? "disabled" : ""} ${hovered === "order" && !isRunning ? "hover" : ""}`}
         >
           {sortOrder === "asc" ? <AscIcon /> : <DescIcon />}
           {sortOrder === "asc" ? "Tăng dần" : "Giảm dần"}
@@ -180,8 +167,7 @@ export default function ControlPanel() {
           onClick={handleSubmit}
           disabled={isRunning || !inputValue.trim()}
           {...handleHover("apply")}
-          className={`btn-apply ${!isRunning && inputValue.trim() ? "active" : "inactive"
-            } ${hovered === "apply" && !isRunning && inputValue.trim() ? "hover" : ""}`}
+          className={`btn-apply ${!isRunning && inputValue.trim() ? "active" : "inactive"} ${hovered === "apply" && !isRunning && inputValue.trim() ? "hover" : ""}`}
         >
           Áp dụng
         </button>
@@ -190,8 +176,7 @@ export default function ControlPanel() {
           onClick={handleRandomArray}
           disabled={isRunning}
           {...handleHover("random")}
-          className={`btn-random ${isRunning ? "disabled" : ""} ${hovered === "random" && !isRunning ? "hover" : ""
-            }`}
+          className={`btn-random ${isRunning ? "disabled" : ""} ${hovered === "random" && !isRunning ? "hover" : ""}`}
         >
           <ShuffleIcon /> Mảng ngẫu nhiên
         </button>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdmin } from '../../../context/AdminContext';
 import './AddAlgorithm.css';
@@ -18,6 +18,37 @@ const AddAlgorithm = () => {
     status: 1,
   });
   const [error, setError] = useState('');
+  const debounceTimer = useRef(null);
+
+  const removeVietnameseTones = (str) => {
+    return str
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd')
+      .replace(/Đ/g, 'D');
+  };
+
+  const generateSlug = (text) => {
+    if (!text.trim()) return '';
+    const noTone = removeVietnameseTones(text);
+    return noTone
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+  };
+
+  useEffect(() => {
+    clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      setFormData((prev) => ({
+        ...prev,
+        slug: generateSlug(prev.name),
+      }));
+    }, 3500);
+    return () => clearTimeout(debounceTimer.current);
+  }, [formData.name]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -55,7 +86,7 @@ const AddAlgorithm = () => {
           </div>
           <div className="form-group">
             <label>Slug</label>
-            <input type="text" name="slug" placeholder="e.g. bubble-sort" value={formData.slug} onChange={handleChange} required />
+            <input type="text" name="slug" placeholder="Tự động từ tên" value={formData.slug} onChange={handleChange} required />
           </div>
 
           <div className="form-group">

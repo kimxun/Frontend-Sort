@@ -15,29 +15,35 @@ const VariablesPanel = () => {
   const currentArray = currentStepData?.array || array;
   const safeArray = Array.isArray(currentArray) ? currentArray : [];
 
-  const variables = [
+  const systemVariables = [
     { name: "Độ dài mảng", value: safeArray.length },
-    { name: "Bước hiện tại", value: `${Math.min(currentStep + 1, safeSteps.length)} / ${safeSteps.length || 1}` },
-    { name: "Mảng", value: safeArray.length ? `[${safeArray.join(", ")}]` : "[]" },
-    { name: "Số bước", value: safeSteps.length },
-    { name: "Phần tử nhỏ nhất", value: safeArray.length ? Math.min(...safeArray) : '-' },
-    { name: "Phần tử lớn nhất", value: safeArray.length ? Math.max(...safeArray) : '-' },
+    { name: "Bước hiện tại", value: safeSteps.length > 0 ? `${currentStep + 1} / ${safeSteps.length}` : '0/0' },
   ];
+
+  const backendKeys = currentStepData?.keys || [];
+  const backendVals = currentStepData?.vals || [];
+
+  const dynamicVariables = backendKeys.map((key, index) => ({
+    name: key,
+    value: backendVals[index] !== undefined && backendVals[index] !== null ? String(backendVals[index]) : '-'
+  }));
+
+  const allVariables = [...systemVariables, ...dynamicVariables];
 
   return (
     <div className="variables-panel">
       <div className="variables-header">
         <span className="variables-title">Biến trạng thái</span>
-        {variables.length > 0 && (
-          <span className="variables-badge">{variables.length}</span>
+        {allVariables.length > 0 && (
+          <span className="variables-badge">{allVariables.length}</span>
         )}
       </div>
       <div className="variables-content">
-        {variables.length === 0 ? (
-          <div className="variables-empty">Chưa có biến nào</div>
+        {allVariables.length === 0 ? (
+          <div className="variables-empty">Chưa có biến trạng thái nào</div>
         ) : (
           <div className="variables-grid">
-            {variables.map((v, i) => (
+            {allVariables.map((v, i) => (
               <div key={i} className="variable-item">
                 <span className="variable-name" style={{ color: VAR_COLORS[i % VAR_COLORS.length] }}>
                   {v?.name ?? '?'}

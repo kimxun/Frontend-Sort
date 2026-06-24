@@ -28,9 +28,7 @@ export const SortingProvider = ({ children }) => {
     const fetchAlgorithms = async () => {
       try {
         const res = await getAlgorithms();
-
         setAlgorithms(res.data || []);
-
         if (res.data?.length > 0) {
           setAlgorithmId(res.data[0].id);
         }
@@ -38,7 +36,6 @@ export const SortingProvider = ({ children }) => {
         console.error(error);
       }
     };
-
     fetchAlgorithms();
   }, []);
 
@@ -77,43 +74,77 @@ export const SortingProvider = ({ children }) => {
     }
     return () => clearInterval(timer);
   }, [isRunning, steps, speed]);
+
   const generateSteps = async () => {
     if (!array.length) return false;
-
-    const data = await getAlgorithmSteps(
-      algorithmId,
-      array,
-      sortOrder
-    );
-
-    const stepData =
-      data.step_by_step ||
-      data.steps ||
-      data.data ||
-      (Array.isArray(data) ? data : []);
-
-    if (!stepData.length) return false;
-
-    setSteps(stepData);
-    setArray(stepData[0].array);
-    setCurrentStep(0);
-
-    return true;
-  };
-
-  const runAlgorithm = async () => {
     setLoading(true);
-
     try {
-      const success = await generateSteps();
+      const data = await getAlgorithmSteps(algorithmId, array, sortOrder);
+      const stepData =
+        data.step_by_step ||
+        data.steps ||
+        data.data ||
+        (Array.isArray(data) ? data : []);
 
-      if (success) {
-        setIsRunning(true);
-      }
+      if (!stepData.length) return false;
+
+      setSteps(stepData);
+      setArray(stepData[0].array);
+      setCurrentStep(0);
+      return true;
+    } catch (error) {
+      console.error(error);
+      return false;
     } finally {
       setLoading(false);
     }
   };
+
+  const goToNextStep = async () => {
+    if (isRunning) return;
+
+    if (steps.length === 0) {
+      setLoading(true);
+      try {
+        const data = await getAlgorithmSteps(algorithmId, array, sortOrder);
+        const stepData =
+          data.step_by_step ||
+          data.steps ||
+          data.data ||
+          (Array.isArray(data) ? data : []);
+
+        if (stepData.length > 0) {
+          setSteps(stepData);
+          if (stepData.length > 1) {
+            setCurrentStep(1);
+            setArray(stepData[1].array);
+          } else {
+            setCurrentStep(0);
+            setArray(stepData[0].array);
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+      return;
+    }
+
+    const nextStep = currentStep + 1;
+    if (nextStep < steps.length) {
+      setCurrentStep(nextStep);
+      setArray(steps[nextStep].array);
+    }
+  };
+
+  const runAlgorithm = async () => {
+    const success = await generateSteps();
+    if (success) {
+      setIsRunning(true);
+    }
+  };
+
   const setArrayWithMemory = (newArr) => {
     setOriginalArray([...newArr]);
     setArray(newArr);
@@ -122,12 +153,10 @@ export const SortingProvider = ({ children }) => {
     setIsRunning(false);
   };
 
-
   const reset = () => {
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
-
     if (originalArray.length) {
       setArray([...originalArray]);
     }
@@ -135,10 +164,8 @@ export const SortingProvider = ({ children }) => {
 
   const generateRandomArray = () => {
     const newArray = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100) + 1);
-
-    setOriginalArray([...newArray]); // 👈 lưu bản gốc
+    setOriginalArray([...newArray]);
     setArray(newArray);
-
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
@@ -153,7 +180,6 @@ export const SortingProvider = ({ children }) => {
       setArray([...originalArray]);
     }
   };
-
 
   const value = {
     algorithms,
@@ -179,6 +205,7 @@ export const SortingProvider = ({ children }) => {
     generateRandomArray,
     toggleSortOrder,
     generateSteps,
+    goToNextStep,
   };
 
   return (
