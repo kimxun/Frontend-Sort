@@ -53,6 +53,7 @@ export const SortingProvider = ({ children }) => {
     fetchAlgorithmInfo();
   }, [algorithmId]);
 
+  // Bộ đếm tự động chạy Animation
   useEffect(() => {
     let timer;
     if (isRunning && steps.length > 0) {
@@ -60,7 +61,13 @@ export const SortingProvider = ({ children }) => {
         setCurrentStep((prevStep) => {
           const nextStep = prevStep + 1;
           if (nextStep < steps.length) {
-            setArray(steps[nextStep].array);
+            const targetStep = steps[nextStep];
+            // Đọc an toàn cho cả dạng Object {array} lẫn mảng thuần [1,2,3]
+            if (targetStep && targetStep.array) {
+              setArray(targetStep.array);
+            } else if (Array.isArray(targetStep)) {
+              setArray(targetStep);
+            }
             return nextStep;
           } else {
             setIsRunning(false);
@@ -80,48 +87,37 @@ export const SortingProvider = ({ children }) => {
     }
   }, []);
 
+  // Hàm nạp các bước từ API Backend
   const generateSteps = async () => {
-    if (!array.length) return false;
+    if (!array.length) return null;
 
     try {
       const currentAlgo = algorithms.find(algo => algo.id === algorithmId);
-      let algoNameForBackend = 'quick_sort';
+      if (!currentAlgo) return null;
 
-      if (currentAlgo && currentAlgo.name) {
-        algoNameForBackend = currentAlgo.name.toLowerCase().replace(/\s+/g, '_');
-      }
+      // Chuẩn hóa tên: "Selection Sort" -> "selection_sort" trùng khớp với API Flask
+      const algorithmName = currentAlgo.name.toLowerCase().replace(/\s+/g, '_');
 
-      const data = await getAlgorithmSteps(
-        algoNameForBackend,
-        array,
-        sortOrder
-      );
+      const data = await getAlgorithmSteps(algorithmName, array, sortOrder);
 
-      console.log("Dữ liệu thực tế từ Flask trả về:", data);
+      const stepData =
+        data?.metrics?.steps ||
+        data?.step_by_step ||
+        data?.steps ||
+        (Array.isArray(data) ? data : []);
 
-      const stepData = data?.metrics?.steps || data?.steps || (Array.isArray(data) ? data : []);
-
-      if (!stepData || !stepData.length) {
-        console.warn("Cảnh báo: Không tìm thấy mảng các bước (steps) trong dữ liệu trả về.");
-        return false;
-      }
+      if (!stepData.length) return null;
 
       setSteps(stepData);
-
-      if (stepData[0] && stepData[0].array) {
-        setArray(stepData[0].array);
-      } else if (Array.isArray(stepData[0])) {
-        setArray(stepData[0]);
-      }
-
       setCurrentStep(0);
       setRequireLogin(false);
-      return true;
+      
+      return stepData; // Trả về danh sách để hỗ trợ nút bấm thủ công di chuyển ngay lập tức
     } catch (error) {
       const response = error.response;
       if (response && response.status === 401 && response.data?.error === "Free limit exceeded") {
         setRequireLogin(true);
-        alert(response.data.message);
+        alert(response.data.message || "Bạn đã dùng hết 3 lượt miễn phí. Vui lòng đăng nhập!");
       } else {
         console.error("Lỗi hệ thống khi sắp xếp:", error);
       }
@@ -130,13 +126,19 @@ export const SortingProvider = ({ children }) => {
   };
 
   const runAlgorithm = async () => {
-    const success = await generateSteps();
-    if (success) {
-      setIsRunning(true);
+    setLoading(true);
+    try {
+      const success = await generateSteps();
+      if (success) {
+        setIsRunning(true);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
-  const setArrayWithMemory = (newArr) => {
+  // Hàm xử lý RIÊNG khi người dùng tự nhập mảng bằng tay
+  const changeInputArray = (newArr) => {
     setOriginalArray([...newArr]);
     setArray(newArr);
     setSteps([]);
@@ -172,24 +174,13 @@ export const SortingProvider = ({ children }) => {
     }
   };
 
-  const goToNextStep = () => {
-    if (steps.length === 0) return;
-    setCurrentStep((prevStep) => {
-      const nextStep = prevStep + 1;
-      if (nextStep < steps.length) {
-        setArray(steps[nextStep].array || steps[nextStep]);
-        return nextStep;
-      }
-      return prevStep;
-    });
-  };
-
   const value = {
     algorithms,
     algorithmId,
     setAlgorithmId,
     array,
-    setArray,
+    setArray,             // Trả về hàm set thuần túy của React để chạy mượt
+    changeInputArray,     // Hàm riêng dành cho ô Input dữ liệu
     steps,
     currentStep,
     setCurrentStep,
@@ -207,10 +198,8 @@ export const SortingProvider = ({ children }) => {
     generateRandomArray,
     toggleSortOrder,
     generateSteps,
-    goToNextStep,       
     requireLogin,
     setRequireLogin,
-    setArrayWithMemory, 
   };
 
   return (

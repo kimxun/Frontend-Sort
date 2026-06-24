@@ -9,9 +9,12 @@ const HistoryPanel = () => {
 
   const visibleSteps = safeHistory.slice(0, currentStep + 1);
 
-  useEffect(() => {
+useEffect(() => {
     if (scrollContainerRef.current) {
-      scrollContainerRef.current.scrollTop = scrollContainerRef.current.scrollHeight;
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
     }
   }, [visibleSteps.length]);
 

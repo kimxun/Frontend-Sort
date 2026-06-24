@@ -14,12 +14,14 @@ export default function ControlPanel() {
     reset,
     steps,
     currentStep,
+    setCurrentStep,       // Lấy hàm này ra để cập nhật bước
     sortOrder,
     toggleSortOrder,
     algorithms,
     generateRandomArray,
-    goToNextStep,
-    setArrayWithMemory, 
+    setArray,
+    generateSteps,        // Lấy hàm này để tự nạp dữ liệu khi đi bằng tay
+    changeInputArray,     // Dùng hàm này khi submit form nhập mảng
   } = useSorting();
 
   const [inputValue, setInputValue] = useState("");
@@ -31,7 +33,7 @@ export default function ControlPanel() {
       .map((v) => parseInt(v.trim()))
       .filter((v) => !isNaN(v) && v > 0);
     if (values.length > 0) {
-      setArrayWithMemory(values); 
+      changeInputArray(values); // Gọi hàm chuẩn để tránh lỗi tự động Reset
       setInputValue("");
     }
   };
@@ -40,9 +42,34 @@ export default function ControlPanel() {
     generateRandomArray();
   };
 
-  const handleStepForward = () => {
-    goToNextStep();
+  // Xử lý nút bấm thủ công (Không cần nhấn "Bắt đầu" trước vẫn chạy)
+  const handleStepForward = async () => {
+    let currentSteps = steps;
+    let activeStep = currentStep;
+
+    // Nếu mảng dữ liệu rỗng, tự động đi gọi API nạp dữ liệu
+    if (steps.length === 0) {
+      const fetchedSteps = await generateSteps();
+      if (!fetchedSteps || fetchedSteps.length === 0) return; // Dừng lại nếu lỗi hoặc bị Redis chặn
+      
+      currentSteps = fetchedSteps;
+      activeStep = 0; 
+    }
+
+    const nextStep = activeStep + 1;
+
+    if (nextStep < currentSteps.length) {
+      setCurrentStep(nextStep);
+      
+      const targetStep = currentSteps[nextStep];
+      if (targetStep && targetStep.array) {
+        setArray(targetStep.array);
+      } else if (Array.isArray(targetStep)) {
+        setArray(targetStep);
+      }
+    }
   };
+
   const canStepForward = !isRunning && (steps.length === 0 || currentStep < steps.length - 1);
 
   const handleStartOrContinue = () => {
@@ -189,76 +216,12 @@ export default function ControlPanel() {
   );
 }
 
-function PlayIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-      <polygon points="5,3 19,12 5,21" />
-    </svg>
-  );
-}
-
-function PauseIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-      <rect x="6" y="4" width="4" height="16" />
-      <rect x="14" y="4" width="4" height="16" />
-    </svg>
-  );
-}
-
-function StepIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polygon points="5,4 15,12 5,20" />
-      <line x1="19" y1="4" x2="19" y2="20" />
-    </svg>
-  );
-}
-
-function ResetIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-      <path d="M3 3v5h5" />
-    </svg>
-  );
-}
-
-function AscIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <line x1="12" y1="19" x2="12" y2="5" />
-      <polyline points="5,12 12,5 19,12" />
-    </svg>
-  );
-}
-
-function DescIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <line x1="12" y1="5" x2="12" y2="19" />
-      <polyline points="19,12 12,19 5,12" />
-    </svg>
-  );
-}
-
-function ShuffleIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-      <polyline points="16,3 21,3 21,8" />
-      <line x1="4" y1="20" x2="21" y2="3" />
-      <polyline points="21,16 21,21 16,21" />
-      <line x1="15" y1="15" x2="21" y2="21" />
-      <line x1="4" y1="4" x2="9" y2="9" />
-    </svg>
-  );
-}
-
-function SpeedIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2">
-      <path d="M12 2a10 10 0 1 1-7.07 2.93" />
-      <polyline points="12,6 12,12 16,14" />
-    </svg>
-  );
-}
+// Giữ nguyên các hàm SVG Icon bên dưới của bạn...
+function PlayIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21" /></svg>; }
+function PauseIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" /></svg>; }
+function StepIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="5,4 15,12 5,20" /><line x1="19" y1="4" x2="19" y2="20" /></svg>; }
+function ResetIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" /><path d="M3 3v5h5" /></svg>; }
+function AscIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="19" x2="12" y2="5" /><polyline points="5,12 12,5 19,12" /></svg>; }
+function DescIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><polyline points="19,12 12,19 5,12" /></svg>; }
+function ShuffleIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16,3 21,3 21,8" /><line x1="4" y1="20" x2="21" y2="3" /><polyline points="21,16 21,21 16,21" /><line x1="15" y1="15" x2="21" y2="21" /><line x1="4" y1="4" x2="9" y2="9" /></svg>; }
+function SpeedIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2"><path d="M12 2a10 10 0 1 1-7.07 2.93" /><polyline points="12,6 12,12 16,14" /></svg>; }
