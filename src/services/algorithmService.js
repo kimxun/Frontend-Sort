@@ -5,8 +5,32 @@ export const getAlgorithms = async (page=1, limit=5) => {
   return response.data;
 };
 
-export const getAlgorithmSteps = async (algorithmId, array, sortOrder) => {
-  const response = await api.post(`/algorithms/${algorithmId}/steps`, { array, sortOrder });
+// SỬA ĐỔI HÀM NÀY ĐỂ TÍCH HỢP REDIS VÀ KHỚP VỚI FLASK BACKEND
+export const getAlgorithmSteps = async (algorithmName, array, sortOrder) => {
+  // 1. Lấy token và guest_id từ localStorage
+  const token = localStorage.getItem('token'); // Thay bằng key bạn dùng lưu JWT (VD: access_token)
+  const guestId = localStorage.getItem('guest_id');
+
+  // 2. Thiết lập headers
+  const headers = {
+    'Guest-ID': guestId // Bắt buộc phải có để backend check Redis
+  };
+
+  // Nếu đã đăng nhập thì đính kèm thêm JWT
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  // 3. Gửi request chuẩn khớp với data backend cần: { array, algorithm }
+  // Lưu ý: Hãy đổi lại URL bên dưới nếu URL gốc của blueprint backend là đường dẫn khác (VD: '/api/sort' hoặc '/sort')
+  const response = await api.post('/sort', 
+    { 
+      array: array, 
+      algorithm: algorithmName // Backend cần chuỗi string như 'quick_sort', 'selection_sort'
+    }, 
+    { headers } // Truyền config headers vào axios
+  );
+
   return response.data;
 };
 

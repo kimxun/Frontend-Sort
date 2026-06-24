@@ -20,9 +20,7 @@ export const SortingProvider = ({ children }) => {
   const [speed, setSpeed] = useState(50);
 
   const [originalArray, setOriginalArray] = useState(initialArray);
-  const [freeUsageCount, setFreeUsageCount] = useState(() => {
-    return parseInt(localStorage.getItem('freeUsageCount')) || 0;
-  });
+  const [requireLogin, setRequireLogin] = useState(false);
 
   useEffect(() => {
     const fetchAlgorithms = async () => {
@@ -75,66 +73,65 @@ export const SortingProvider = ({ children }) => {
     return () => clearInterval(timer);
   }, [isRunning, steps, speed]);
 
+  useEffect(() => {
+    if (!localStorage.getItem("guest_id")) {
+      const uuid = crypto.randomUUID ? crypto.randomUUID() : 'guest_' + Math.random().toString(36).substring(2, 15);
+      localStorage.setItem("guest_id", uuid);
+    }
+  }, []);
+
   const generateSteps = async () => {
     if (!array.length) return false;
-    setLoading(true);
-    try {
-      const data = await getAlgorithmSteps(algorithmId, array, sortOrder);
-      const stepData =
-        data.step_by_step ||
-        data.steps ||
-        data.data ||
-        (Array.isArray(data) ? data : []);
 
-      if (!stepData.length) return false;
+    try {
+      const currentAlgo = algorithms.find(algo => algo.id === algorithmId);
+      let algoNameForBackend = 'quick_sort';
+
+      if (currentAlgo && currentAlgo.name) {
+        algoNameForBackend = currentAlgo.name.toLowerCase().replace(/\s+/g, '_');
+      }
+
+      const data = await getAlgorithmSteps(
+        algoNameForBackend,
+        array,
+        sortOrder
+      );
+
+      // TẠM THỜI: Thêm dòng log này để bạn nhìn thấy cấu trúc thực tế từ Flask trả về
+      console.log("Dữ liệu thực tế từ Flask trả về:", data);
+
+      // 🔴 SỬA DÒNG NÀY: Móc đúng vào data.metrics.steps
+      const stepData = data?.metrics?.steps || data?.steps || (Array.isArray(data) ? data : []);
+
+      // Nếu vẫn không có dữ liệu bước, thông báo lên màn hình để biết đường debug
+      if (!stepData || !stepData.length) {
+        console.warn("Cảnh báo: Không tìm thấy mảng các bước (steps) trong dữ liệu trả về.");
+        return false;
+      }
 
       setSteps(stepData);
-      setArray(stepData[0].array);
-      setCurrentStep(0);
-      return true;
-    } catch (error) {
-      console.error(error);
-      return false;
-    } finally {
-      setLoading(false);
-    }
-  };
 
-  const goToNextStep = async () => {
-    if (isRunning) return;
-
-    if (steps.length === 0) {
-      setLoading(true);
-      try {
-        const data = await getAlgorithmSteps(algorithmId, array, sortOrder);
-        const stepData =
-          data.step_by_step ||
-          data.steps ||
-          data.data ||
-          (Array.isArray(data) ? data : []);
-
-        if (stepData.length > 0) {
-          setSteps(stepData);
-          if (stepData.length > 1) {
-            setCurrentStep(1);
-            setArray(stepData[1].array);
-          } else {
-            setCurrentStep(0);
-            setArray(stepData[0].array);
-          }
-        }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
+      // Kiểm tra xem phần tử đầu tiên có thuộc tính .array không (tùy thuộc vào cấu trúc sort_service của bạn)
+      if (stepData[0] && stepData[0].array) {
+        setArray(stepData[0].array);
+      } else if (Array.isArray(stepData[0])) {
+        // Nếu từng step chỉ là một mảng thuần [5, 3, 1...] chứ không phải object {array: [...]}
+        setArray(stepData[0]);
       }
-      return;
-    }
 
-    const nextStep = currentStep + 1;
-    if (nextStep < steps.length) {
-      setCurrentStep(nextStep);
-      setArray(steps[nextStep].array);
+      setCurrentStep(0);
+      setRequireLogin(false);
+      return true;
+      return stepData;
+    } catch (error) {
+      const response = error.response;
+      if (response && response.status === 401 && response.data?.error === "Free limit exceeded") {
+        setRequireLogin(true);
+        alert(response.data.message);
+      } else {
+        console.error("Lỗi hệ thống khi sắp xếp:", error);
+      }
+      return null;
     }
   };
 
@@ -186,7 +183,7 @@ export const SortingProvider = ({ children }) => {
     algorithmId,
     setAlgorithmId,
     array,
-    setArray: setArrayWithMemory,
+    setArray,
     steps,
     currentStep,
     setCurrentStep,
@@ -200,12 +197,14 @@ export const SortingProvider = ({ children }) => {
     setSpeed,
     runAlgorithm,
     reset,
-    freeUsageCount,
     algorithmInfo,
     generateRandomArray,
     toggleSortOrder,
     generateSteps,
     goToNextStep,
+    requireLogin,
+    setRequireLogin,
+    changeInputArray,
   };
 
   return (
