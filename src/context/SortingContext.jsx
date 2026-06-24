@@ -20,9 +20,7 @@ export const SortingProvider = ({ children }) => {
   const [speed, setSpeed] = useState(50);
 
   const [originalArray, setOriginalArray] = useState(initialArray);
-  const [freeUsageCount, setFreeUsageCount] = useState(() => {
-    return parseInt(localStorage.getItem('freeUsageCount')) || 0;
-  });
+  const [requireLogin, setRequireLogin] = useState(false);
 
   useEffect(() => {
     const fetchAlgorithms = async () => {
@@ -77,28 +75,67 @@ export const SortingProvider = ({ children }) => {
     }
     return () => clearInterval(timer);
   }, [isRunning, steps, speed]);
+
+  useEffect(() => {
+    if (!localStorage.getItem("guest_id")) {
+      const uuid = crypto.randomUUID ? crypto.randomUUID() : 'guest_' + Math.random().toString(36).substring(2, 15);
+      localStorage.setItem("guest_id", uuid);
+    }
+  }, []);
+
   const generateSteps = async () => {
     if (!array.length) return false;
 
-    const data = await getAlgorithmSteps(
-      algorithmId,
-      array,
-      sortOrder
-    );
+    try {
+      const currentAlgo = algorithms.find(algo => algo.id === algorithmId);
+      let algoNameForBackend = 'quick_sort';
 
-    const stepData =
-      data.step_by_step ||
-      data.steps ||
-      data.data ||
-      (Array.isArray(data) ? data : []);
+      if (currentAlgo && currentAlgo.name) {
+        algoNameForBackend = currentAlgo.name.toLowerCase().replace(/\s+/g, '_');
+      }
 
-    if (!stepData.length) return false;
+      const data = await getAlgorithmSteps(
+        algoNameForBackend,
+        array,
+        sortOrder
+      );
 
-    setSteps(stepData);
-    setArray(stepData[0].array);
-    setCurrentStep(0);
+      // TẠM THỜI: Thêm dòng log này để bạn nhìn thấy cấu trúc thực tế từ Flask trả về
+      console.log("Dữ liệu thực tế từ Flask trả về:", data);
 
-    return true;
+      // 🔴 SỬA DÒNG NÀY: Móc đúng vào data.metrics.steps
+      const stepData = data?.metrics?.steps || data?.steps || (Array.isArray(data) ? data : []);
+
+      // Nếu vẫn không có dữ liệu bước, thông báo lên màn hình để biết đường debug
+      if (!stepData || !stepData.length) {
+        console.warn("Cảnh báo: Không tìm thấy mảng các bước (steps) trong dữ liệu trả về.");
+        return false;
+      }
+
+      setSteps(stepData);
+
+      // Kiểm tra xem phần tử đầu tiên có thuộc tính .array không (tùy thuộc vào cấu trúc sort_service của bạn)
+      if (stepData[0] && stepData[0].array) {
+        setArray(stepData[0].array);
+      } else if (Array.isArray(stepData[0])) {
+        // Nếu từng step chỉ là một mảng thuần [5, 3, 1...] chứ không phải object {array: [...]}
+        setArray(stepData[0]);
+      }
+
+      setCurrentStep(0);
+      setRequireLogin(false);
+      return true;
+      return stepData;
+    } catch (error) {
+      const response = error.response;
+      if (response && response.status === 401 && response.data?.error === "Free limit exceeded") {
+        setRequireLogin(true);
+        alert(response.data.message);
+      } else {
+        console.error("Lỗi hệ thống khi sắp xếp:", error);
+      }
+      return null;
+    }
   };
 
   const runAlgorithm = async () => {
@@ -114,7 +151,7 @@ export const SortingProvider = ({ children }) => {
       setLoading(false);
     }
   };
-  const setArrayWithMemory = (newArr) => {
+  const changeInputArray = (newArr) => {
     setOriginalArray([...newArr]);
     setArray(newArr);
     setSteps([]);
@@ -136,7 +173,7 @@ export const SortingProvider = ({ children }) => {
   const generateRandomArray = () => {
     const newArray = Array.from({ length: 10 }, () => Math.floor(Math.random() * 100) + 1);
 
-    setOriginalArray([...newArray]); // 👈 lưu bản gốc
+    setOriginalArray([...newArray]); // lưu bản gốc
     setArray(newArray);
 
     setSteps([]);
@@ -160,7 +197,7 @@ export const SortingProvider = ({ children }) => {
     algorithmId,
     setAlgorithmId,
     array,
-    setArray: setArrayWithMemory,
+    setArray,
     steps,
     currentStep,
     setCurrentStep,
@@ -174,11 +211,13 @@ export const SortingProvider = ({ children }) => {
     setSpeed,
     runAlgorithm,
     reset,
-    freeUsageCount,
     algorithmInfo,
     generateRandomArray,
     toggleSortOrder,
     generateSteps,
+    requireLogin,
+    setRequireLogin,
+    changeInputArray,
   };
 
   return (
