@@ -2,6 +2,7 @@ import React, { createContext, useState, useEffect, useContext, useCallback } fr
 import { getUsers, deleteUser, createUser, updateUser } from '../services/userService';
 import { getSimulations } from '../services/simulationService';
 import { getAlgorithms, createAlgorithm, deleteAlgorithm, updateAlgorithm } from '../services/algorithmService';
+import { toast } from 'react-toastify';
 
 const AdminContext = createContext();
 
@@ -16,7 +17,6 @@ export const AdminProvider = ({ children }) => {
   const [algorithms, setAlgorithms] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // 1. Tách riêng các trạng thái lỗi để tránh bị ghi đè dữ liệu chéo
   const [userError, setUserError] = useState(null);
   const [simulationError, setSimulationError] = useState(null);
   const [algorithmError, setAlgorithmError] = useState(null);
@@ -28,7 +28,21 @@ export const AdminProvider = ({ children }) => {
   const [algorithmPagination, setAlgorithmPagination] = useState({});
   const [algorithmPage, setAlgorithmPage] = useState(1);
 
-  // 2. Sử dụng useCallback và xóa setPage(p) bên trong để sửa lỗi Double-Fetch
+  const handleGlobalError = (err, defaultMsg, isAlgorithm = false) => {
+    const msg = err?.response?.data?.message || err?.message || "";
+    if (err?.response?.status === 500 || msg.includes("500")) {
+      if (isAlgorithm) {
+        toast.error("Lỗi: Slug đã tồn tại hoặc lỗi máy chủ (500)!");
+      } else {
+        toast.error("Lỗi máy chủ (500): Dữ liệu không hợp lệ hoặc đã tồn tại!");
+      }
+      return "Lỗi hệ thống (500)";
+    } else {
+      toast.error(msg || defaultMsg);
+      return msg || defaultMsg;
+    }
+  };
+
   const fetchUsers = useCallback(async (p) => {
     setLoading(true);
     try {
@@ -43,7 +57,6 @@ export const AdminProvider = ({ children }) => {
     }
   }, [limit]);
 
-  // useEffect này sẽ chịu trách nhiệm chính trong việc tự động gọi API mỗi khi `page` thay đổi
   useEffect(() => {
     fetchUsers(page);
   }, [page, fetchUsers]);
@@ -82,7 +95,7 @@ export const AdminProvider = ({ children }) => {
   const addUser = async (userData) => {
     try {
       const newUser = await createUser(userData);
-      // Nếu đang ở trang 1 thì chủ động fetch lại, nếu ở trang khác thì quay về trang 1 (useEffect sẽ tự fetch)
+      toast.success('Thêm người dùng thành công!');
       if (page === 1) {
         await fetchUsers(1);
       } else {
@@ -90,7 +103,8 @@ export const AdminProvider = ({ children }) => {
       }
       return newUser;
     } catch (err) {
-      setUserError(err.message || 'Không thể thêm người dùng');
+      const systemMsg = handleGlobalError(err, 'Không thể thêm người dùng');
+      setUserError(systemMsg);
       throw err;
     }
   };
@@ -98,10 +112,12 @@ export const AdminProvider = ({ children }) => {
   const editUser = async (id, userData) => {
     try {
       const updated = await updateUser(id, userData);
+      toast.success('Cập nhật thông tin người dùng thành công!');
       await fetchUsers(page);
       return updated;
     } catch (err) {
-      setUserError(err.message || 'Không thể cập nhật người dùng');
+      const systemMsg = handleGlobalError(err, 'Không thể cập nhật người dùng');
+      setUserError(systemMsg);
       throw err;
     }
   };
@@ -109,7 +125,7 @@ export const AdminProvider = ({ children }) => {
   const removeUser = async (id) => {
     try {
       await deleteUser(id);
-      // 3. Sửa lỗi hụt trang: Kiểm tra nếu xóa item cuối cùng của trang hiện tại thì lùi trang
+      toast.success('Khóa/Xóa tài khoản thành công!');
       const isLastItemOnPage = users.length === 1 && page > 1;
       const targetPage = isLastItemOnPage ? page - 1 : page;
       
@@ -119,7 +135,8 @@ export const AdminProvider = ({ children }) => {
         setPage(targetPage);
       }
     } catch (err) {
-      setUserError(err.message || 'Không thể xóa người dùng');
+      const systemMsg = handleGlobalError(err, 'Không thể xóa người dùng');
+      setUserError(systemMsg);
       throw err;
     }
   };
@@ -127,6 +144,7 @@ export const AdminProvider = ({ children }) => {
   const addAlgorithm = async (data) => {
     try {
       const newAlgo = await createAlgorithm(data);
+      toast.success('Thêm thuật toán thành công!');
       if (algorithmPage === 1) {
         await fetchAlgorithms(1);
       } else {
@@ -134,7 +152,8 @@ export const AdminProvider = ({ children }) => {
       }
       return newAlgo;
     } catch (err) {
-      setAlgorithmError(err.message || 'Không thể thêm thuật toán');
+      const systemMsg = handleGlobalError(err, 'Không thể thêm thuật toán', true);
+      setAlgorithmError(systemMsg);
       throw err;
     }
   };
@@ -142,10 +161,12 @@ export const AdminProvider = ({ children }) => {
   const editAlgorithm = async (id, data) => {
     try {
       const updated = await updateAlgorithm(id, data);
+      toast.success('Cập nhật thuật toán thành công!');
       await fetchAlgorithms(algorithmPage);
       return updated;
     } catch (err) {
-      setAlgorithmError(err.message || 'Không thể cập nhật thuật toán');
+      const systemMsg = handleGlobalError(err, 'Không thể cập nhật thuật toán', true);
+      setAlgorithmError(systemMsg);
       throw err;
     }
   };
@@ -153,6 +174,7 @@ export const AdminProvider = ({ children }) => {
   const removeAlgorithm = async (id) => {
     try {
       await deleteAlgorithm(id);
+      toast.success('Xóa thuật toán thành công!');
       const isLastItemOnPage = algorithms.length === 1 && algorithmPage > 1;
       const targetPage = isLastItemOnPage ? algorithmPage - 1 : algorithmPage;
       
@@ -162,7 +184,8 @@ export const AdminProvider = ({ children }) => {
         setAlgorithmPage(targetPage);
       }
     } catch (err) {
-      setAlgorithmError(err.message || 'Không thể xóa thuật toán');
+      const systemMsg = handleGlobalError(err, 'Không thể xóa thuật toán');
+      setAlgorithmError(systemMsg);
       throw err;
     }
   };
@@ -173,10 +196,7 @@ export const AdminProvider = ({ children }) => {
       setIsMobile(mobile);
       setSidebarOpen(!mobile);
     };
-    window.addEventListener('resize', () => {
-      // Debounce hoặc bọc trong RequestAnimationFrame nếu cần tối ưu resize hơn
-      handleResize();
-    });
+    window.addEventListener('resize', handleResize);
     handleResize();
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -197,7 +217,6 @@ export const AdminProvider = ({ children }) => {
     simulations,
     algorithms,
     loading,
-    // Trả về các error tương ứng với từng màn hình cụ thể
     userError,
     simulationError,
     algorithmError,
@@ -212,7 +231,7 @@ export const AdminProvider = ({ children }) => {
     removeAlgorithm,
     pagination,
     page,
-    setPage, // Nên đưa thêm các hàm set này ra ngoài để các nút Phân trang (Pagination UI) có thể gọi trực tiếp
+    setPage,
     algorithmPagination,
     algorithmPage,
     setAlgorithmPage,

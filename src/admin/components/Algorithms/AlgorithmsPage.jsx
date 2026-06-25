@@ -8,10 +8,10 @@ const AlgorithmsPage = () => {
     const { 
         algorithms = [], 
         loading, 
-        algorithmError, // Lấy state lỗi của thuật toán từ Context
+        algorithmError,
         removeAlgorithm, 
         algorithmPagination,
-        setAlgorithmPage // Sử dụng hàm set page thay vì fetch trực tiếp
+        setAlgorithmPage
     } = useAdmin();
     
     const [search, setSearch] = useState('');
@@ -20,16 +20,11 @@ const AlgorithmsPage = () => {
     const currentPage = algorithmPagination?.page || 1;
     const totalPages = algorithmPagination?.totalPages || 1;
 
-    // Đã xóa useEffect fetchAlgorithms() ở đây vì Context đã tự động xử lý khi component mount
-
     const handleDelete = async (id, name) => {
         if (window.confirm(`Bạn có chắc muốn xóa thuật toán "${name}"?`)) {
             try {
                 await removeAlgorithm(id);
-                // Không cần gọi await fetchAlgorithms(currentPage) nữa
-                alert('Xóa thành công');
             } catch (err) {
-                alert('Xóa thất bại: ' + err.message);
             }
         }
     };
@@ -41,7 +36,7 @@ const AlgorithmsPage = () => {
 
     const goToPage = (page) => {
         if (page < 1 || page > totalPages) return;
-        setAlgorithmPage(page); // Gọi hàm đổi trang
+        setAlgorithmPage(page);
     };
 
     return (
@@ -63,7 +58,6 @@ const AlgorithmsPage = () => {
                     />
                 </div>
                 
-                {/* Xử lý hiển thị Loading và Error trực tiếp trong layout */}
                 {loading ? (
                     <div className="loading" style={{ padding: '20px', textAlign: 'center' }}>Đang tải...</div>
                 ) : algorithmError ? (
@@ -121,7 +115,6 @@ const AlgorithmsPage = () => {
                             </tbody>
                         </table>
                         
-                        {/* PAGINATION */}
                         <div className="pagination">
                             <button
                                 disabled={currentPage <= 1}

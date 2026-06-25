@@ -1,7 +1,8 @@
-import { NavLink } from "react-router-dom";
+import React from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom"; 
 import { useAdmin } from "../../context/AdminContext";
 import { logout } from "../../services/authService";
-import { Link } from "react-router-dom";
+import { toast } from "react-toastify"; 
 import {
   FiLayout,
   FiCode,
@@ -9,7 +10,6 @@ import {
   FiTrendingUp,
   FiUsers,
   FiPlus,
-  FiFileText,
   FiLogOut,
   FiHome
 } from "react-icons/fi";
@@ -17,6 +17,66 @@ import "./SideBar.css";
 
 export default function Sidebar() {
   const { sidebarOpen, isMobile, closeSidebar } = useAdmin();
+  const navigate = useNavigate();
+
+  const handleLogoutConfirm = () => {
+    toast.info(
+      ({ closeToast }) => (
+        <div className="custom-confirm-toast">
+          <p style={{ margin: "0 0 10px 0", fontWeight: "500", color: "#fff" }}>
+            Bạn có chắc chắn muốn đăng xuất?
+          </p>
+          <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
+            <button
+              onClick={closeToast}
+              style={{
+                background: "#475569",
+                color: "#fff",
+                border: "none",
+                padding: "5px 12px",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontSize: "13px"
+              }}
+            >
+              Hủy
+            </button>
+            <button
+              onClick={async () => {
+                closeToast(); 
+                try {
+                  await logout();
+                  toast.success("Đăng xuất thành công!");
+                  navigate("/login"); 
+                } catch (err) {
+                  toast.error("Đăng xuất thất bại!");
+                }
+              }}
+              style={{
+                background: "#ef4444",
+                color: "#fff",
+                border: "none",
+                padding: "5px 12px",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontSize: "13px",
+                fontWeight: "600"
+              }}
+            >
+              Đăng xuất
+            </button>
+          </div>
+        </div>
+      ),
+      {
+        position: "top-center", 
+        autoClose: false,      
+        closeOnClick: false,    
+        draggable: false,       
+        theme: "dark"           
+      }
+    );
+  };
 
   if (isMobile && !sidebarOpen) return null;
 
@@ -65,11 +125,8 @@ export default function Sidebar() {
               <FiHome size={20} />
               <span>Trang Chủ</span>
             </Link>
-            <button className="sidebar-btn logout-btn" onClick={() => {
-              if (window.confirm("Bạn có chắc muốn đăng xuất?")) {
-                logout();
-              }
-            }}>
+            {/* Sự kiện onClick đã được thay đổi sạch sẽ */}
+            <button className="sidebar-btn logout-btn" onClick={handleLogoutConfirm}>
               <FiLogOut size={20} />
               <span>Đăng xuất</span>
             </button>

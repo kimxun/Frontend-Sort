@@ -1,5 +1,6 @@
-import React, { createContext, useState, useEffect, useContext } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import { getAlgorithms, getAlgorithmSteps, getAlgorithmById } from '../services/algorithmService';
+import { toast } from 'react-toastify';
 
 const SortingContext = createContext();
 
@@ -32,6 +33,7 @@ export const SortingProvider = ({ children }) => {
         }
       } catch (error) {
         console.error(error);
+        toast.error("Không thể tải danh sách thuật toán!");
       }
     };
     fetchAlgorithms();
@@ -46,6 +48,7 @@ export const SortingProvider = ({ children }) => {
         setAlgorithmInfo(data);
       } catch (error) {
         setAlgorithmInfo(null);
+        toast.error("Không thể tải thông tin mô tả thuật toán!");
       } finally {
         setInfoLoading(false);
       }
@@ -53,7 +56,6 @@ export const SortingProvider = ({ children }) => {
     fetchAlgorithmInfo();
   }, [algorithmId]);
 
-  // Bộ đếm tự động chạy Animation
   useEffect(() => {
     let timer;
     if (isRunning && steps.length > 0) {
@@ -62,7 +64,6 @@ export const SortingProvider = ({ children }) => {
           const nextStep = prevStep + 1;
           if (nextStep < steps.length) {
             const targetStep = steps[nextStep];
-            // Đọc an toàn cho cả dạng Object {array} lẫn mảng thuần [1,2,3]
             if (targetStep && targetStep.array) {
               setArray(targetStep.array);
             } else if (Array.isArray(targetStep)) {
@@ -72,6 +73,7 @@ export const SortingProvider = ({ children }) => {
           } else {
             setIsRunning(false);
             clearInterval(timer);
+            toast.success("Mô phỏng sắp xếp hoàn thành!");
             return prevStep;
           }
         });
@@ -87,7 +89,6 @@ export const SortingProvider = ({ children }) => {
     }
   }, []);
 
-  // Hàm nạp các bước từ API Backend
   const generateSteps = async () => {
     if (!array.length) return null;
 
@@ -95,9 +96,7 @@ export const SortingProvider = ({ children }) => {
       const currentAlgo = algorithms.find(algo => algo.id === algorithmId);
       if (!currentAlgo) return null;
 
-      // Chuẩn hóa tên: "Selection Sort" -> "selection_sort" trùng khớp với API Flask
       const algorithmName = currentAlgo.name.toLowerCase().replace(/\s+/g, '_');
-
       const data = await getAlgorithmSteps(algorithmName, array, sortOrder);
 
       const stepData =
@@ -106,20 +105,24 @@ export const SortingProvider = ({ children }) => {
         data?.steps ||
         (Array.isArray(data) ? data : []);
 
-      if (!stepData.length) return null;
+      if (!stepData.length) {
+        toast.warning("Không tìm thấy các bước xử lý cho mảng này.");
+        return null;
+      }
 
       setSteps(stepData);
       setCurrentStep(0);
       setRequireLogin(false);
       
-      return stepData; // Trả về danh sách để hỗ trợ nút bấm thủ công di chuyển ngay lập tức
+      return stepData; 
     } catch (error) {
       const response = error.response;
       if (response && response.status === 401 && response.data?.error === "Free limit exceeded") {
         setRequireLogin(true);
-        alert(response.data.message || "Bạn đã dùng hết 3 lượt miễn phí. Vui lòng đăng nhập!");
+        toast.warn(response.data.message || "Bạn đã dùng hết 3 lượt mô phỏng miễn phí. Vui lòng đăng nhập!");
       } else {
         console.error("Lỗi hệ thống khi sắp xếp:", error);
+        toast.error("Đã xảy ra lỗi kết nối với máy chủ tính toán thuật toán!");
       }
       return null;
     }
@@ -132,18 +135,18 @@ export const SortingProvider = ({ children }) => {
       if (success) {
         setIsRunning(true);
       }
-    } finally {
+    }  finally{
       setLoading(false);
     }
   };
 
-  // Hàm xử lý RIÊNG khi người dùng tự nhập mảng bằng tay
   const changeInputArray = (newArr) => {
     setOriginalArray([...newArr]);
     setArray(newArr);
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
+    toast.info("Đã ghi nhận mảng tùy chỉnh mới!");
   };
 
   const reset = () => {
@@ -153,26 +156,30 @@ export const SortingProvider = ({ children }) => {
     if (originalArray.length) {
       setArray([...originalArray]);
     }
+    toast.info("Đã đặt lại trạng thái ban đầu.");
   };
 
   const generateRandomArray = () => {
-     const length = Math.floor(Math.random() * 21) + 10
+    const length = Math.floor(Math.random() * 21) + 10;
     const newArray = Array.from({ length }, () => Math.floor(Math.random() * 100) + 1);
     setOriginalArray([...newArray]);
     setArray(newArray);
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
+    toast.success(`Đã tạo ngẫu nhiên mảng gồm ${length} phần tử!`);
   };
 
   const toggleSortOrder = () => {
-    setSortOrder(prev => prev === 'asc' ? 'desc' : 'asc');
+    const nextOrder = sortOrder === 'asc' ? 'desc' : 'asc';
+    setSortOrder(nextOrder);
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
     if (originalArray.length) {
       setArray([...originalArray]);
     }
+    toast.info(`Chuyển sang thứ tự sắp xếp: ${nextOrder === 'asc' ? 'Tăng dần (ASC)' : 'Giảm dần (DESC)'}`);
   };
 
   const value = {
@@ -180,8 +187,8 @@ export const SortingProvider = ({ children }) => {
     algorithmId,
     setAlgorithmId,
     array,
-    setArray,             // Trả về hàm set thuần túy của React để chạy mượt
-    changeInputArray,     // Hàm riêng dành cho ô Input dữ liệu
+    setArray,
+    changeInputArray,
     steps,
     currentStep,
     setCurrentStep,

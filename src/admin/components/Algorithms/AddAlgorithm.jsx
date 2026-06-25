@@ -17,7 +17,6 @@ const AddAlgorithm = () => {
     category_id: 1,
     status: 1,
   });
-  const [error, setError] = useState('');
   const debounceTimer = useRef(null);
 
   const removeVietnameseTones = (str) => {
@@ -56,18 +55,15 @@ const AddAlgorithm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    const stepsArray = formData.steps.split('\n').filter(s => s.trim() !== '');
+    const submitData = {
+      ...formData,
+      steps: stepsArray.length ? JSON.stringify(stepsArray) : null
+    };
     try {
-      const stepsArray = formData.steps.split('\n').filter(s => s.trim() !== '');
-      const submitData = {
-        ...formData,
-        steps: stepsArray.length ? JSON.stringify(stepsArray) : null
-      };
       await addAlgorithm(submitData);
-      alert('Thêm thuật toán thành công');
       navigate('/admin/algorithms');
     } catch (err) {
-      setError(err.message || 'Không thể thêm thuật toán');
     }
   };
 
@@ -128,8 +124,6 @@ const AddAlgorithm = () => {
             <textarea name="steps" placeholder="Mỗi bước trên một dòng..." value={formData.steps} onChange={handleChange} rows="5" />
           </div>
         </div>
-
-        {error && <div className="error-message">{error}</div>}
         
         <div className="button-group">
           <button type="button" className="cancel-btn" onClick={() => navigate('/admin/algorithms')}>Hủy</button>

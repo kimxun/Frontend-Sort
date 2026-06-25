@@ -29,20 +29,17 @@ export default function UsersPage() {
     const {
         users = [],
         loading,
-        userError, // Đã đổi từ error -> userError
+        userError,
         removeUser,
         pagination,
-        setPage, // Lấy setPage từ Context
+        setPage,
     } = useAdmin();
 
     const [search, setSearch] = useState("");
 
-    // ================= CURRENT PAGE FROM BACKEND =================
     const currentPage = pagination?.page || 1;
     const totalPages = pagination?.totalPages || 1;
 
-    // ================= SEARCH (TEMP FRONTEND) =================
-    // Lưu ý: Filter này chỉ đang hoạt động trên danh sách của trang hiện tại (page hiện tại)
     const filteredUsers = users.filter((u) => {
         const keyword = search.toLowerCase();
         return (
@@ -52,7 +49,6 @@ export default function UsersPage() {
         );
     });
 
-    // ================= HANDLE DELETE =================
     const handleDelete = async (user) => {
         const confirmDelete = window.confirm(
             `Bạn có chắc muốn khóa tài khoản "${user.username}"?`
@@ -62,23 +58,17 @@ export default function UsersPage() {
 
         try {
             await removeUser(user.id);
-            // Không cần gọi fetchUsers ở đây nữa vì Context đã lo việc đó
-            alert("Khóa tài khoản thành công");
         } catch (err) {
-            alert("Khóa tài khoản thất bại");
         }
     };
 
-    // ================= CHANGE PAGE =================
     const goToPage = (page) => {
         if (page < 1 || page > totalPages) return;
-        setPage(page); // Đổi fetchUsers(page) thành setPage(page)
+        setPage(page);
     };
 
     return (
         <div className="users-page">
-
-            {/* HEADER */}
             <div className="header">
                 <h1>Quản lý người dùng</h1>
 
@@ -90,7 +80,6 @@ export default function UsersPage() {
                 </button>
             </div>
 
-            {/* STATS */}
             <div className="stats">
                 <div className="card">
                     <span>TỔNG SỐ NGƯỜI DÙNG</span>
@@ -108,25 +97,19 @@ export default function UsersPage() {
                 </div>
             </div>
 
-            {/* TABLE */}
             <div className="table-container">
-
-                {/* SEARCH */}
                 <div className="toolbar">
                     <input
                         type="text"
                         placeholder="Tìm kiếm người dùng..."
                         value={search}
-                        onChange={(e) => {
-                            setSearch(e.target.value);
-                        }}
+                        onChange={(e) => setSearch(e.target.value)}
                     />
                 </div>
 
-                {/* LOADING */}
                 {loading ? (
                     <p>Đang tải...</p>
-                ) : userError ? ( // Cập nhật biến userError
+                ) : userError ? (
                     <p>{userError}</p>
                 ) : (
                     <>
@@ -175,9 +158,7 @@ export default function UsersPage() {
 
                                         <td>
                                             <button
-                                                onClick={() =>
-                                                    navigate(`/admin/edit-user/${user.id}`)
-                                                }
+                                                onClick={() => navigate(`/admin/edit-user/${user.id}`)}
                                             >
                                                 <FiEdit2 />
                                             </button>
@@ -193,7 +174,6 @@ export default function UsersPage() {
                             </tbody>
                         </table>
 
-                        {/* PAGINATION */}
                         <div className="pagination">
                             <button
                                 disabled={currentPage <= 1}

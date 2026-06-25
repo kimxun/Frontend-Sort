@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./AddUser.css";
 import { useAdmin } from "../../../context/AdminContext";
 import { FiEye, FiEyeOff } from "react-icons/fi";
+import { toast } from "react-toastify";
 
 export default function AddUser() {
     const navigate = useNavigate();
@@ -27,23 +28,21 @@ export default function AddUser() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (formData.password !== formData.confirmPassword) {
-            alert("Mật khẩu không trùng khớp!");
+            toast.error("Mật khẩu không trùng khớp!");
             return;
         }
+        const payload = {
+            username: formData.username,
+            password: formData.password,
+            full_name: formData.full_name,
+            email: formData.email,
+            role: Number(formData.role),
+            status: 1,
+        };
         try {
-            const payload = {
-                username: formData.username,
-                password: formData.password,
-                full_name: formData.full_name,
-                email: formData.email,
-                role: Number(formData.role),
-                status: 1,
-            };
             await addUser(payload);
-            alert("Tạo người dùng thành công!");
             navigate("/admin/users");
         } catch (err) {
-            alert("Tạo người dùng thất bại: " + err.message);
         }
     };
 
@@ -69,11 +68,8 @@ export default function AddUser() {
                 onSubmit={handleSubmit}
                 autoComplete="off"
             >
-                {/* ─── MẸO ĐÁNH LỪA TRÌNH DUYỆT ───────────────────────────────── */}
-                {/* Trình duyệt sẽ tự động điền tài khoản admin vào 2 ô ẩn này và bỏ qua các ô bên dưới */}
                 <input type="text" style={{ display: "none" }} aria-hidden="true" />
                 <input type="password" style={{ display: "none" }} aria-hidden="true" />
-                {/* ──────────────────────────────────────────────────────────── */}
 
                 <div className="form-row">
                     <div className="form-group large">

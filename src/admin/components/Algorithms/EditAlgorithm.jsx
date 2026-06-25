@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAdmin } from '../../../context/AdminContext';
+import { toast } from 'react-toastify';
 import './AddAlgorithm.css';
 
 const EditAlgorithm = () => {
@@ -81,10 +82,12 @@ const EditAlgorithm = () => {
         steps: stepsArray.length ? JSON.stringify(stepsArray) : null
       };
       await editAlgorithm(parseInt(id), submitData);
-      alert('Cập nhật thành công');
+      toast.success('Cập nhật thành công!');
       navigate('/admin/algorithms');
     } catch (err) {
-      setError(err.message || 'Cập nhật thất bại');
+      const message = err.response?.data?.error || err.message || 'Cập nhật thất bại';
+      toast.error(message);
+      setError(message);
     }
   };
 
