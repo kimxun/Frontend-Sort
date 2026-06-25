@@ -43,13 +43,17 @@
   padding: 16px 8px 8px;
   min-height: 280px;
   background: #0c0e14;
+  width: 100%;
 }
 
 .bar-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
   gap: 4px;
+  flex: 1;
+  max-width: 56px;
 }
 
 .bar-value {
@@ -59,9 +63,10 @@
 }
 
 .bar {
+  width: 100%;
   border-radius: 4px 4px 2px 2px;
   min-height: 8px;
-  transition: height 0.2s ease;
+  transition: height 0.2s ease, background 0.2s ease;
 }
 
 .bar-index {
@@ -71,14 +76,20 @@
 
 @media (max-width: 768px) {
   .bars-container {
-    gap: 4px;
-    padding: 12px 4px 8px;
+    gap: 2px;
+    padding: 12px 2px 8px;
     min-height: 200px;
   }
-  .bar {
-    width: 28px !important;
-  }
-  .bar-value {
+  .bar-value, .bar-index {
     font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .bars-container {
+    gap: 1px;
+  }
+  .bar-value, .bar-index {
+    font-size: 8px;
   }
 }
