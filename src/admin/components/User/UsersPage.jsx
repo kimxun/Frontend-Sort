@@ -29,10 +29,10 @@ export default function UsersPage() {
     const {
         users = [],
         loading,
-        error,
+        userError, // Đã đổi từ error -> userError
         removeUser,
-        fetchUsers,
         pagination,
+        setPage, // Lấy setPage từ Context
     } = useAdmin();
 
     const [search, setSearch] = useState("");
@@ -42,6 +42,7 @@ export default function UsersPage() {
     const totalPages = pagination?.totalPages || 1;
 
     // ================= SEARCH (TEMP FRONTEND) =================
+    // Lưu ý: Filter này chỉ đang hoạt động trên danh sách của trang hiện tại (page hiện tại)
     const filteredUsers = users.filter((u) => {
         const keyword = search.toLowerCase();
         return (
@@ -61,7 +62,7 @@ export default function UsersPage() {
 
         try {
             await removeUser(user.id);
-            await fetchUsers(currentPage); // reload đúng page
+            // Không cần gọi fetchUsers ở đây nữa vì Context đã lo việc đó
             alert("Khóa tài khoản thành công");
         } catch (err) {
             alert("Khóa tài khoản thất bại");
@@ -71,7 +72,7 @@ export default function UsersPage() {
     // ================= CHANGE PAGE =================
     const goToPage = (page) => {
         if (page < 1 || page > totalPages) return;
-        fetchUsers(page);
+        setPage(page); // Đổi fetchUsers(page) thành setPage(page)
     };
 
     return (
@@ -125,8 +126,8 @@ export default function UsersPage() {
                 {/* LOADING */}
                 {loading ? (
                     <p>Đang tải...</p>
-                ) : error ? (
-                    <p>{error}</p>
+                ) : userError ? ( // Cập nhật biến userError
+                    <p>{userError}</p>
                 ) : (
                     <>
                         <table>
