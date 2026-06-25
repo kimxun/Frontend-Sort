@@ -64,8 +64,6 @@ const SortingVisualizer = () => {
         {safeArray.map((value, index) => {
           const heightPct = (value / maxValue) * 100;
           const barHeight = Math.max(heightPct * 2, 20);
-          const barWidth = Math.max(28, Math.min(56, Math.floor(480 / safeArray.length) - 8));
-
           const colorScheme = getBarColor(index, currentStepData);
 
           return (
@@ -75,7 +73,6 @@ const SortingVisualizer = () => {
                 className="bar"
                 style={{
                   height: `${barHeight}px`,
-                  width: `${barWidth}px`,
                   background: `linear-gradient(180deg, ${colorScheme.bg}ee, ${colorScheme.bg}99)`,
                   boxShadow: colorScheme.glow,
                 }}

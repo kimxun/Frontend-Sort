@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAdmin } from '../../../context/AdminContext';
 import './AddAlgorithm.css';
@@ -9,10 +9,31 @@ const EditAlgorithm = () => {
   const { algorithms, editAlgorithm, loading } = useAdmin();
   const [formData, setFormData] = useState(null);
   const [error, setError] = useState('');
+  const debounceTimer = useRef(null);
+  const hasIdentifiedInitialName = useRef(false);
+
+  const removeVietnameseTones = (str) => {
+    return str
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/đ/g, 'd')
+      .replace(/Đ/g, 'D');
+  };
+
+  const generateSlug = (text) => {
+    if (!text.trim()) return '';
+    const noTone = removeVietnameseTones(text);
+    return noTone
+      .toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+  };
 
   useEffect(() => {
     const algo = algorithms.find(a => a.id === parseInt(id));
-    if (algo) {
+    if (algo && !formData) {
       setFormData({
         name: algo.name || '',
         slug: algo.slug || '',
@@ -25,7 +46,26 @@ const EditAlgorithm = () => {
         status: algo.status !== undefined ? algo.status : 1,
       });
     }
-  }, [algorithms, id]);
+  }, [algorithms, id, formData]);
+
+  useEffect(() => {
+    if (!formData) return;
+
+    if (!hasIdentifiedInitialName.current) {
+      hasIdentifiedInitialName.current = true;
+      return;
+    }
+
+    clearTimeout(debounceTimer.current);
+    debounceTimer.current = setTimeout(() => {
+      setFormData((prev) => ({
+        ...prev,
+        slug: generateSlug(prev.name),
+      }));
+    }, 3500);
+
+    return () => clearTimeout(debounceTimer.current);
+  }, [formData?.name]);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
