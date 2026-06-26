@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSorting } from "../../context/SortingContext";
 import "./ControlPanel.css";
 
@@ -26,6 +26,26 @@ export default function ControlPanel() {
 
   const [inputValue, setInputValue] = useState("");
   const [hovered, setHovered] = useState(null);
+  const [isAlgorithmMenuOpen, setIsAlgorithmMenuOpen] = useState(false);
+  const algorithmMenuRef = useRef(null);
+
+  const activeAlgorithms = (algorithms || []).filter((a) => a.status === 1);
+  const selectedAlgorithm =
+    activeAlgorithms.find((a) => a.id === algorithmId) || activeAlgorithms[0];
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        algorithmMenuRef.current &&
+        !algorithmMenuRef.current.contains(event.target)
+      ) {
+        setIsAlgorithmMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const handleSubmit = () => {
     const values = inputValue
@@ -89,27 +109,46 @@ export default function ControlPanel() {
     onMouseLeave: () => setHovered(null),
   });
 
+  const handleAlgorithmSelect = (id) => {
+    setAlgorithmId(id);
+    setIsAlgorithmMenuOpen(false);
+  };
+
   const isPaused = steps.length > 0 && !isRunning;
 
   return (
     <div className="control-panel">
       <div className="control-row">
-        <div className="select-wrapper">
-          <select
-            value={algorithmId}
-            onChange={(e) => setAlgorithmId(Number(e.target.value))}
+        <div className="select-wrapper" ref={algorithmMenuRef}>
+          <button
+            type="button"
+            onClick={() => setIsAlgorithmMenuOpen((open) => !open)}
             disabled={isRunning}
             className={`algorithm-select ${isRunning ? "disabled" : ""}`}
+            aria-haspopup="listbox"
+            aria-expanded={isAlgorithmMenuOpen}
           >
-            {(algorithms || [])
-              .filter((a) => a.status === 1)
-              .map((a) => (
-                <option key={a.id} value={a.id}>
-                  {a.name}
-                </option>
-              ))}
-          </select>
+            <span>{selectedAlgorithm?.name || "Chọn thuật toán"}</span>
+          </button>
           <span className="select-arrow">▼</span>
+          {isAlgorithmMenuOpen && !isRunning && (
+            <div className="algorithm-options" role="listbox">
+              {activeAlgorithms.map((a) => (
+                <button
+                  type="button"
+                  key={a.id}
+                  role="option"
+                  aria-selected={a.id === algorithmId}
+                  className={`algorithm-option ${
+                    a.id === algorithmId ? "selected" : ""
+                  }`}
+                  onClick={() => handleAlgorithmSelect(a.id)}
+                >
+                  {a.name}
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         <button
