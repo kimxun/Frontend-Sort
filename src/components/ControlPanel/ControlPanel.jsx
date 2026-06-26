@@ -73,7 +73,7 @@ export default function ControlPanel() {
       if (!fetchedSteps || fetchedSteps.length === 0) return; // Dừng lại nếu lỗi hoặc bị Redis chặn
       
       currentSteps = fetchedSteps;
-      activeStep = 0; 
+      activeStep = -1; 
     }
 
     const nextStep = activeStep + 1;

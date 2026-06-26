@@ -15,10 +15,11 @@ import Forbidden from "./pages/Forbidden/Forbidden";
 import Register from "./pages/Register/Register";
 function App() {
   return (
-    <SortingProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <SortingProvider>
         <Routes>
           <Route path="/" element={<SortingPage />} />
+          <Route path="/:algorithmSlug" element={<SortingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/403" element={<Forbidden />} />
@@ -38,8 +39,8 @@ function App() {
 
           </Route>
         </Routes>
-      </BrowserRouter>
-    </SortingProvider>
+      </SortingProvider>
+    </BrowserRouter>
   );
 }
 
