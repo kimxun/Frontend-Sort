@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
+import React, { createContext, useState, useEffect, useContext, useRef } from 'react';
 import { getAlgorithms, getAlgorithmSteps, getAlgorithmById } from '../services/algorithmService';
 import { toast } from 'react-toastify';
 
@@ -22,6 +22,7 @@ export const SortingProvider = ({ children }) => {
 
   const [originalArray, setOriginalArray] = useState(initialArray);
   const [requireLogin, setRequireLogin] = useState(false);
+  const completionToastShownRef = useRef(false);
 
   useEffect(() => {
     const fetchAlgorithms = async () => {
@@ -47,6 +48,7 @@ export const SortingProvider = ({ children }) => {
         const data = await getAlgorithmById(algorithmId);
         setAlgorithmInfo(data);
       } catch (error) {
+        console.error(error);
         setAlgorithmInfo(null);
         toast.error("Không thể tải thông tin mô tả thuật toán!");
       } finally {
@@ -56,39 +58,39 @@ export const SortingProvider = ({ children }) => {
     fetchAlgorithmInfo();
   }, [algorithmId]);
 
+  // Bộ đếm tự động chạy Animation
   useEffect(() => {
-    let timer;
-    if (isRunning && steps.length > 0) {
-      timer = setInterval(() => {
-        setCurrentStep((prevStep) => {
-          const nextStep = prevStep + 1;
-          if (nextStep < steps.length) {
-            const targetStep = steps[nextStep];
-            if (targetStep && targetStep.array) {
-              setArray(targetStep.array);
-            } else if (Array.isArray(targetStep)) {
-              setArray(targetStep);
-            }
-            return nextStep;
-          } else {
-            setIsRunning(false);
-            clearInterval(timer);
-            toast.success("Mô phỏng sắp xếp hoàn thành!");
-            return prevStep;
-          }
-        });
-      }, Math.max(50, 1000 - speed * 8));
-    }
-    return () => clearInterval(timer);
-  }, [isRunning, steps, speed]);
+    if (!isRunning || steps.length === 0) return;
 
-  useEffect(() => {
-    if (!localStorage.getItem("guest_id")) {
-      const uuid = crypto.randomUUID ? crypto.randomUUID() : 'guest_' + Math.random().toString(36).substring(2, 15);
-      localStorage.setItem("guest_id", uuid);
+    if (currentStep >= steps.length - 1) {
+      setIsRunning(false);
+      if (!completionToastShownRef.current) {
+        completionToastShownRef.current = true;
+        toast.success("Mô phỏng sắp xếp hoàn thành!");
+      }
+      return;
     }
-  }, []);
 
+    const timer = setTimeout(() => {
+      const nextStep = currentStep + 1;
+      const targetStep = steps[nextStep];
+
+      // Đọc an toàn cho cả dạng Object {array} lẫn mảng thuần [1,2,3]
+      if (targetStep && targetStep.array) {
+        setArray(targetStep.array);
+      } else if (Array.isArray(targetStep)) {
+        setArray(targetStep);
+      }
+
+      setCurrentStep(nextStep);
+    }, Math.max(50, 1000 - speed * 8));
+
+    return () => clearTimeout(timer);
+  }, [isRunning, steps, speed, currentStep]);
+
+
+
+  // Hàm nạp các bước từ API Backend
   const generateSteps = async () => {
     if (!array.length) return null;
 
@@ -96,8 +98,7 @@ export const SortingProvider = ({ children }) => {
       const currentAlgo = algorithms.find(algo => algo.id === algorithmId);
       if (!currentAlgo) return null;
 
-      const algorithmName = currentAlgo.name.toLowerCase().replace(/\s+/g, '_');
-      const data = await getAlgorithmSteps(algorithmName, array, sortOrder);
+      const data = await getAlgorithmSteps(currentAlgo, array, sortOrder);
 
       const stepData =
         data?.metrics?.steps ||
@@ -112,9 +113,10 @@ export const SortingProvider = ({ children }) => {
 
       setSteps(stepData);
       setCurrentStep(0);
+      completionToastShownRef.current = false;
       setRequireLogin(false);
       
-      return stepData; 
+      return stepData; // Trả về danh sách để hỗ trợ nút bấm thủ công di chuyển ngay lập tức
     } catch (error) {
       const response = error.response;
       if (response && response.status === 401 && response.data?.error === "Free limit exceeded") {
@@ -135,17 +137,19 @@ export const SortingProvider = ({ children }) => {
       if (success) {
         setIsRunning(true);
       }
-    }  finally{
+    } finally {
       setLoading(false);
     }
   };
 
+  // Hàm xử lý RIÊNG khi người dùng tự nhập mảng bằng tay
   const changeInputArray = (newArr) => {
     setOriginalArray([...newArr]);
     setArray(newArr);
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
+    completionToastShownRef.current = false;
     toast.info("Đã ghi nhận mảng tùy chỉnh mới!");
   };
 
@@ -153,6 +157,7 @@ export const SortingProvider = ({ children }) => {
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
+    completionToastShownRef.current = false;
     if (originalArray.length) {
       setArray([...originalArray]);
     }
@@ -167,6 +172,7 @@ export const SortingProvider = ({ children }) => {
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
+    completionToastShownRef.current = false;
     toast.success(`Đã tạo ngẫu nhiên mảng gồm ${length} phần tử!`);
   };
 
@@ -176,6 +182,7 @@ export const SortingProvider = ({ children }) => {
     setSteps([]);
     setCurrentStep(0);
     setIsRunning(false);
+    completionToastShownRef.current = false;
     if (originalArray.length) {
       setArray([...originalArray]);
     }
@@ -187,8 +194,8 @@ export const SortingProvider = ({ children }) => {
     algorithmId,
     setAlgorithmId,
     array,
-    setArray,
-    changeInputArray,
+    setArray,             // Trả về hàm set thuần túy của React để chạy mượt
+    changeInputArray,     // Hàm riêng dành cho ô Input dữ liệu
     steps,
     currentStep,
     setCurrentStep,

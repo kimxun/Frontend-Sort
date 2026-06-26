@@ -5,8 +5,13 @@ export const getAlgorithms = async (page=1, limit=5) => {
   return response.data;
 };
 
+export const getActiveAlgorithms = async () => {
+  const response = await api.get('/algorithms');
+  return response.data;
+};
 
-export const getAlgorithmSteps = async (algorithmName, array, sortOrder) => {
+
+export const getAlgorithmSteps = async (algorithm, array, sortOrder) => {
   const token = localStorage.getItem('token'); 
   const headers = {};
 
@@ -19,7 +24,8 @@ export const getAlgorithmSteps = async (algorithmName, array, sortOrder) => {
   const response = await api.post('/sort', 
     { 
       array: array, 
-      algorithm: algorithmName,
+      algorithm_id: algorithm.id,
+      algorithm: algorithm.slug,
       sortOrder: sortOrder
     }, 
     { headers } 
