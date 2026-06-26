@@ -1,12 +1,22 @@
 import React, { createContext, useState, useEffect, useContext, useRef } from 'react';
-import { getAlgorithms, getAlgorithmSteps, getAlgorithmById } from '../services/algorithmService';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { getActiveAlgorithms, getAlgorithmSteps, getAlgorithmById } from '../services/algorithmService';
 import { toast } from 'react-toastify';
 
 const SortingContext = createContext();
+const RESERVED_PATHS = new Set(['admin', 'login', 'register', '403']);
+
+const getAlgorithmSlugFromPath = (pathname) => {
+  const firstSegment = pathname.split('/').filter(Boolean)[0];
+  if (!firstSegment || RESERVED_PATHS.has(firstSegment)) return null;
+  return firstSegment;
+};
 
 export const useSorting = () => useContext(SortingContext);
 
 export const SortingProvider = ({ children }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
   const initialArray = [5, 3, 8, 1, 2];
   const [algorithms, setAlgorithms] = useState([]);
   const [algorithmId, setAlgorithmId] = useState(1);
@@ -23,14 +33,18 @@ export const SortingProvider = ({ children }) => {
   const [originalArray, setOriginalArray] = useState(initialArray);
   const [requireLogin, setRequireLogin] = useState(false);
   const completionToastShownRef = useRef(false);
+  const previousAlgorithmIdRef = useRef(null);
 
   useEffect(() => {
     const fetchAlgorithms = async () => {
       try {
-        const res = await getAlgorithms();
-        setAlgorithms(res.data || []);
-        if (res.data?.length > 0) {
-          setAlgorithmId(res.data[0].id);
+        const res = await getActiveAlgorithms();
+        const activeAlgorithms = Array.isArray(res) ? res : res.data || [];
+        setAlgorithms(activeAlgorithms);
+        if (activeAlgorithms.length > 0) {
+          const slugFromPath = getAlgorithmSlugFromPath(location.pathname);
+          const algorithmFromPath = activeAlgorithms.find((algo) => algo.slug === slugFromPath);
+          setAlgorithmId((algorithmFromPath || activeAlgorithms[0]).id);
         }
       } catch (error) {
         console.error(error);
@@ -39,6 +53,37 @@ export const SortingProvider = ({ children }) => {
     };
     fetchAlgorithms();
   }, []);
+
+  useEffect(() => {
+    if (!algorithms.length || !algorithmId) return;
+
+    const selectedAlgorithm = algorithms.find((algo) => algo.id === algorithmId);
+    if (!selectedAlgorithm?.slug) return;
+
+    const firstSegment = location.pathname.split('/').filter(Boolean)[0];
+    const isSortingPath = location.pathname === '/' || !RESERVED_PATHS.has(firstSegment);
+    if (!isSortingPath) return;
+
+    if (getAlgorithmSlugFromPath(location.pathname) !== selectedAlgorithm.slug) {
+      navigate(`/${selectedAlgorithm.slug}`, { replace: true });
+    }
+  }, [algorithmId, algorithms, location.pathname, navigate]);
+
+  useEffect(() => {
+    if (!algorithms.length) return;
+
+    const slugFromPath = getAlgorithmSlugFromPath(location.pathname);
+    if (!slugFromPath) return;
+
+    const algorithmFromPath = algorithms.find((algo) => algo.slug === slugFromPath);
+    if (algorithmFromPath) {
+      setAlgorithmId((currentAlgorithmId) =>
+        algorithmFromPath.id !== currentAlgorithmId
+          ? algorithmFromPath.id
+          : currentAlgorithmId
+      );
+    }
+  }, [location.pathname, algorithms]);
 
   useEffect(() => {
     const fetchAlgorithmInfo = async () => {
@@ -57,6 +102,26 @@ export const SortingProvider = ({ children }) => {
     };
     fetchAlgorithmInfo();
   }, [algorithmId]);
+
+  useEffect(() => {
+    if (!algorithmId) return;
+
+    if (previousAlgorithmIdRef.current === null) {
+      previousAlgorithmIdRef.current = algorithmId;
+      return;
+    }
+
+    if (previousAlgorithmIdRef.current !== algorithmId) {
+      previousAlgorithmIdRef.current = algorithmId;
+      setSteps([]);
+      setCurrentStep(0);
+      setIsRunning(false);
+      completionToastShownRef.current = false;
+      if (originalArray.length) {
+        setArray([...originalArray]);
+      }
+    }
+  }, [algorithmId, originalArray]);
 
   // Bộ đếm tự động chạy Animation
   useEffect(() => {
@@ -176,6 +241,17 @@ export const SortingProvider = ({ children }) => {
     toast.success(`Đã tạo ngẫu nhiên mảng gồm ${length} phần tử!`);
   };
 
+  const changeAlgorithmId = (nextAlgorithmId) => {
+    setAlgorithmId(nextAlgorithmId);
+    setSteps([]);
+    setCurrentStep(0);
+    setIsRunning(false);
+    completionToastShownRef.current = false;
+    if (originalArray.length) {
+      setArray([...originalArray]);
+    }
+  };
+
   const toggleSortOrder = () => {
     const nextOrder = sortOrder === 'asc' ? 'desc' : 'asc';
     setSortOrder(nextOrder);
@@ -192,7 +268,7 @@ export const SortingProvider = ({ children }) => {
   const value = {
     algorithms,
     algorithmId,
-    setAlgorithmId,
+    setAlgorithmId: changeAlgorithmId,
     array,
     setArray,             // Trả về hàm set thuần túy của React để chạy mượt
     changeInputArray,     // Hàm riêng dành cho ô Input dữ liệu
