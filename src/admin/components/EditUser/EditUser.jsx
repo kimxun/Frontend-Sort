@@ -24,7 +24,6 @@ export default function EditUser() {
 
     useEffect(() => {
         const user = users.find((u) => String(u.id) === String(id));
-
         if (user) {
             setFormData({
                 id: user.id,
@@ -68,22 +67,12 @@ export default function EditUser() {
             }
 
             await editUser(formData.id, payload);
-            
             toast.success("Cập nhật thông tin người dùng thành công!");
             navigate("/admin/users");
-
         } catch (err) {
             console.error(err);
-            
-            const errorMessage = err?.response?.data?.message || err.message || "";
-            
-            if (errorMessage.includes("500") || (err.response && err.response.status === 500)) {
-                toast.error("Lỗi máy chủ hoặc dữ liệu không hợp lệ!");
-            } else {
-                toast.error(`Cập nhật thông tin thất bại: ${errorMessage}`);
-            }
-            
-            navigate("/admin/users");
+            const errorMessage = err?.response?.data?.message || err.message || "Cập nhật thất bại!";
+            toast.error(errorMessage);
         }
     };
 
@@ -96,111 +85,54 @@ export default function EditUser() {
             <div className="breadcrumb">
                 QUẢN LÝ › NGƯỜI DÙNG › CHỈNH SỬA NGƯỜI DÙNG
             </div>
-
             <div className="page-header">
                 <h1>Chỉnh sửa người dùng</h1>
-                <button
-                    className="close-btn"
-                    onClick={() => navigate("/admin/users")}
-                >
-                    ✕
-                </button>
+                <button className="close-btn" onClick={() => navigate("/admin/users")}>✕</button>
             </div>
-
             <form className="edit-user-form" onSubmit={handleSubmit}>
                 <div className="form-row">
                     <div className="form-group large">
                         <label>TÊN ĐĂNG NHẬP</label>
-                        <input
-                            type="text"
-                            value={formData.username}
-                            disabled
-                        />
+                        <input type="text" value={formData.username} disabled />
                     </div>
-
                     <div className="form-group">
                         <label>VAI TRÒ</label>
-                        <select
-                            name="role"
-                            value={formData.role}
-                            onChange={handleChange}
-                        >
+                        <select name="role" value={formData.role} onChange={handleChange}>
                             <option value={0}>NGƯỜI DÙNG (USER)</option>
                             <option value={1}>QUẢN TRỊ VIÊN (ADMIN)</option>
                         </select>
                     </div>
-
                     <div className="form-group">
                         <label>TRẠNG THÁI</label>
-                        <select
-                            name="status"
-                            value={formData.status}
-                            onChange={handleChange}
-                        >
+                        <select name="status" value={formData.status} onChange={handleChange}>
                             <option value={1}>HOẠT ĐỘNG</option>
                             <option value={0}>TẠM KHÓA</option>
                         </select>
                     </div>
                 </div>
-
                 <div className="form-row">
                     <div className="form-group">
                         <label>HỌ VÀ TÊN</label>
-                        <input
-                            type="text"
-                            name="full_name"
-                            value={formData.full_name}
-                            onChange={handleChange}
-                        />
+                        <input type="text" name="full_name" value={formData.full_name} onChange={handleChange} />
                     </div>
-
                     <div className="form-group">
                         <label>EMAIL</label>
-                        <input
-                            type="email"
-                            name="email"
-                            value={formData.email}
-                            onChange={handleChange}
-                        />
+                        <input type="email" name="email" value={formData.email} onChange={handleChange} />
                     </div>
                 </div>
-
                 <div className="form-row">
                     <div className="form-group">
                         <label>MẬT KHẨU MỚI</label>
-                        <input
-                            type="password"
-                            name="password"
-                            placeholder="Để trống nếu không muốn thay đổi"
-                            value={formData.password}
-                            onChange={handleChange}
-                        />
+                        <input type="password" name="password" placeholder="Để trống nếu không muốn thay đổi" value={formData.password} onChange={handleChange} />
                     </div>
-
                     <div className="form-group">
                         <label>XÁC NHẬN MẬT KHẨU MỚI</label>
-                        <input
-                            type="password"
-                            name="confirmPassword"
-                            placeholder="Xác nhận lại mật khẩu mới"
-                            value={formData.confirmPassword}
-                            onChange={handleChange}
-                        />
+                        <input type="password" name="confirmPassword" placeholder="Xác nhận lại mật khẩu mới" value={formData.confirmPassword} onChange={handleChange} />
                     </div>
                 </div>
-
                 <div className="button-group">
-                    <button
-                        type="button"
-                        className="cancel-btn"
-                        onClick={() => navigate("/admin/users")}
-                    >
-                        Hủy bỏ
-                    </button>
-
-                    <button type="submit" className="save-btn">
-                        Cập nhật
-                    </button>
+                    <button type="button" className="cancel-btn" onClick={() => navigate("/admin/users")}>Hủy bỏ</button>
+                    <button type="submit" className="save-btn">Cập nhật</button>
                 </div>
             </form>
         </div>

@@ -18,6 +18,7 @@ export default function AddUser() {
     });
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -27,22 +28,58 @@ export default function AddUser() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (formData.password !== formData.confirmPassword) {
-            toast.error("Mật khẩu không trùng khớp!");
+
+        const trimmedUsername = formData.username.trim();
+        const trimmedFullName = formData.full_name.trim();
+        const trimmedEmail = formData.email.trim();
+
+        if (!trimmedUsername) {
+            toast.error("Vui lòng nhập tên đăng nhập");
             return;
         }
+        if (!formData.password) {
+            toast.error("Vui lòng nhập mật khẩu");
+            return;
+        }
+        if (!trimmedFullName) {
+            toast.error("Vui lòng nhập họ và tên");
+            return;
+        }
+        if (!trimmedEmail) {
+            toast.error("Vui lòng nhập email");
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(trimmedEmail)) {
+            toast.error("Email không đúng định dạng");
+            return;
+        }
+
+        if (formData.password !== formData.confirmPassword) {
+            toast.error("Mật khẩu không trùng khớp");
+            return;
+        }
+
         const payload = {
-            username: formData.username,
+            username: trimmedUsername,
             password: formData.password,
-            full_name: formData.full_name,
-            email: formData.email,
+            full_name: trimmedFullName,
+            email: trimmedEmail,
             role: Number(formData.role),
             status: 1,
         };
+
         try {
             await addUser(payload);
+            toast.success("Tạo người dùng thành công");
             navigate("/admin/users");
         } catch (err) {
+            const message =
+                err.response?.data?.message ||
+                err.message ||
+                "Đã có lỗi xảy ra, vui lòng thử lại";
+            toast.error(message);
         }
     };
 
@@ -157,9 +194,7 @@ export default function AddUser() {
                             type={showConfirmPassword ? 'text' : 'password'}
                             name="confirmPassword"
                             placeholder="Xác nhận lại mật khẩu..."
-                            value={
-                                formData.confirmPassword
-                            }
+                            value={formData.confirmPassword}
                             onChange={handleChange}
                             autoComplete="new-password"
                         />
