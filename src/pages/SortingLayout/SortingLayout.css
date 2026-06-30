@@ -16,7 +16,6 @@
 
 .header-actions {
   margin-left: auto;
-
   display: flex;
   align-items: center;
   gap: 12px;
@@ -43,6 +42,22 @@
 .header-login-btn:hover {
   background: #535f7d;
   transform: translateY(-1px);
+}
+
+.header-admin-btn {
+  padding: 8px 16px;
+  border: 1px solid rgba(59, 130, 246, 0.4);
+  border-radius: 8px;
+  background: rgba(59, 130, 246, 0.1);
+  color: #60a5fa;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.header-admin-btn:hover {
+  background: rgba(59, 130, 246, 0.25);
 }
 
 .brand-icon {
@@ -209,7 +224,7 @@
   background-color: #0d111a;
 }
 
-.code-content>* {
+.code-content > * {
   width: 100%;
   box-sizing: border-box;
 }
