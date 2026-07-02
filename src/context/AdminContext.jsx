@@ -171,10 +171,14 @@ export const AdminProvider = ({ children }) => {
     }
   };
 
-  const removeAlgorithm = async (id) => {
+  const removeAlgorithm = async (id, options = { type: 'soft' }) => {
     try {
-      await deleteAlgorithm(id);
-      toast.success('Xóa thuật toán thành công!');
+      await deleteAlgorithm(id, options);
+      toast.success(
+        options.type === 'hard'
+          ? 'Xóa vĩnh viễn thuật toán thành công!'
+          : 'Xóa thuật toán thành công!'
+      );
       const isLastItemOnPage = algorithms.length === 1 && algorithmPage > 1;
       const targetPage = isLastItemOnPage ? algorithmPage - 1 : algorithmPage;
       

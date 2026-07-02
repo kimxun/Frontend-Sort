@@ -15,17 +15,33 @@ const AlgorithmsPage = () => {
     } = useAdmin();
     
     const [search, setSearch] = useState('');
+    const [deleteTarget, setDeleteTarget] = useState(null);
     const navigate = useNavigate();
     
     const currentPage = algorithmPagination?.page || 1;
     const totalPages = algorithmPagination?.totalPages || 1;
 
-    const handleDelete = async (id, name) => {
-        if (window.confirm(`Bạn có chắc muốn xóa thuật toán "${name}"?`)) {
-            try {
-                await removeAlgorithm(id);
-            } catch (err) {
-            }
+    const handleDeleteClick = (id, name) => {
+        setDeleteTarget({ id, name });
+    };
+
+    const handleSoftDelete = async () => {
+        if (!deleteTarget) return;
+        try {
+            await removeAlgorithm(deleteTarget.id, { type: 'soft' });
+            setDeleteTarget(null);
+        } catch (err) {
+            setDeleteTarget(null);
+        }
+    };
+
+    const handleHardDelete = async () => {
+        if (!deleteTarget) return;
+        try {
+            await removeAlgorithm(deleteTarget.id, { type: 'hard' });
+            setDeleteTarget(null);
+        } catch (err) {
+            setDeleteTarget(null);
         }
     };
 
@@ -98,7 +114,7 @@ const AlgorithmsPage = () => {
                                             </button>
                                             <button
                                                 className="action-btn delete"
-                                                onClick={() => handleDelete(algo.id, algo.name)}
+                                                onClick={() => handleDeleteClick(algo.id, algo.name)}
                                             >
                                                 <FiTrash2 />
                                             </button>
@@ -137,6 +153,27 @@ const AlgorithmsPage = () => {
                     </>
                 )}
             </div>
+
+            {/* Modal xác nhận kiểu xóa */}
+            {deleteTarget && (
+                <div className="modal-overlay" onClick={() => setDeleteTarget(null)}>
+                    <div className="modal-content" onClick={e => e.stopPropagation()}>
+                        <h3>Xóa thuật toán</h3>
+                        <p>Bạn muốn xóa <strong>{deleteTarget.name}</strong> theo cách nào?</p>
+                        <div className="modal-buttons">
+                            <button className="btn btn-warning" onClick={handleSoftDelete}>
+                                Xóa mềm (ẩn khỏi danh sách)
+                            </button>
+                            <button className="btn btn-danger" onClick={handleHardDelete}>
+                                Xóa cứng (xóa vĩnh viễn)
+                            </button>
+                            <button className="btn btn-secondary" onClick={() => setDeleteTarget(null)}>
+                                Hủy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

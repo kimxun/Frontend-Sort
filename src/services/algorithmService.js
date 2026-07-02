@@ -49,7 +49,9 @@ export const updateAlgorithm = async (id, data) => {
   return response.data;
 };
 
-export const deleteAlgorithm = async (id) => {
-  const response = await api.delete(`/algorithms/${id}`);
+export const deleteAlgorithm = async (id, options = { type: 'soft' }) => {
+  const response = await api.delete(`/algorithms/${id}`, {
+    data: { permanent: options.type === 'hard' }
+  });
   return response.data;
 };
