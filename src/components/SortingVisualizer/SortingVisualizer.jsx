@@ -8,6 +8,7 @@ const BAR_COLORS = {
   swapping:  { bg: "#ef4444", glow: "0 0 14px rgba(239,68,68,0.6)" },
   current:   { bg: "#a855f7", glow: "0 0 14px rgba(168,85,247,0.6)" },
   sorted:    { bg: "#10b981", glow: "0 0 12px rgba(16,185,129,0.4)" },
+  found:     { bg: "#22c55e", glow: "0 0 14px rgba(34,197,94,0.6)" },
 };
 
 const LEGEND = [
@@ -16,24 +17,34 @@ const LEGEND = [
   { id: "swapping", color: BAR_COLORS.swapping.bg, label: "Đang hoán đổi" },
   { id: "pivot", color: BAR_COLORS.current.bg, label: "Phần tử chốt" },
   { id: "sorted", color: BAR_COLORS.sorted.bg, label: "Đã sắp xếp" },
+  { id: "found", color: BAR_COLORS.found.bg, label: "Đã tìm thấy" },
 ];
 
-const getBarColor = (index, stepData) => {
+const getBarColor = (index, stepData, isSearchMode) => {
   if (!stepData) return BAR_COLORS.default;
-  
+
+  if (isSearchMode) {
+    if (stepData.found && stepData.current_index === index) return BAR_COLORS.found;
+    if (stepData.comparing?.includes(index)) return BAR_COLORS.comparing;
+    return BAR_COLORS.default;
+  }
+
   const { comparing = [], swapping = [], pivot, sorted = [] } = stepData;
-  
+
   if (swapping.includes(index)) return BAR_COLORS.swapping;
   if (comparing.includes(index)) return BAR_COLORS.comparing;
   if (pivot === index) return BAR_COLORS.current;
   if (sorted.includes(index)) return BAR_COLORS.sorted;
-  
+
   return BAR_COLORS.default;
 };
 
 const SortingVisualizer = () => {
   const { steps, currentStep, array, algorithmInfo } = useSorting();
 
+  const isSearchMode =
+  algorithmInfo?.slug === "linear-search" ||
+  algorithmInfo?.slug === "binary-search";
   const currentStepData = steps.length > 0 && currentStep < steps.length
     ? steps[currentStep]
     : null;
@@ -44,9 +55,9 @@ const SortingVisualizer = () => {
 
   const currentSlug = algorithmInfo?.slug || '';
   const filteredLegend = LEGEND.filter(item => {
-    if (item.id === 'pivot') {
-      return currentSlug === 'quick-sort';
-    }
+    if (item.id === 'pivot') return currentSlug === 'quick-sort';
+    if (item.id === 'found') return isSearchMode;
+    if (item.id === 'swapping' || item.id === 'sorted') return !isSearchMode;
     return true;
   });
 
@@ -64,7 +75,7 @@ const SortingVisualizer = () => {
         {safeArray.map((value, index) => {
           const heightPct = (value / maxValue) * 100;
           const barHeight = Math.max(heightPct * 2, 20);
-          const colorScheme = getBarColor(index, currentStepData);
+          const colorScheme = getBarColor(index, currentStepData, isSearchMode);
 
           return (
             <div key={`bar-${index}`} className="bar-wrapper">

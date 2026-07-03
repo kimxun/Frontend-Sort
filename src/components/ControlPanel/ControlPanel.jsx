@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSorting } from "../../context/SortingContext";
+import { toast } from "react-toastify";
 import "./ControlPanel.css";
 
 export default function ControlPanel() {
@@ -11,20 +12,26 @@ export default function ControlPanel() {
     isRunning,
     setIsRunning,
     runAlgorithm,
+    searchAlgorithm,
     reset,
     steps,
     currentStep,
-    setCurrentStep,       // Lấy hàm này ra để cập nhật bước
+    setCurrentStep,
     sortOrder,
     toggleSortOrder,
     algorithms,
     generateRandomArray,
     setArray,
-    generateSteps,        // Lấy hàm này để tự nạp dữ liệu khi đi bằng tay
-    changeInputArray,     // Dùng hàm này khi submit form nhập mảng
+    generateSteps,
+    changeInputArray,
+    algorithmInfo,
+    target,
+    setTarget,
+    loading,
   } = useSorting();
 
   const [inputValue, setInputValue] = useState("");
+  const [targetInput, setTargetInput] = useState("");
   const [hovered, setHovered] = useState(null);
   const [isAlgorithmMenuOpen, setIsAlgorithmMenuOpen] = useState(false);
   const algorithmMenuRef = useRef(null);
@@ -32,17 +39,23 @@ export default function ControlPanel() {
   const activeAlgorithms = (algorithms || []).filter((a) => a.status === 1);
   const selectedAlgorithm =
     activeAlgorithms.find((a) => a.id === algorithmId) || activeAlgorithms[0];
+  const isSearchMode =
+    algorithmInfo?.slug === "linear-search" ||
+    algorithmInfo?.slug === "binary-search";
+
+  useEffect(() => {
+    if (isSearchMode) {
+      setTargetInput("");
+      setTarget(null);
+    }
+  }, [isSearchMode]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (
-        algorithmMenuRef.current &&
-        !algorithmMenuRef.current.contains(event.target)
-      ) {
+      if (algorithmMenuRef.current && !algorithmMenuRef.current.contains(event.target)) {
         setIsAlgorithmMenuOpen(false);
       }
     };
-
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -53,7 +66,7 @@ export default function ControlPanel() {
       .map((v) => parseInt(v.trim()))
       .filter((v) => !isNaN(v) && v > 0);
     if (values.length > 0) {
-      changeInputArray(values); // Gọi hàm chuẩn để tránh lỗi tự động Reset
+      changeInputArray(values);
       setInputValue("");
     }
   };
@@ -62,27 +75,32 @@ export default function ControlPanel() {
     generateRandomArray();
   };
 
-  // Xử lý nút bấm thủ công (Không cần nhấn "Bắt đầu" trước vẫn chạy)
   const handleStepForward = async () => {
     let currentSteps = steps;
     let activeStep = currentStep;
-
-    // Nếu mảng dữ liệu rỗng, tự động đi gọi API nạp dữ liệu
     if (steps.length === 0) {
-      const fetchedSteps = await generateSteps();
-      if (!fetchedSteps || fetchedSteps.length === 0) return; // Dừng lại nếu lỗi hoặc bị Redis chặn
-      
-      currentSteps = fetchedSteps;
-      activeStep = -1; 
+      if (isSearchMode) {
+        const parsedTarget = parseInt(targetInput, 10);
+        if (isNaN(parsedTarget)) {
+          toast.warning("Vui lòng nhập giá trị cần tìm");
+          return;
+        }
+        setTarget(parsedTarget);
+        setTargetInput(String(parsedTarget));
+        await searchAlgorithm(parsedTarget);
+        return;
+      } else {
+        const fetchedSteps = await generateSteps();
+        if (!fetchedSteps || fetchedSteps.length === 0) return;
+        currentSteps = fetchedSteps;
+        activeStep = -1;
+      }
     }
-
     const nextStep = activeStep + 1;
-
     if (nextStep < currentSteps.length) {
       setCurrentStep(nextStep);
-      
       const targetStep = currentSteps[nextStep];
-      if (targetStep && targetStep.array) {
+      if (targetStep?.array) {
         setArray(targetStep.array);
       } else if (Array.isArray(targetStep)) {
         setArray(targetStep);
@@ -93,10 +111,32 @@ export default function ControlPanel() {
   const canStepForward = !isRunning && (steps.length === 0 || currentStep < steps.length - 1);
 
   const handleStartOrContinue = () => {
-    if (steps.length > 0 && !isRunning) {
-      setIsRunning(true);
+    if (isSearchMode) {
+      const parsedTarget = parseInt(targetInput, 10);
+      if (isNaN(parsedTarget)) {
+        toast.warning("Vui lòng nhập giá trị cần tìm");
+        return;
+      }
+      setTarget(parsedTarget);
+      setTargetInput(String(parsedTarget));
+
+      if (steps.length === 0 || parsedTarget !== target) {
+        searchAlgorithm(parsedTarget).then(() => {
+          setCurrentStep(0);
+          setIsRunning(true);
+        });
+      } else if (currentStep < 0) {
+        setCurrentStep(0);
+        setIsRunning(true);
+      } else if (!isRunning) {
+        setIsRunning(true);
+      }
     } else {
-      runAlgorithm();
+      if (steps.length > 0 && !isRunning) {
+        setIsRunning(true);
+      } else {
+        runAlgorithm();
+      }
     }
   };
 
@@ -139,9 +179,7 @@ export default function ControlPanel() {
                   key={a.id}
                   role="option"
                   aria-selected={a.id === algorithmId}
-                  className={`algorithm-option ${
-                    a.id === algorithmId ? "selected" : ""
-                  }`}
+                  className={`algorithm-option ${a.id === algorithmId ? "selected" : ""}`}
                   onClick={() => handleAlgorithmSelect(a.id)}
                 >
                   {a.name}
@@ -151,24 +189,37 @@ export default function ControlPanel() {
           )}
         </div>
 
+        {isSearchMode && (
+          <button
+            onClick={() => {
+              const parsedTarget = parseInt(targetInput, 10);
+              if (isNaN(parsedTarget)) {
+                toast.warning("Vui lòng nhập giá trị cần tìm");
+                return;
+              }
+              setTarget(parsedTarget);
+              setTargetInput(String(parsedTarget));
+              setIsRunning(false);
+              searchAlgorithm(parsedTarget);
+            }}
+            disabled={isRunning || loading}
+            className="btn-search"
+          >
+            <SearchIcon /> Tìm kiếm
+          </button>
+        )}
+
         <button
           onClick={isRunning ? handlePause : handleStartOrContinue}
           {...handleHover("play")}
-          className={`btn-play ${isRunning ? "pause" : "play"} ${hovered === "play" ? "hover" : ""
-            }`}
+          className={`btn-play ${isRunning ? "pause" : "play"} ${hovered === "play" ? "hover" : ""}`}
         >
           {isRunning ? (
-            <>
-              <PauseIcon /> Tạm dừng
-            </>
+            <><PauseIcon /> Tạm dừng</>
           ) : isPaused ? (
-            <>
-              <PlayIcon /> Tiếp tục
-            </>
+            <><PlayIcon /> Tiếp tục</>
           ) : (
-            <>
-              <PlayIcon /> Bắt đầu
-            </>
+            <><PlayIcon /> Bắt đầu</>
           )}
         </button>
 
@@ -176,30 +227,30 @@ export default function ControlPanel() {
           onClick={handleStepForward}
           disabled={!canStepForward}
           {...handleHover("step")}
-          className={`btn-step ${canStepForward ? "active" : "inactive"} ${hovered === "step" && canStepForward ? "hover" : ""
-            }`}
+          className={`btn-step ${canStepForward ? "active" : "inactive"} ${hovered === "step" && canStepForward ? "hover" : ""}`}
         >
           <StepIcon /> Bước tiếp
         </button>
+
         <button
           onClick={reset}
           {...handleHover("reset")}
-          className={`btn-reset  ${hovered === "reset" && !isRunning ? "hover" : ""
-            }`}
+          className={`btn-reset ${hovered === "reset" && !isRunning ? "hover" : ""}`}
         >
           <ResetIcon /> Reset
         </button>
 
-        <button
-          onClick={toggleSortOrder}
-          disabled={isRunning}
-          {...handleHover("order")}
-          className={`btn-order ${sortOrder === "asc" ? "asc" : "desc"} ${isRunning ? "disabled" : ""
-            } ${hovered === "order" && !isRunning ? "hover" : ""}`}
-        >
-          {sortOrder === "asc" ? <AscIcon /> : <DescIcon />}
-          {sortOrder === "asc" ? "Tăng dần" : "Giảm dần"}
-        </button>
+        {!isSearchMode && (
+          <button
+            onClick={toggleSortOrder}
+            disabled={isRunning}
+            {...handleHover("order")}
+            className={`btn-order ${sortOrder === "asc" ? "asc" : "desc"} ${isRunning ? "disabled" : ""} ${hovered === "order" && !isRunning ? "hover" : ""}`}
+          >
+            {sortOrder === "asc" ? <AscIcon /> : <DescIcon />}
+            {sortOrder === "asc" ? "Tăng dần" : "Giảm dần"}
+          </button>
+        )}
 
         <div className="speed-control">
           <SpeedIcon />
@@ -231,12 +282,24 @@ export default function ControlPanel() {
           />
         </div>
 
+        {isSearchMode && (
+          <div className="target-input-wrapper">
+            <input
+              type="number"
+              placeholder="Giá trị cần tìm"
+              value={targetInput}
+              onChange={(e) => setTargetInput(e.target.value)}
+              disabled={isRunning}
+              className={`target-input ${isRunning ? "disabled" : ""}`}
+            />
+          </div>
+        )}
+
         <button
           onClick={handleSubmit}
           disabled={isRunning || !inputValue.trim()}
           {...handleHover("apply")}
-          className={`btn-apply ${!isRunning && inputValue.trim() ? "active" : "inactive"
-            } ${hovered === "apply" && !isRunning && inputValue.trim() ? "hover" : ""}`}
+          className={`btn-apply ${!isRunning && inputValue.trim() ? "active" : "inactive"} ${hovered === "apply" && !isRunning && inputValue.trim() ? "hover" : ""}`}
         >
           Áp dụng
         </button>
@@ -245,8 +308,7 @@ export default function ControlPanel() {
           onClick={handleRandomArray}
           disabled={isRunning}
           {...handleHover("random")}
-          className={`btn-random ${isRunning ? "disabled" : ""} ${hovered === "random" && !isRunning ? "hover" : ""
-            }`}
+          className={`btn-random ${isRunning ? "disabled" : ""} ${hovered === "random" && !isRunning ? "hover" : ""}`}
         >
           <ShuffleIcon /> Mảng ngẫu nhiên
         </button>
@@ -255,7 +317,6 @@ export default function ControlPanel() {
   );
 }
 
-// Giữ nguyên các hàm SVG Icon bên dưới của bạn...
 function PlayIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21" /></svg>; }
 function PauseIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="4" width="4" height="16" /><rect x="14" y="4" width="4" height="16" /></svg>; }
 function StepIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="5,4 15,12 5,20" /><line x1="19" y1="4" x2="19" y2="20" /></svg>; }
@@ -264,3 +325,4 @@ function AscIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill
 function DescIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><polyline points="19,12 12,19 5,12" /></svg>; }
 function ShuffleIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16,3 21,3 21,8" /><line x1="4" y1="20" x2="21" y2="3" /><polyline points="21,16 21,21 16,21" /><line x1="15" y1="15" x2="21" y2="21" /><line x1="4" y1="4" x2="9" y2="9" /></svg>; }
 function SpeedIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2"><path d="M12 2a10 10 0 1 1-7.07 2.93" /><polyline points="12,6 12,12 16,14" /></svg>; }
+function SearchIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="10.5" cy="10.5" r="7.5" /><line x1="16" y1="16" x2="21" y2="21" /></svg>; }
