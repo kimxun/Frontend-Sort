@@ -70,7 +70,7 @@ export default function UsersPage() {
     return (
         <div className="users-page">
             <div className="header">
-                <h1>Quản lý người dùng</h1>
+                <h1>QUẢN LÝ NGƯỜI DÙNG</h1>
 
                 <button
                     className="invite-btn"

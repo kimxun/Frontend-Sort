@@ -34,7 +34,7 @@ export default function Topbar({
         )}
 
         <div className="brand">
-          Quản trị AlgoStudio
+          ADMIN ALGORITM
         </div>
 
         <input

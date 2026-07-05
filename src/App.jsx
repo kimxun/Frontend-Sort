@@ -13,6 +13,7 @@ import EditAlgorithm from './admin/components/Algorithms/EditAlgorithm';
 import AdminRoute from "./admin/components/Route/AdminRoute";
 import Forbidden from "./pages/Forbidden/Forbidden";
 import Register from "./pages/Register/Register";
+import DashboardPage from "./admin/components/DashboardPage/DashboardPage";
 function App() {
   return (
     <BrowserRouter>
@@ -30,6 +31,7 @@ function App() {
               </AdminProvider>
             </AdminRoute>
           }>
+            <Route path="dashboard" element={<DashboardPage />} />
             <Route path="users" element={<UsersPage />} />
             <Route path="add-user" element={<AddUser />} />
             <Route path="edit-user/:id" element={<EditUser />} />
