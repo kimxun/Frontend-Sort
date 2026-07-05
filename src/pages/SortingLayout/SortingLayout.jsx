@@ -74,9 +74,7 @@ const SortingLayout = () => {
   const renderHeader = () => (
     <div className="sorting-layout__header">
       <div className="brand-icon">
-        <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-          <path d="M10 18h4v-2h-4v2zM3 6v2h18V6H3zm3 7h12v-2H6v2z" />
-        </svg>
+        <img src="/pufferfish.svg" alt="Logo" width="50" height="50" />
       </div>
       <div className="brand-title">
         <h1>SORTING VISUALIZER</h1>
