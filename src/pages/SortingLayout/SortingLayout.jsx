@@ -157,21 +157,21 @@ const SortingLayout = () => {
             {renderCodePanel()}
           </div>
           <div className="layout-column layout-column--right">
-            <AlgorithmInfo />
-            <VariablesPanel />
             <HistoryPanel />
+            <VariablesPanel />
+            <AlgorithmInfo />
           </div>
         </div>
       </div>
 
       <div className="layout-mobile">
         <div className="mobile-layout">
-          <AlgorithmInfo />
+          {HistoryPanel && <HistoryPanel />}
           {renderVisualizer()}
           <ControlPanel />
           {renderCodePanel()}
           <VariablesPanel />
-          {HistoryPanel && <HistoryPanel />}
+          <AlgorithmInfo />
         </div>
       </div>
     </div>
