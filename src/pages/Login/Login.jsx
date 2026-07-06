@@ -75,9 +75,15 @@ const Login = () => {
           <button type="submit" className="login-btn">
             Đăng nhập
           </button>
-          <Link to="/register" className="register-link">
-            Đăng ký
-          </Link>
+          <div className="auth-links">
+            <Link to="/register" className="register-link">
+              Đăng ký
+            </Link>
+
+            <Link to="/forgotpassword" className="forgotpassword-link">
+              Quên mật khẩu?
+            </Link>
+          </div>
         </form>
       </div>
     </div>
