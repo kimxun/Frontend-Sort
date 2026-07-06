@@ -87,8 +87,8 @@ export default function Sidebar() {
       )}
       <aside className={`sidebar ${sidebarOpen ? 'open' : 'closed'}`}>
         <div className="sidebar-logo">
-          <h2>Algorithm Lab</h2>
-          <span>V2.0.4-STABLE</span>
+          <h2>Algorithm Visualizer</h2>
+            <span>2026</span>
         </div>
 
         <nav className="sidebar-menu">
@@ -99,10 +99,6 @@ export default function Sidebar() {
           <NavLink to="/admin/algorithms">
             <FiCode size={20} />
             <span>Thuật toán</span>
-          </NavLink>
-          <NavLink to="/admin/visualizer">
-            <FiBarChart2 size={20} />
-            <span>Trực quan hóa</span>
           </NavLink>
           <NavLink to="/admin/analytics">
             <FiTrendingUp size={20} />
