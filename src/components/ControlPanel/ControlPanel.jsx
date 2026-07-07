@@ -15,6 +15,7 @@ export default function ControlPanel() {
     searchAlgorithm,
     reset,
     steps,
+    setSteps,
     currentStep,
     setCurrentStep,
     sortOrder,
@@ -27,7 +28,6 @@ export default function ControlPanel() {
     algorithmInfo,
     target,
     setTarget,
-    loading,
   } = useSorting();
 
   const [inputValue, setInputValue] = useState("");
@@ -61,13 +61,32 @@ export default function ControlPanel() {
   }, []);
 
   const handleSubmit = () => {
-    const values = inputValue
-      .split(",")
-      .map((v) => parseInt(v.trim()))
-      .filter((v) => !isNaN(v) && v > 0);
-    if (values.length > 0) {
-      changeInputArray(values);
-      setInputValue("");
+    if (inputValue.trim()) {
+      const values = inputValue
+        .split(",")
+        .map((value) => parseInt(value.trim(), 10))
+        .filter((value) => !isNaN(value) && value > 0);
+
+      if (values.length > 0) {
+        changeInputArray(values);
+        setInputValue("");
+      }
+    }
+
+    if (isSearchMode && targetInput.trim()) {
+      const parsedTarget = parseInt(targetInput, 10);
+
+      if (isNaN(parsedTarget)) {
+        toast.warning("Vui lòng nhập giá trị cần tìm hợp lệ");
+        return;
+      }
+
+      setTarget(parsedTarget);
+      setTargetInput(String(parsedTarget));
+      setSteps([]);
+      setCurrentStep(0);
+      setIsRunning(false);
+      toast.info(`Đã áp dụng giá trị cần tìm: ${parsedTarget}`);
     }
   };
 
@@ -155,6 +174,10 @@ export default function ControlPanel() {
   };
 
   const isPaused = steps.length > 0 && !isRunning;
+  const canApply = Boolean(
+    !isRunning &&
+    (inputValue.trim() || (isSearchMode && targetInput.trim()))
+  );
 
   return (
     <div className="control-panel">
@@ -188,26 +211,6 @@ export default function ControlPanel() {
             </div>
           )}
         </div>
-
-        {isSearchMode && (
-          <button
-            onClick={() => {
-              const parsedTarget = parseInt(targetInput, 10);
-              if (isNaN(parsedTarget)) {
-                toast.warning("Vui lòng nhập giá trị cần tìm");
-                return;
-              }
-              setTarget(parsedTarget);
-              setTargetInput(String(parsedTarget));
-              setIsRunning(false);
-              searchAlgorithm(parsedTarget);
-            }}
-            disabled={isRunning || loading}
-            className="btn-search"
-          >
-            <SearchIcon /> Tìm kiếm
-          </button>
-        )}
 
         <button
           onClick={isRunning ? handlePause : handleStartOrContinue}
@@ -297,9 +300,9 @@ export default function ControlPanel() {
 
         <button
           onClick={handleSubmit}
-          disabled={isRunning || !inputValue.trim()}
+          disabled={!canApply}
           {...handleHover("apply")}
-          className={`btn-apply ${!isRunning && inputValue.trim() ? "active" : "inactive"} ${hovered === "apply" && !isRunning && inputValue.trim() ? "hover" : ""}`}
+          className={`btn-apply ${canApply ? "active" : "inactive"} ${hovered === "apply" && canApply ? "hover" : ""}`}
         >
           Áp dụng
         </button>
@@ -325,4 +328,3 @@ function AscIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill
 function DescIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><polyline points="19,12 12,19 5,12" /></svg>; }
 function ShuffleIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16,3 21,3 21,8" /><line x1="4" y1="20" x2="21" y2="3" /><polyline points="21,16 21,21 16,21" /><line x1="15" y1="15" x2="21" y2="21" /><line x1="4" y1="4" x2="9" y2="9" /></svg>; }
 function SpeedIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2"><path d="M12 2a10 10 0 1 1-7.07 2.93" /><polyline points="12,6 12,12 16,14" /></svg>; }
-function SearchIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="10.5" cy="10.5" r="7.5" /><line x1="16" y1="16" x2="21" y2="21" /></svg>; }

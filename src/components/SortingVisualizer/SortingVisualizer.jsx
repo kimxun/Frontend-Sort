@@ -6,6 +6,7 @@ const BAR_COLORS = {
   default:   { bg: "#3b82f6", glow: "0 0 12px rgba(59,130,246,0.5)" },
   comparing: { bg: "#f59e0b", glow: "0 0 14px rgba(245,158,11,0.6)" },
   swapping:  { bg: "#ef4444", glow: "0 0 14px rgba(239,68,68,0.6)" },
+  candidate: { bg: "#ec4899", glow: "0 0 14px rgba(236,72,153,0.6)" },
   current:   { bg: "#a855f7", glow: "0 0 14px rgba(168,85,247,0.6)" },
   sorted:    { bg: "#10b981", glow: "0 0 12px rgba(16,185,129,0.4)" },
   found:     { bg: "#22c55e", glow: "0 0 14px rgba(34,197,94,0.6)" },
@@ -15,6 +16,7 @@ const LEGEND = [
   { id: "default", color: BAR_COLORS.default.bg, label: "Chưa xử lý" },
   { id: "comparing", color: BAR_COLORS.comparing.bg, label: "Đang so sánh" },
   { id: "swapping", color: BAR_COLORS.swapping.bg, label: "Đang hoán đổi" },
+  { id: "candidate", color: BAR_COLORS.candidate.bg, label: "Ứng viên tạm thời" },
   { id: "pivot", color: BAR_COLORS.current.bg, label: "Phần tử chốt" },
   { id: "sorted", color: BAR_COLORS.sorted.bg, label: "Đã sắp xếp" },
   { id: "found", color: BAR_COLORS.found.bg, label: "Đã tìm thấy" },
@@ -29,9 +31,10 @@ const getBarColor = (index, stepData, isSearchMode) => {
     return BAR_COLORS.default;
   }
 
-  const { comparing = [], swapping = [], pivot, sorted = [] } = stepData;
+  const { comparing = [], swapping = [], candidate, pivot, sorted = [] } = stepData;
 
   if (swapping.includes(index)) return BAR_COLORS.swapping;
+  if (candidate === index) return BAR_COLORS.candidate;
   if (comparing.includes(index)) return BAR_COLORS.comparing;
   if (pivot === index) return BAR_COLORS.current;
   if (sorted.includes(index)) return BAR_COLORS.sorted;
@@ -40,7 +43,7 @@ const getBarColor = (index, stepData, isSearchMode) => {
 };
 
 const SortingVisualizer = () => {
-  const { steps, currentStep, array, algorithmInfo } = useSorting();
+  const { steps, currentStep, array, algorithmInfo, sortOrder } = useSorting();
 
   const isSearchMode =
   algorithmInfo?.slug === "linear-search" ||
@@ -48,6 +51,13 @@ const SortingVisualizer = () => {
   const currentStepData = steps.length > 0 && currentStep < steps.length
     ? steps[currentStep]
     : null;
+  const stepStatus =
+    currentStepData?.action ||
+    (isSearchMode
+      ? 'Nhấn "Bắt đầu" để tìm kiếm'
+      : 'Nhấn "Bắt đầu" để sắp xếp');
+  const isCompleted =
+    currentStepData && currentStep === steps.length - 1;
 
   const currentArray = currentStepData?.array || array;
   const safeArray = Array.isArray(currentArray) ? currentArray : [];
@@ -55,6 +65,7 @@ const SortingVisualizer = () => {
 
   const currentSlug = algorithmInfo?.slug || '';
   const filteredLegend = LEGEND.filter(item => {
+    if (item.id === 'candidate') return currentSlug === 'selection-sort';
     if (item.id === 'pivot') return currentSlug === 'quick-sort';
     if (item.id === 'found') return isSearchMode;
     if (item.id === 'swapping' || item.id === 'sorted') return !isSearchMode;
@@ -67,9 +78,20 @@ const SortingVisualizer = () => {
         {filteredLegend.map((item) => (
           <div key={item.label} className="legend-item">
             <div className="legend-color" style={{ background: item.color }} />
-            <span className="legend-label">{item.label}</span>
+            <span className="legend-label">
+              {item.id === 'candidate'
+                ? `${sortOrder === 'asc' ? 'Nhỏ nhất' : 'Lớn nhất'} tạm thời`
+                : item.label}
+            </span>
           </div>
         ))}
+      </div>
+      <div
+        className={`step-status ${
+          currentStepData?.found || isCompleted ? "completed" : ""
+        }`}
+      >
+        {stepStatus}
       </div>
       <div className="bars-container">
         {safeArray.map((value, index) => {

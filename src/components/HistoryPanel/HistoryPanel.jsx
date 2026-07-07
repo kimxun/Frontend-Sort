@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSorting } from '../../context/SortingContext';
 import './HistoryPanel.css';
 
@@ -43,7 +43,7 @@ useEffect(() => {
               const isActive = i === currentStep;
               const stepArray = stepObj?.array || [];
               const arrayDisplay = `[${stepArray.join(", ")}]`;
-              const actionDisplay = stepObj?.action || "Đang xử lý...";
+              const actionDisplay = stepObj?.action || stepObj?.message || "Đang xử lý...";
 
               return (
                 <div 
