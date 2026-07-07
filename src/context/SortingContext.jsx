@@ -26,7 +26,7 @@ export const SortingProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [infoLoading, setInfoLoading] = useState(false);
 
-  const [speed, setSpeed] = useState(50);
+  const [speed, setSpeed] = useState(1);
   const [sortOrder, setSortOrder] = useState('asc');
   const [target, setTarget] = useState(null);
 
@@ -77,7 +77,7 @@ export const SortingProvider = ({ children }) => {
     }
     const timer = setTimeout(() => {
       setCurrentStep((prev) => prev + 1);
-    }, Math.max(50, 1000 - speed * 8));
+    }, Math.max(100, 1100 - speed * 100));
     return () => clearTimeout(timer);
   }, [isRunning, currentStep, steps, speed, algorithmInfo]);
 

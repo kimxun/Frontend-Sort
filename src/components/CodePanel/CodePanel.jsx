@@ -4,10 +4,35 @@ import './CodePanel.css';
 
 const TOKEN_COLORS = [
   [/\b(void|int|for|if|swap|while|do|return|let|const|function)\b/g, "#c084fc"], 
-  [/\b(a|N|i|j|min|min_idx|pivot|pivot_idx|x|l|r|arr|steps_history)\b/g, "#93c5fd"], 
+  [/\b(a|N|i|j|min|max|min_idx|pivot|pivot_idx|x|l|r|arr|steps_history)\b/g, "#93c5fd"], 
   [/\b(\d+)\b/g, "#fbbf24"], 
   [/"[^"]*"|'[^']*'/g, "#86efac"], 
 ];
+
+function getCodeForOrder(code, slug, sortOrder) {
+  if (sortOrder === "asc") return code;
+
+  if (slug === "selection-sort") {
+    return code
+      .replace(/\bmin\b/g, "max")
+      .replace(/a\[j\]\s*<\s*a\[max\]/g, "a[j] > a[max]");
+  }
+
+  if (slug === "interchange-sort") {
+    return code.replace(
+      /a\[i\]\s*>\s*a\[j\]/g,
+      "a[i] < a[j]"
+    );
+  }
+
+  if (slug === "quick-sort") {
+    return code
+      .replace(/a\[i\]\s*<\s*x/g, "a[i] > x")
+      .replace(/a\[j\]\s*>\s*x/g, "a[j] < x");
+  }
+
+  return code;
+}
 
 function highlight(line) {
   if (!line.trim()) return line;
@@ -57,9 +82,13 @@ function highlight(line) {
 }
 
 const CodePanel = () => {
-  const { algorithmInfo, steps, currentStep } = useSorting();
+  const { algorithmInfo, steps, currentStep, sortOrder } = useSorting();
 
-  const code = algorithmInfo?.code || '';
+  const code = getCodeForOrder(
+    algorithmInfo?.code || '',
+    algorithmInfo?.slug,
+    sortOrder
+  );
   const lines = code.split('\n');
   const label = algorithmInfo?.name || 'Algorithm';
 

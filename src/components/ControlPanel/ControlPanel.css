@@ -158,7 +158,14 @@ button:disabled {
   flex: 1;
   max-width: 340px;
 }
-.array-input {
+
+.target-input-wrapper {
+  flex: 1;
+  max-width: 200px;
+}
+
+.array-input,
+.target-input {
   width: 100%;
   padding: 8px 12px;
   border-radius: 8px;
@@ -207,11 +214,14 @@ button:disabled {
   .speed-control {
     justify-content: space-between;
   }
-  .array-input-wrapper {
+  .array-input-wrapper,
+  .target-input-wrapper {
     max-width: 100%;
     width: 100%;
   }
-  .array-input {
+
+  .array-input,
+  .target-input {
     width: 100%;
   }
   .speed-slider {
