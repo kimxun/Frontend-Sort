@@ -162,7 +162,7 @@ const AlgorithmsPage = () => {
                         <p>Bạn muốn xóa <strong>{deleteTarget.name}</strong> theo cách nào?</p>
                         <div className="modal-buttons">
                             <button className="btn btn-warning" onClick={handleSoftDelete}>
-                                Xóa mềm (ẩn khỏi danh sách)
+                                Xóa mềm (chuyển sang không hoạt động)
                             </button>
                             <button className="btn btn-danger" onClick={handleHardDelete}>
                                 Xóa cứng (xóa vĩnh viễn)

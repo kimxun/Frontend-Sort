@@ -20,7 +20,9 @@ export const updateUser = async (id, userData) => {
   return response.data;
 };
 
-export const deleteUser = async (id) => {
-  const response = await api.delete(`/users/${id}`);
+export const deleteUser = async (id, options = { type: 'soft' }) => {
+  const response = await api.delete(`/users/${id}`, {
+    data: { permanent: options.type === 'hard' }
+  });
   return response.data;
 };

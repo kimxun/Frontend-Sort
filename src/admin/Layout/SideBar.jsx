@@ -11,7 +11,8 @@ import {
   FiUsers,
   FiPlus,
   FiLogOut,
-  FiHome
+  FiHome,
+  FiClock
 } from "react-icons/fi";
 import "./SideBar.css";
 
@@ -100,13 +101,13 @@ export default function Sidebar() {
             <FiCode size={20} />
             <span>Thuật toán</span>
           </NavLink>
-          <NavLink to="/admin/analytics">
-            <FiTrendingUp size={20} />
-            <span>Phân tích</span>
-          </NavLink>
           <NavLink to="/admin/users">
             <FiUsers size={20} />
             <span>Người dùng</span>
+          </NavLink>
+          <NavLink to="/admin/simulations">
+            <FiClock size={20} />
+            <span>Lịch sử mô phỏng</span>
           </NavLink>
         </nav>
 

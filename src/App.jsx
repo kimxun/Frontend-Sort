@@ -14,6 +14,7 @@ import AdminRoute from "./admin/components/Route/AdminRoute";
 import Forbidden from "./pages/Forbidden/Forbidden";
 import Register from "./pages/Register/Register";
 import DashboardPage from "./admin/components/DashboardPage/DashboardPage";
+import SimulationHistoryPage from "./admin/components/SimulationHistory/SimulationHistoryPage";
 function App() {
   return (
     <BrowserRouter>
@@ -36,6 +37,7 @@ function App() {
             <Route path="add-user" element={<AddUser />} />
             <Route path="edit-user/:id" element={<EditUser />} />
             <Route path="algorithms" element={<AlgorithmsPage />} />
+            <Route path="simulations" element={<SimulationHistoryPage />} />
             <Route path="add-algorithm" element={<AddAlgorithm />} />
             <Route path="edit-algorithm/:id" element={<EditAlgorithm />} />
 

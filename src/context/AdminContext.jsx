@@ -1,6 +1,6 @@
 import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import { getUsers, deleteUser, createUser, updateUser } from '../services/userService';
-import { getSimulations } from '../services/simulationService';
+import { getSimulations, deleteSimulation } from '../services/simulationService';
 import { getAlgorithms, createAlgorithm, deleteAlgorithm, updateAlgorithm } from '../services/algorithmService';
 import { toast } from 'react-toastify';
 
@@ -122,11 +122,15 @@ export const AdminProvider = ({ children }) => {
     }
   };
 
-  const removeUser = async (id) => {
+  const removeUser = async (id, options = { type: 'soft' }) => {
     try {
-      await deleteUser(id);
-      toast.success('Khóa/Xóa tài khoản thành công!');
-      const isLastItemOnPage = users.length === 1 && page > 1;
+      await deleteUser(id, options);
+      toast.success(
+        options.type === 'hard'
+          ? 'Xóa vĩnh viễn người dùng thành công!'
+          : 'Khóa tài khoản thành công!'
+      );
+      const isLastItemOnPage = options.type === 'hard' && users.length === 1 && page > 1;
       const targetPage = isLastItemOnPage ? page - 1 : page;
       
       if (page === targetPage) {
@@ -177,9 +181,10 @@ export const AdminProvider = ({ children }) => {
       toast.success(
         options.type === 'hard'
           ? 'Xóa vĩnh viễn thuật toán thành công!'
-          : 'Xóa thuật toán thành công!'
+          : 'Đã chuyển thuật toán sang trạng thái không hoạt động!'
       );
-      const isLastItemOnPage = algorithms.length === 1 && algorithmPage > 1;
+      const isLastItemOnPage =
+        options.type === 'hard' && algorithms.length === 1 && algorithmPage > 1;
       const targetPage = isLastItemOnPage ? algorithmPage - 1 : algorithmPage;
       
       if (algorithmPage === targetPage) {
@@ -190,6 +195,18 @@ export const AdminProvider = ({ children }) => {
     } catch (err) {
       const systemMsg = handleGlobalError(err, 'Không thể xóa thuật toán');
       setAlgorithmError(systemMsg);
+      throw err;
+    }
+  };
+
+  const removeSimulation = async (id) => {
+    try {
+      await deleteSimulation(id);
+      toast.success('Xóa lịch sử mô phỏng thành công!');
+      await fetchSimulations();
+    } catch (err) {
+      const systemMsg = handleGlobalError(err, 'Không thể xóa lịch sử mô phỏng');
+      setSimulationError(systemMsg);
       throw err;
     }
   };
@@ -233,6 +250,7 @@ export const AdminProvider = ({ children }) => {
     addAlgorithm,
     editAlgorithm,
     removeAlgorithm,
+    removeSimulation,
     pagination,
     page,
     setPage,
