@@ -15,6 +15,7 @@ import Forbidden from "./pages/Forbidden/Forbidden";
 import Register from "./pages/Register/Register";
 import DashboardPage from "./admin/components/DashboardPage/DashboardPage";
 import SimulationHistoryPage from "./admin/components/SimulationHistory/SimulationHistoryPage";
+import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 function App() {
   return (
     <BrowserRouter>
@@ -24,6 +25,8 @@ function App() {
           <Route path="/:algorithmSlug" element={<SortingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
           <Route path="/403" element={<Forbidden />} />
           <Route path="/admin" element={
             <AdminRoute>

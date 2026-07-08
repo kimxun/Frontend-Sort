@@ -80,7 +80,7 @@ const Login = () => {
               Đăng ký
             </Link>
 
-            <Link to="/forgotpassword" className="forgotpassword-link">
+            <Link to="/forgot-password" className="forgotpassword-link">
               Quên mật khẩu?
             </Link>
           </div>
