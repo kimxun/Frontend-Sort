@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiEdit2, FiTrash2 } from "react-icons/fi";
 import { useAdmin } from "../../../context/AdminContext";
@@ -36,6 +36,7 @@ export default function UsersPage() {
     } = useAdmin();
 
     const [search, setSearch] = useState("");
+    const [deleteTarget, setDeleteTarget] = useState(null);
 
     const currentPage = pagination?.page || 1;
     const totalPages = pagination?.totalPages || 1;
@@ -49,16 +50,25 @@ export default function UsersPage() {
         );
     });
 
-    const handleDelete = async (user) => {
-        const confirmDelete = window.confirm(
-            `Bạn có chắc muốn khóa tài khoản "${user.username}"?`
-        );
-
-        if (!confirmDelete) return;
-
+    const handleSoftDelete = async () => {
+        if (!deleteTarget) return;
         try {
-            await removeUser(user.id);
-        } catch (err) {
+            await removeUser(deleteTarget.id, { type: "soft" });
+        } catch {
+            return;
+        } finally {
+            setDeleteTarget(null);
+        }
+    };
+
+    const handleHardDelete = async () => {
+        if (!deleteTarget) return;
+        try {
+            await removeUser(deleteTarget.id, { type: "hard" });
+        } catch {
+            return;
+        } finally {
+            setDeleteTarget(null);
         }
     };
 
@@ -164,7 +174,7 @@ export default function UsersPage() {
                                             </button>
 
                                             <button
-                                                onClick={() => handleDelete(user)}
+                                                onClick={() => setDeleteTarget(user)}
                                             >
                                                 <FiTrash2 />
                                             </button>
@@ -196,6 +206,28 @@ export default function UsersPage() {
                     </>
                 )}
             </div>
+
+            {deleteTarget && (
+                <div className="modal-overlay" onClick={() => setDeleteTarget(null)}>
+                    <div className="modal-content" onClick={(event) => event.stopPropagation()}>
+                        <h3>Xóa người dùng</h3>
+                        <p>
+                            Bạn muốn xóa tài khoản <strong>{deleteTarget.username}</strong> theo cách nào?
+                        </p>
+                        <div className="modal-buttons">
+                            <button className="btn btn-warning" onClick={handleSoftDelete}>
+                                Xóa mềm (khóa tài khoản)
+                            </button>
+                            <button className="btn btn-danger" onClick={handleHardDelete}>
+                                Xóa cứng (xóa vĩnh viễn)
+                            </button>
+                            <button className="btn btn-secondary" onClick={() => setDeleteTarget(null)}>
+                                Hủy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

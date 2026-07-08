@@ -295,6 +295,90 @@ tbody td {
     color: #ef4444;
 }
 
+.users-page .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.users-page .modal-content {
+    background: #1e1f2b;
+    border: 1px solid #3a3f4d;
+    border-radius: 12px;
+    padding: 30px;
+    max-width: 450px;
+    width: 90%;
+    color: #e2e1ed;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    text-align: center;
+}
+
+.users-page .modal-content h3 {
+    margin: 0 0 12px;
+    font-size: 20px;
+    color: #fff;
+}
+
+.users-page .modal-content p {
+    margin: 0 0 24px;
+    font-size: 15px;
+    color: #b0b3c1;
+    line-height: 1.5;
+}
+
+.users-page .modal-content strong {
+    color: #fff;
+}
+
+.users-page .modal-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.users-page .modal-buttons .btn {
+    width: 100%;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.users-page .btn-warning {
+    background: #f59e0b;
+    color: #1a1a1a;
+}
+
+.users-page .btn-warning:hover {
+    background: #d97706;
+}
+
+.users-page .btn-danger {
+    background: #ef4444;
+    color: #fff;
+}
+
+.users-page .btn-danger:hover {
+    background: #dc2626;
+}
+
+.users-page .btn-secondary {
+    background: #3a3f4d;
+    color: #e2e1ed;
+}
+
+.users-page .btn-secondary:hover {
+    background: #4b5162;
+}
+
 /* ==========================================
    PHÂN TRANG (PAGINATION)
 ========================================== */
