@@ -64,10 +64,17 @@ const SortingVisualizer = () => {
   const maxValue = safeArray.length > 0 ? Math.max(...safeArray, 1) : 1;
 
   const features = algorithmInfo?.features || [];
+  const useFeatures = features.length > 0;
 
   const filteredLegend = LEGEND.filter(item => {
-    if (item.id === 'candidate') return features.includes('candidate');
-    if (item.id === 'pivot') return features.includes('pivot');
+    if (item.id === 'candidate') {
+      if (useFeatures) return features.includes('candidate');
+      return algorithmInfo?.slug === 'selection-sort';
+    }
+    if (item.id === 'pivot') {
+      if (useFeatures) return features.includes('pivot');
+      return algorithmInfo?.slug === 'quick-sort';
+    }
     if (item.id === 'found') return isSearchMode;
     if (item.id === 'swapping' || item.id === 'sorted') return !isSearchMode;
     return true;
@@ -120,4 +127,4 @@ const SortingVisualizer = () => {
   );
 };
 
-export default SortingVisualizer;
+export default SortingVisualizer; //comment de push len git
