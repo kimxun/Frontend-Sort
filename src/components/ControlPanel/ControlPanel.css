@@ -1,14 +1,11 @@
-/* =========================================
-   1. BỐ CỤC TỔNG THỂ PANEL
-========================================= */
 .control-panel {
   display: flex;
   flex-direction: column;
   gap: 12px;
   padding: 16px;
-  background: var(--card); 
+  background: var(--card);
   border-radius: 12px;
-  border: 1px solid var(--border); 
+  border: 1px solid var(--border);
   width: 100%;
   box-sizing: border-box;
 }
@@ -21,9 +18,6 @@
   width: 100%;
 }
 
-/* =========================================
-   2. DROPDOWN CHỌN THUẬT TOÁN
-========================================= */
 .select-wrapper {
   position: relative;
 }
@@ -41,14 +35,14 @@
   font-size: 13px;
   font-weight: 500;
   font-family: "Inter", sans-serif;
-  background: var(--card-header) !important; 
-  color: var(--text) !important; 
+  background: var(--card-header);
+  color: var(--text);
   cursor: pointer;
   white-space: nowrap;
 }
 
 .algorithm-select:hover {
-  border-color: var(--title) !important;
+  border-color: var(--title);
 }
 
 .algorithm-select span {
@@ -77,8 +71,8 @@
   padding: 4px 0;
   border: 1px solid var(--border);
   border-radius: 8px;
-  background: var(--card-content); 
-  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15); 
+  background: var(--card);
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.15);
 }
 
 .algorithm-options::-webkit-scrollbar { width: 6px; }
@@ -100,14 +94,11 @@
 
 .algorithm-option:hover,
 .algorithm-option.selected {
-  background: rgba(99, 102, 241, 0.15); 
-  color: var(--title); 
+  background: rgba(99, 102, 241, 0.15);
+  color: var(--title);
   font-weight: 600;
 }
 
-/* =========================================
-   3. NÚT BẤM (BUTTONS)
-========================================= */
 button {
   display: inline-flex;
   align-items: center;
@@ -115,7 +106,7 @@ button {
   gap: 6px;
   padding: 7px 14px;
   border-radius: 8px;
-  border: 1px solid var(--border) !important;
+  border: 1px solid var(--border);
   cursor: pointer;
   font-size: 13px;
   font-weight: 500;
@@ -123,87 +114,71 @@ button {
   transition: all 0.15s ease;
   user-select: none;
   white-space: nowrap;
-  background: var(--card-header) !important;
-  color: var(--text) !important;
+  background: var(--card-header);
+  color: var(--text);
 }
 
 button:hover:not(:disabled) {
-  background: var(--button) !important;
-  color: #ffffff !important;
-  border-color: var(--button) !important;
+  background: var(--button);
+  color: #ffffff;
+  border-color: var(--button);
 }
 
 button:disabled {
   cursor: not-allowed;
-  opacity: 0.5 !important;
-  color: var(--text-muted) !important;
-  background: var(--border) !important;
+  opacity: 0.5;
+  color: var(--text-muted);
+  background: var(--border);
 }
 
-.btn-play { border: none; color: #fff !important; box-shadow: 0 0 16px rgba(99, 102, 241, 0.3); }
-.btn-play.play { background: #6366f1 !important; }
-.btn-play.pause { background: #f59e0b !important; }
+.btn-play { border: none; color: #fff; box-shadow: 0 0 16px rgba(99, 102, 241, 0.3); }
+.btn-play.play { background: #6366f1; }
+.btn-play.pause { background: #f59e0b; }
 
-.btn-step.active { background: rgba(6, 182, 212, 0.1) !important; color: #22d3ee !important; border-color: #06b6d4 !important; }
+.btn-step.active { background: rgba(6, 182, 212, 0.1); color: #22d3ee; border-color: #06b6d4; }
 .btn-step.inactive { opacity: 0.4; }
 
 .btn-reset,
 .btn-random {
-  color: #cbd5e1 !important;
+  color: #cbd5e1;
 }
 
-.btn-order { transition: all 0.3s ease !important; }
-.btn-order.asc { background: rgba(16, 185, 129, 0.1) !important; color: #34d399 !important; border: 1px solid #10b981 !important; }
-.btn-order.asc:hover { background: #10b981 !important; color: #fff !important; }
-.btn-order.desc { background: rgba(168, 85, 247, 0.1) !important; color: #c084fc !important; border: 1px solid #a855f7 !important; }
-.btn-order.desc:hover { background: #a855f7 !important; color: #fff !important; }
+.btn-order { transition: all 0.3s ease; }
+.btn-order.asc { background: rgba(16, 185, 129, 0.1); color: #34d399; border: 1px solid #10b981; }
+.btn-order.asc:hover { background: #10b981; color: #fff; }
+.btn-order.desc { background: rgba(168, 85, 247, 0.1); color: #c084fc; border: 1px solid #a855f7; }
+.btn-order.desc:hover { background: #a855f7; color: #fff; }
 
-/* =========================================
-   4. CỤM TỐC ĐỘ (SPEED CONTROL)
-========================================= */
 .speed-control {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: var(--card-header) !important; 
+  background: var(--card-header);
   padding: 4px 12px;
   border-radius: 8px;
-  border: 1px solid var(--border) !important;
-  color: var(--text) !important;
+  border: 1px solid var(--border);
+  color: var(--text);
 }
 
-.speed-label { 
-  font-size: 12px; 
-  color: #e2e8f0 !important; 
-  white-space: nowrap; 
+.speed-label {
+  font-size: 12px;
+  color: var(--title);
+  white-space: nowrap;
   font-weight: 500;
 }
 
-.speed-value { 
-  font-size: 12px; 
-  font-family: monospace; 
-  color: var(--title) !important; 
-  min-width: 28px; 
+.speed-value {
+  font-size: 12px;
+  font-family: monospace;
+  color: var(--title);
+  min-width: 28px;
 }
 
-.speed-slider { 
-  width: 100px; 
-  accent-color: #6366f1; 
+.speed-slider {
+  width: 100px;
+  accent-color: #6366f1;
 }
 
-/* --- VŨ KHÍ TỐI THƯỢNG: Ép cứng màu cho Light Mode --- */
-body.light-theme .speed-control,
-body.light-theme .speed-control svg,
-body.light-theme .speed-label {
-  color: #1f2937 !important; /* Đen nhạt / Xám đậm */
-}
-body.light-theme .speed-value {
-  color: #2563eb !important; /* Xanh dương đậm */
-}
-
-/* =========================================
-   5. Ô NHẬP LIỆU (INPUTS)
-========================================= */
 .array-input-wrapper { flex: 1; max-width: 340px; }
 .target-input-wrapper { flex: 1; max-width: 200px; }
 
@@ -213,8 +188,8 @@ body.light-theme .speed-value {
   padding: 8px 12px;
   border-radius: 8px;
   border: 1px solid var(--border);
-  background: var(--card-header) !important;
-  color: var(--text) !important;
+  background: var(--card-header);
+  color: var(--text);
   font-family: 'JetBrains Mono', monospace;
   font-size: 13px;
   box-sizing: border-box;
@@ -222,101 +197,110 @@ body.light-theme .speed-value {
 
 .array-input::placeholder,
 .target-input::placeholder {
-  color: #93c5fd !important; 
-  opacity: 1 !important; 
+  color: var(--text-muted);
+  opacity: 1;
 }
 
 .array-input:focus,
 .target-input:focus {
   outline: none;
-  border-color: var(--title); 
+  border-color: var(--title);
 }
 
 .btn-apply, .btn-random { padding: 8px 16px; }
 
-/* =========================================
-   6. RESPONSIVE (MOBILE)
-========================================= */
 @media (max-width: 768px) {
-  .control-row { flex-direction: column; align-items: stretch; gap: 10px; }
-  .select-wrapper { width: 100%; }
-  .algorithm-select { width: 100%; justify-content: space-between; white-space: normal; }
-  .algorithm-options { width: 100%; }
-  button, .btn-play, .btn-step, .btn-reset, .btn-order, .speed-control, .btn-apply, .btn-random {
-    width: 100% !important; justify-content: center; white-space: normal; box-sizing: border-box;
+  .control-row {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
   }
-  .speed-control { justify-content: space-between; }
-  .array-input-wrapper, .target-input-wrapper { max-width: 100%; width: 100%; }
-  .array-input, .target-input { width: 100%; }
-  .speed-slider { width: auto; flex: 1; }
+  .select-wrapper {
+    width: 100%;
+  }
+  .algorithm-select {
+    width: 100%;
+    justify-content: space-between;
+    white-space: normal;
+  }
+  .algorithm-options {
+    width: 100%;
+  }
+  button,
+  .btn-play,
+  .btn-step,
+  .btn-reset,
+  .btn-order,
+  .speed-control,
+  .btn-apply,
+  .btn-random {
+    width: 100%;
+    justify-content: center;
+    white-space: normal;
+    box-sizing: border-box;
+  }
+  .speed-control {
+    justify-content: space-between;
+  }
+  .array-input-wrapper,
+  .target-input-wrapper {
+    max-width: 100%;
+    width: 100%;
+  }
+  .array-input,
+  .target-input {
+    width: 100%;
+  }
+  .speed-slider {
+    width: auto;
+    flex: 1;
+  }
 }
 
-/* 1. SỬA Ô CHỌN THUẬT TOÁN (TẤT CẢ CHỮ BÊN TRONG) */
-.algorithm-select,
-.algorithm-select span {
-  background: var(--card-header) !important; /* Nền hơi xám nhạt để dễ phân biệt */
-  color: var(--text) !important; /* Ép chữ phải thành màu đậm */
+body.light-theme .speed-control,
+body.light-theme .speed-label,
+body.light-theme .speed-control svg {
+  color: #1f2937;
 }
 
-.algorithm-select:hover {
-  border-color: var(--title) !important;
-}
-
-/* 2. SỬA MÀU CHỮ VÀ PLACEHOLDER CỦA Ô NHẬP MẢNG/TARGET */
-.array-input,
-.target-input {
-  background: var(--card-header) !important;
-  color: var(--text) !important; /* Ép chữ bạn gõ vào có màu đậm */
-}
-
-/* Đây là phần xử lý dòng chữ mờ "Nhập mảng..." bị tàng hình */
-.array-input::placeholder,
-.target-input::placeholder {
-  color: #93c5fd !important; 
-  opacity: 1 !important; /* Đảm bảo trình duyệt không tự làm mờ thêm */
-}
-
-/* Nút Disable (như nút "Áp dụng" đang bị chìm) */
-button:disabled {
-  opacity: 0.5 !important;
-  color: var(--text-muted) !important;
-  background: var(--border) !important;
+body.light-theme .speed-value {
+  color: #2563eb;
 }
 
 body.light-theme .array-input,
 body.light-theme .target-input {
-  background: #f8fafc !important;
-  border-color: #cbd5e1 !important;
-  color: #0f172a !important;
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #0f172a;
 }
 
 body.light-theme .array-input::placeholder,
 body.light-theme .target-input::placeholder {
-  color: #2563eb !important;
-  opacity: 0.72 !important;
+  color: #2563eb;
+  opacity: 0.72;
 }
 
 body.light-theme .btn-reset,
 body.light-theme .btn-apply,
 body.light-theme .btn-random {
-  background: #f8fafc !important;
-  border-color: #cbd5e1 !important;
-  color: #334155 !important;
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #334155;
 }
 
 body.light-theme .btn-reset:hover:not(:disabled),
 body.light-theme .btn-apply:hover:not(:disabled),
 body.light-theme .btn-random:hover:not(:disabled) {
-  background: #2563eb !important;
-  border-color: #2563eb !important;
-  color: #ffffff !important;
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
 }
 
 body.light-theme .btn-reset:disabled,
 body.light-theme .btn-apply:disabled,
 body.light-theme .btn-random:disabled {
-  opacity: 1 !important;
-  background: #eef2f7 !important;
-  border-color: #cbd5e1 !important;
-  color: #64748b !important;
+  opacity: 1;
+  background: #eef2f7;
+  border-color: #cbd5e1;
+  color: #64748b;
 }
