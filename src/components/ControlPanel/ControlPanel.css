@@ -144,13 +144,18 @@ button:disabled {
 .btn-play.play { background: #6366f1 !important; }
 .btn-play.pause { background: #f59e0b !important; }
 
-.btn-step.active { background: rgba(6, 182, 212, 0.1) !important; color: #0891b2 !important; border-color: #06b6d4 !important; }
+.btn-step.active { background: rgba(6, 182, 212, 0.1) !important; color: #22d3ee !important; border-color: #06b6d4 !important; }
 .btn-step.inactive { opacity: 0.4; }
 
+.btn-reset,
+.btn-random {
+  color: #cbd5e1 !important;
+}
+
 .btn-order { transition: all 0.3s ease !important; }
-.btn-order.asc { background: rgba(16, 185, 129, 0.1) !important; color: #059669 !important; border: 1px solid #10b981 !important; }
+.btn-order.asc { background: rgba(16, 185, 129, 0.1) !important; color: #34d399 !important; border: 1px solid #10b981 !important; }
 .btn-order.asc:hover { background: #10b981 !important; color: #fff !important; }
-.btn-order.desc { background: rgba(168, 85, 247, 0.1) !important; color: #7e22ce !important; border: 1px solid #a855f7 !important; }
+.btn-order.desc { background: rgba(168, 85, 247, 0.1) !important; color: #c084fc !important; border: 1px solid #a855f7 !important; }
 .btn-order.desc:hover { background: #a855f7 !important; color: #fff !important; }
 
 /* =========================================
@@ -169,7 +174,7 @@ button:disabled {
 
 .speed-label { 
   font-size: 12px; 
-  color: var(--text) !important; 
+  color: #e2e8f0 !important; 
   white-space: nowrap; 
   font-weight: 500;
 }
@@ -217,7 +222,7 @@ body.light-theme .speed-value {
 
 .array-input::placeholder,
 .target-input::placeholder {
-  color: var(--text-muted) !important; 
+  color: #93c5fd !important; 
   opacity: 1 !important; 
 }
 
@@ -267,7 +272,7 @@ body.light-theme .speed-value {
 /* Đây là phần xử lý dòng chữ mờ "Nhập mảng..." bị tàng hình */
 .array-input::placeholder,
 .target-input::placeholder {
-  color: var(--text-muted) !important; 
+  color: #93c5fd !important; 
   opacity: 1 !important; /* Đảm bảo trình duyệt không tự làm mờ thêm */
 }
 
@@ -276,4 +281,42 @@ button:disabled {
   opacity: 0.5 !important;
   color: var(--text-muted) !important;
   background: var(--border) !important;
+}
+
+body.light-theme .array-input,
+body.light-theme .target-input {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #0f172a !important;
+}
+
+body.light-theme .array-input::placeholder,
+body.light-theme .target-input::placeholder {
+  color: #2563eb !important;
+  opacity: 0.72 !important;
+}
+
+body.light-theme .btn-reset,
+body.light-theme .btn-apply,
+body.light-theme .btn-random {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  color: #334155 !important;
+}
+
+body.light-theme .btn-reset:hover:not(:disabled),
+body.light-theme .btn-apply:hover:not(:disabled),
+body.light-theme .btn-random:hover:not(:disabled) {
+  background: #2563eb !important;
+  border-color: #2563eb !important;
+  color: #ffffff !important;
+}
+
+body.light-theme .btn-reset:disabled,
+body.light-theme .btn-apply:disabled,
+body.light-theme .btn-random:disabled {
+  opacity: 1 !important;
+  background: #eef2f7 !important;
+  border-color: #cbd5e1 !important;
+  color: #64748b !important;
 }

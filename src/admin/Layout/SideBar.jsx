@@ -112,11 +112,6 @@ export default function Sidebar() {
         </nav>
 
         <div className="sidebar-bottom">
-          <button className="deploy-btn">
-            <FiPlus size={20} />
-            <span>Triển khai mới</span>
-          </button>
-
           <div className="sidebar-bottom-links">
             <Link to="/" className="sidebar-btn">
               <FiHome size={20} />
