@@ -3,10 +3,10 @@ import { useSorting } from '../../context/SortingContext';
 import './CodePanel.css';
 
 const TOKEN_COLORS = [
-  [/\b(void|int|for|if|swap|while|do|return|let|const|function)\b/g, "#c084fc"], 
-  [/\b(a|N|i|j|min|max|min_idx|pivot|pivot_idx|x|l|r|arr|steps_history)\b/g, "#93c5fd"], 
-  [/\b(\d+)\b/g, "#fbbf24"], 
-  [/"[^"]*"|'[^']*'/g, "#86efac"], 
+  [/\b(void|int|for|if|swap|while|do|return|let|const|function)\b/g, "var(--code-keyword)"], 
+  [/\b(a|N|i|j|min|max|min_idx|pivot|pivot_idx|x|l|r|arr|steps_history)\b/g, "var(--code-variable)"], 
+  [/\b(\d+)\b/g, "var(--code-number)"], 
+  [/"[^"]*"|'[^']*'/g, "var(--code-string)"], 
 ];
 
 function getCodeForOrder(code, slug, sortOrder) {

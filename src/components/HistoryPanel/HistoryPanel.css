@@ -1,7 +1,7 @@
 .history-panel {
-  background-color: #151c2c;
+  background-color: var(--card);
   border-radius: 8px;
-  border: 1px solid #24324d;
+  border: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   height: 380px;
@@ -10,16 +10,26 @@
 
 .history-header {
   padding: 12px 16px;
-  border-bottom: 1px solid #24324d;
+  border-bottom: 1px solid var(--border);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.history-title {
-  color: #fff;
+/* 
+  GIẢI PHÁP TẠI ĐÂY: 
+  Mở rộng bộ chọn để tóm gọn mọi loại thẻ (h2, h3, span, div) nằm trong thẻ header.
+  Thêm !important để đánh bại mọi CSS nào đang cố ghi đè nó ở Light Mode.
+*/
+.history-title,
+.history-header > span,
+.history-header > h2,
+.history-header > h3,
+.history-header > div:first-child {
+  color: var(--heading) !important;
   font-weight: 600;
   font-size: 0.95rem;
+  margin: 0;
 }
 
 /* Sửa triệt để lỗi vỡ layout hàng của cụm nút bấm */
@@ -30,8 +40,8 @@
 }
 
 .history-btn {
-  background-color: #24304a;
-  color: #cbd5e1;
+  background-color: var(--button);
+  color: var(--text-secondary);
   border: none;
   padding: 6px 12px;
   border-radius: 4px;
@@ -40,12 +50,11 @@
   font-weight: 500;
   transition: all 0.2s ease;
   white-space: nowrap;
-  /* Không cho chữ rớt dòng */
 }
 
 .history-btn:hover:not(:disabled) {
-  background-color: #314265;
-  color: #fff;
+  background-color: var(--button-hover);
+  color: var(--text);
 }
 
 .history-btn:disabled {
@@ -69,7 +78,7 @@
   overflow-y: auto !important;
   padding: 12px;
   scrollbar-width: auto;
-  scrollbar-color: #3a424e #1e293b;
+  scrollbar-color: var(--scroll-thumb) var(--scroll-track);
 }
 
 .history-item {
@@ -82,7 +91,7 @@
 }
 
 .history-item:hover {
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: var(--border); 
 }
 
 .history-item.active {
@@ -97,7 +106,7 @@
 }
 
 .history-step {
-  color: #3b82f6;
+  color: var(--title); 
   font-weight: bold;
   font-size: 0.85rem;
 }
@@ -109,7 +118,7 @@
 }
 
 .history-action-text {
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 0.85rem;
   line-height: 1.4;
 }
