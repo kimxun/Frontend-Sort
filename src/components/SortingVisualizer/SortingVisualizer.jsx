@@ -127,4 +127,4 @@ const SortingVisualizer = () => {
   );
 };
 
-export default SortingVisualizer;
+export default SortingVisualizer; //comment de push len git
