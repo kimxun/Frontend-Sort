@@ -46,8 +46,8 @@ const SortingVisualizer = () => {
   const { steps, currentStep, array, algorithmInfo, sortOrder } = useSorting();
 
   const isSearchMode =
-  algorithmInfo?.slug === "linear-search" ||
-  algorithmInfo?.slug === "binary-search";
+    algorithmInfo?.slug === "linear-search" ||
+    algorithmInfo?.slug === "binary-search";
   const currentStepData = steps.length > 0 && currentStep < steps.length
     ? steps[currentStep]
     : null;
@@ -63,10 +63,11 @@ const SortingVisualizer = () => {
   const safeArray = Array.isArray(currentArray) ? currentArray : [];
   const maxValue = safeArray.length > 0 ? Math.max(...safeArray, 1) : 1;
 
-  const currentSlug = algorithmInfo?.slug || '';
+  const features = algorithmInfo?.features || [];
+
   const filteredLegend = LEGEND.filter(item => {
-    if (item.id === 'candidate') return currentSlug === 'selection-sort';
-    if (item.id === 'pivot') return currentSlug === 'quick-sort';
+    if (item.id === 'candidate') return features.includes('candidate');
+    if (item.id === 'pivot') return features.includes('pivot');
     if (item.id === 'found') return isSearchMode;
     if (item.id === 'swapping' || item.id === 'sorted') return !isSearchMode;
     return true;

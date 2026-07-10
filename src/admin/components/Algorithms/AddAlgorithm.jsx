@@ -26,6 +26,8 @@ const AddAlgorithm = () => {
     fileName: null,
     codeFilename: null,
     isCustom: false,
+    hasDisplayCode: true,
+    features: [],
   });
   const fileInputRef = useRef(null);
   const debounceTimer = useRef(null);
@@ -80,6 +82,8 @@ const AddAlgorithm = () => {
         fileName: null,
         codeFilename: null,
         isCustom: false,
+        hasDisplayCode: true,
+        features: [],
       });
       e.target.value = '';
       return;
@@ -93,16 +97,12 @@ const AddAlgorithm = () => {
         fileName: null,
         codeFilename: null,
         isCustom: false,
+        hasDisplayCode: true,
+        features: [],
       });
       e.target.value = '';
       return;
     }
-
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      setFormData((prev) => ({ ...prev, code: ev.target.result }));
-    };
-    reader.readAsText(file);
 
     handleUpload(file);
   };
@@ -115,10 +115,13 @@ const AddAlgorithm = () => {
       fileName: file.name,
       codeFilename: null,
       isCustom: false,
+      hasDisplayCode: true,
+      features: [],
     });
 
     try {
       const result = await uploadAlgorithmCode(file);
+      const hasDisplay = result.display_code && result.display_code.trim() !== '';
       setUploadState({
         uploading: false,
         success: true,
@@ -126,8 +129,16 @@ const AddAlgorithm = () => {
         fileName: file.name,
         codeFilename: result.code_filename,
         isCustom: true,
+        hasDisplayCode: hasDisplay,
+        features: result.features || [],
       });
       setSlugManuallyEdited(false);
+
+      if (hasDisplay) {
+        setFormData((prev) => ({ ...prev, code: result.display_code }));
+      } else {
+        setFormData((prev) => ({ ...prev, code: '' }));
+      }
     } catch (err) {
       const errMsg =
         err?.response?.data?.error ||
@@ -139,6 +150,8 @@ const AddAlgorithm = () => {
         fileName: file.name,
         codeFilename: null,
         isCustom: false,
+        hasDisplayCode: true,
+        features: [],
       });
     }
   };
@@ -151,9 +164,12 @@ const AddAlgorithm = () => {
       fileName: null,
       codeFilename: null,
       isCustom: false,
+      hasDisplayCode: true,
+      features: [],
     });
     if (fileInputRef.current) fileInputRef.current.value = '';
     setSlugManuallyEdited(false);
+    setFormData(prev => ({ ...prev, code: '' }));
   };
 
   const handleDownloadTemplate = () => {
@@ -179,6 +195,7 @@ const AddAlgorithm = () => {
       steps: stepsArray.length ? JSON.stringify(stepsArray) : null,
       is_custom: uploadState.isCustom,
       code_filename: uploadState.codeFilename,
+      features: uploadState.features,
     };
 
     try {
@@ -270,6 +287,9 @@ const AddAlgorithm = () => {
                   {uploadState.success && (
                     <span className="status-badge status-success">
                       ✓ Hợp lệ — slug: {formData.slug}
+                      {!uploadState.hasDisplayCode && (
+                        <span style={{ marginLeft: 8, color: '#fbbf24' }}>⚠ Thiếu DISPLAY_CODE</span>
+                      )}
                     </span>
                   )}
 

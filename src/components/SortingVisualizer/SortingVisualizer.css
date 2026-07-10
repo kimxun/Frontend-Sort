@@ -2,16 +2,9 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  
-  /* Sử dụng --card-header để nền hơi xám/xanh nhạt, bớt lóa ở Light Mode */
-  background: var(--card-header); 
-  
-  /* Thêm viền khung */
-  border: 1px solid var(--border); 
-  
-  /* Thêm bóng đổ chìm bên trong để tạo chiều sâu (lõm xuống) */
+  background: var(--card-header);
+  border: 1px solid var(--border);
   box-shadow: inset 0 2px 15px rgba(0, 0, 0, 0.03);
-  
   border-radius: 12px;
   padding: 16px;
   min-height: 350px;
@@ -20,10 +13,12 @@
 .legend-container {
   display: flex;
   justify-content: center;
+  align-items: center;
   gap: 20px;
   padding: 8px 16px 16px;
   flex-wrap: wrap;
-  border-bottom: 1px solid var(--border); 
+  border-bottom: 1px solid var(--border);
+  min-height: 56px;
 }
 
 .legend-item {
@@ -41,7 +36,7 @@
 
 .legend-label {
   font-size: 12px;
-  color: var(--text-secondary); 
+  color: var(--text-secondary);
 }
 
 .step-status {
@@ -50,13 +45,13 @@
   color: #fbbf24;
   font-size: 12px;
   text-align: center;
-  background: rgba(245, 158, 11, 0.12); 
+  background: rgba(245, 158, 11, 0.12);
   border: 1px solid rgba(245, 158, 11, 0.3);
   border-radius: 6px;
 }
 
 .step-status.completed {
-  color: #22c55e; 
+  color: #22c55e;
   background: rgba(34, 197, 94, 0.12);
   border-color: rgba(34, 197, 94, 0.3);
 }
@@ -68,7 +63,7 @@
   gap: 8px;
   padding: 16px 8px 8px;
   min-height: 280px;
-  background: transparent; 
+  background: transparent;
   width: 100%;
 }
 
@@ -85,7 +80,7 @@
 .bar-value {
   font-size: 12px;
   font-weight: 600;
-  color: var(--title); 
+  color: var(--title);
 }
 
 .bar {
@@ -97,25 +92,95 @@
 
 .bar-index {
   font-size: 10px;
-  color: var(--text-muted); 
+  color: var(--text-muted);
 }
 
 @media (max-width: 768px) {
-  .bars-container {
-    gap: 2px;
-    padding: 12px 2px 8px;
-    min-height: 200px;
+  .visualizer-container {
+    padding: 12px;
+    min-height: 280px;
   }
-  .bar-value, .bar-index {
+
+  .legend-container {
+    gap: 10px 14px;
+    padding: 6px 8px 12px;
+    min-height: auto;
+  }
+
+  .legend-label {
+    font-size: 11px;
+  }
+
+  .legend-color {
+    width: 10px;
+    height: 10px;
+  }
+
+  .step-status {
+    font-size: 11px;
+    padding: 5px 10px;
+    margin-top: 8px;
+  }
+
+  .bars-container {
+    gap: 4px;
+    padding: 12px 4px 8px;
+    min-height: 200px;
+    overflow-x: auto;
+    justify-content: center;   
+  }
+
+  .bar-wrapper {
+    max-width: 40px;
+    min-width: 28px;
+  }
+
+  .bar-value,
+  .bar-index {
     font-size: 10px;
   }
 }
 
 @media (max-width: 480px) {
-  .bars-container {
-    gap: 1px;
+  .visualizer-container {
+    padding: 8px;
+    min-height: 240px;
   }
-  .bar-value, .bar-index {
+
+  .legend-container {
+    gap: 8px 10px;
+    padding: 6px 4px 10px;
+  }
+
+  .legend-label {
+    font-size: 10px;
+  }
+
+  .legend-color {
+    width: 8px;
+    height: 8px;
+  }
+
+  .step-status {
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+
+  .bars-container {
+    gap: 2px;
+    padding: 8px 2px 6px;
+    min-height: 160px;
+    overflow-x: auto;
+    justify-content: center;  
+  }
+
+  .bar-wrapper {
+    max-width: 32px;
+    min-width: 22px;
+  }
+
+  .bar-value,
+  .bar-index {
     font-size: 8px;
   }
 }

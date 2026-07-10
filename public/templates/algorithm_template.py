@@ -43,11 +43,31 @@ QUY TẮC BẮT BUỘC:
    không trùng với thuật toán đã có sẵn (selection-sort, quick-sort,
    interchange-sort, linear-search, binary-search) trừ khi bạn muốn GHI ĐÈ.
 
+8. NÊN khai báo biến DISPLAY_CODE (chuỗi) chứa pseudocode / code mẫu hiển thị
+   trên giao diện Code Editor. Nếu không có, hệ thống vẫn lưu được nhưng sẽ để
+   trống ô Code và nhắc nhở admin tự nhập tay.
+# FEATURES khai báo các tính năng đặc biệt của thuật toán (nếu có).
+# Hệ thống dùng danh sách này để hiển thị đúng các trạng thái màu (legend) khi mô phỏng.
+# Ví dụ: ["pivot"] -> hiển thị thêm màu "Phần tử chốt" (dành cho Quick Sort).
+# Để trống [] nếu thuật toán không có trạng thái đặc biệt nào.
 =====================================================================
 VÍ DỤ MẪU: BUBBLE SORT (copy cấu trúc này để viết thuật toán của bạn)
 =====================================================================
 """
 
+DISPLAY_CODE = """void bubbleSort(int arr[], int n) {
+    for (int i = 0; i < n-1; i++) {
+        for (int j = 0; j < n-i-1; j++) {
+            if (arr[j] > arr[j+1]) {
+                int temp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = temp;
+            }
+        }
+    }
+}"""
+
+FEATURES = ["pivot"] 
 
 def run_logic(arr, sort_order="asc"):
     steps_history = []
