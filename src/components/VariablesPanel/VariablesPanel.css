@@ -1,13 +1,16 @@
+/* ====================================================
+   VARIABLES PANEL (BIẾN TRẠNG THÁI)
+==================================================== */
 .variables-panel {
-  background: var(--card, #ffffff);
+  background: var(--card) !important;
   border-radius: 12px;
-  border: 1px solid var(--border, #e2e8f0);
+  border: 1px solid var(--border);
   overflow: hidden;
 }
 
 .variables-header {
   padding: 10px 14px;
-  border-bottom: 1px solid var(--border, #e2e8f0);
+  border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   gap: 8px;
@@ -15,9 +18,10 @@
 
 .variables-title {
   font-size: 11px;
-  color: var(--muted-foreground, #475569);
+  color: var(--text-muted) !important; /* Đổi màu chữ tiêu đề để không bị tàng hình */
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  font-weight: 600;
 }
 
 .variables-badge {
@@ -25,8 +29,9 @@
   border-radius: 10px;
   background: rgba(99, 102, 241, 0.15);
   font-size: 11px;
-  color: #a5b4fc;
+  color: var(--title); /* Đổi màu badge linh hoạt */
   font-family: 'JetBrains Mono', monospace;
+  font-weight: 600;
 }
 
 .variables-content {
@@ -39,7 +44,7 @@
   align-items: center;
   justify-content: center;
   padding: 12px 0;
-  color: var(--muted-foreground, #475569);
+  color: var(--text-muted);
   font-size: 12px;
 }
 
@@ -49,50 +54,46 @@
   gap: 6px;
 }
 
+/* Các ô chứa biến (Độ dài mảng, Bước hiện tại...) */
 .variable-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 6px 10px;
   border-radius: 7px;
-  background: var(--secondary, #f1f5f9);
-  border: 1px solid var(--border, #e2e8f0);
+  background: var(--card-header) !important; /* Đổi cục đen thui thành nền linh hoạt theo theme */
+  border: 1px solid var(--border);
 }
 
 .variable-name {
   font-size: 12px;
   font-family: 'JetBrains Mono', monospace;
+  color: var(--title) !important; /* Chữ tên biến màu xanh dương nhạt/đậm tùy theme */
 }
 
 .variable-value {
   font-size: 13px;
   font-family: 'JetBrains Mono', monospace;
-  color: var(--foreground, #0f172a);
-  font-weight: 600;
+  color: var(--heading) !important; /* Giá trị biến sẽ có màu nổi bật */
+  font-weight: 700;
 }
 
-@media (prefers-color-scheme: dark) {
-  .variables-panel {
-    --card: #1e293b;
-    --border: #334155;
-    --secondary: #0f172a;
-    --muted-foreground: #94a3b8;
-    --foreground: #f1f5f9;
-    background: var(--card);
-    border-color: var(--border);
-  }
-  .variable-item {
-    background: var(--secondary);
-    border-color: var(--border);
-  }
-  .variable-value {
-    color: var(--foreground);
-  }
-  .variables-empty {
-    color: var(--muted-foreground);
-  }
+/* ====================================================
+   VŨ KHÍ TỐI THƯỢNG CHO LIGHT MODE (Chống lỗi kẹt cache)
+==================================================== */
+body.light-theme .variable-item {
+  background: #f8fafc !important; /* Xám cực nhạt cho Light Mode */
+}
+body.light-theme .variable-name {
+  color: #0284c7 !important; /* Xanh cyan đậm */
+}
+body.light-theme .variable-value {
+  color: #0f172a !important; /* Đen đậm */
 }
 
+/* ====================================================
+   RESPONSIVE
+==================================================== */
 @media (max-width: 768px) {
   .variables-grid {
     grid-template-columns: 1fr;
@@ -105,4 +106,16 @@
   .variable-value {
     font-size: 12px;
   }
+}
+
+/* Ép buộc màu chữ tiêu đề cho Light Mode */
+body.light-theme .variables-title {
+  color: #64748b !important; /* Màu xám đậm để nổi trên nền trắng */
+  font-weight: 700 !important;
+}
+
+/* Đảm bảo số đếm trong badge bên cạnh cũng hiển thị rõ */
+body.light-theme .variables-badge {
+  color: #4f46e5 !important; /* Xanh indigo đậm */
+  background: rgba(79, 70, 229, 0.15) !important;
 }

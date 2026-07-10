@@ -1,46 +1,56 @@
+/* ====================================================
+   1. ĐỊNH NGHĨA MÀU SYNTAX HIGHLIGHT CHO 2 CHẾ ĐỘ
+==================================================== */
+:root {
+  --code-keyword: #c084fc;   /* Tím nhạt cho Dark */
+  --code-variable: #93c5fd;  /* Xanh nhạt cho Dark */
+  --code-number: #fbbf24;    /* Vàng cho Dark */
+  --code-string: #86efac;    /* Xanh lá cho Dark */
+}
+
+body.light-theme {
+  --code-keyword: #7e22ce;   /* Tím đậm cho Light */
+  --code-variable: #2563eb;  /* Xanh dương đậm cho Light */
+  --code-number: #d97706;    /* Cam đậm cho Light */
+  --code-string: #16a34a;    /* Xanh lá đậm cho Light */
+}
+
+/* ====================================================
+   2. KHUNG CODE PANEL CHÍNH
+==================================================== */
 .code-panel {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: #141720 !important;
+  background: var(--card-content) !important; /* Lấy màu nền theo theme */
   border-radius: 8px;
   overflow: hidden;
+  border: 1px solid var(--border); /* Thêm viền nhẹ cho đẹp */
 }
 
-.code-panel-tabbar {
-  display: flex;
-  align-items: center;
+/* Style cho chữ "Selection Sort" đang bị lỗi dính lề */
+.code-header {
   padding: 12px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-  gap: 8px;
-  background: inherit;
-}
-
-.window-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-}
-
-.window-dot.red { background: #ef4444; }
-.window-dot.yellow { background: #f59e0b; }
-.window-dot.green { background: #10b981; }
-
-.file-label {
-  margin-left: 8px;
-  font-size: 13px;
-  color: #94a3b8;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--heading);
+  background: var(--card-header);
+  border-bottom: 1px solid var(--border);
   font-family: 'JetBrains Mono', monospace;
 }
 
+/* ====================================================
+   3. NỘI DUNG CODE
+==================================================== */
 .code-container {
   flex: 1;
   height: 320px !important;
   max-height: 320px !important;
-  overflow-y: scroll !important;
-  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overflow-x: auto !important;
   padding: 12px 0;
   box-sizing: border-box;
+  background: var(--card-content);
 }
 
 .code-line {
@@ -48,14 +58,14 @@
   align-items: center;
   min-height: 26px;
   background: transparent;
-  border-left: 2px solid transparent;
+  border-left: 3px solid transparent;
   transition: background 0.2s, border-left 0.2s;
-  padding-right: 10px;
+  padding-right: 16px;
 }
 
 .code-line.active {
   background: rgba(99, 102, 241, 0.12);
-  border-left-color: #6366f1;
+  border-left-color: var(--title); /* Vệt sáng bám theo dòng code chạy */
 }
 
 .line-number {
@@ -64,26 +74,27 @@
   padding-right: 16px;
   padding-left: 8px;
   font-size: 12px;
-  color: #4b5563;
+  color: var(--text-muted); /* Màu số dòng */
   font-family: 'JetBrains Mono', monospace;
   user-select: none;
 }
 
 .line-number[data-active="true"] {
-  color: #6366f1;
+  color: var(--title);
+  font-weight: bold;
 }
 
 .code-text {
   font-size: 13px;
   font-family: 'JetBrains Mono', monospace;
-  color: #cbd5e1;
+  color: var(--text); /* Đổi màu code mặc định */
   white-space: pre;
 }
 
 .executing-indicator {
   margin-left: 12px;
   font-size: 11px;
-  color: #a5b4fc;
+  color: var(--title);
   opacity: 0.8;
   animation: pulse 1.5s infinite;
 }
@@ -93,67 +104,49 @@
   50% { opacity: 0.3; }
 }
 
-.code-container::-webkit-scrollbar {
-  width: 4px !important;
-  display: block !important;
-}
-.code-container::-webkit-scrollbar-track {
-  background: transparent !important;
-}
-.code-container::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15) !important;
-  border-radius: 4px !important;
-}
-.code-container::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.35) !important;
-}
-@supports (scrollbar-width: thin) {
-  .code-container {
-    scrollbar-width: thin !important;
-    scrollbar-color: rgba(255, 255, 255, 0.15) transparent !important;
-  }
-}
+/* ====================================================
+   4. THANH CUỘN (SCROLLBAR)
+==================================================== */
+.code-container::-webkit-scrollbar { width: 6px !important; height: 6px !important; }
+.code-container::-webkit-scrollbar-track { background: transparent !important; }
+.code-container::-webkit-scrollbar-thumb { background: var(--scroll-thumb) !important; border-radius: 4px !important; }
+.code-container::-webkit-scrollbar-thumb:hover { background: var(--text-muted) !important; }
 
+/* ====================================================
+   5. RESPONSIVE
+==================================================== */
 @media (max-width: 768px) {
-  .code-panel {
-    width: 100%;
-  }
-  .code-container {
-    height: 220px !important;
-    max-height: 220px !important;
-    padding: 8px 0;
-  }
-  .line-number {
-    min-width: 30px;
-    padding-right: 8px;
-    font-size: 10px;
-  }
-  .code-text {
-    font-size: 11px;
-  }
-  .executing-indicator {
-    font-size: 9px;
-    margin-left: 6px;
-  }
-  .code-panel-tabbar {
-    padding: 8px 12px;
-  }
-  .file-label {
-    font-size: 11px;
-  }
+  .code-panel { width: 100%; }
+  .code-container { height: 220px !important; max-height: 220px !important; padding: 8px 0; }
+  .line-number { min-width: 30px; padding-right: 8px; font-size: 10px; }
+  .code-text { font-size: 11px; }
+  .executing-indicator { font-size: 9px; margin-left: 6px; }
+  .code-header { font-size: 13px; padding: 10px 12px; }
 }
 
 @media (max-width: 480px) {
-  .code-container {
-    height: 180px !important;
-    max-height: 180px !important;
-  }
-  .line-number {
-    min-width: 24px;
-    padding-right: 6px;
-    font-size: 9px;
-  }
-  .code-text {
-    font-size: 10px;
-  }
+  .code-container { height: 180px !important; max-height: 180px !important; }
+  .line-number { min-width: 24px; padding-right: 6px; font-size: 9px; }
+  .code-text { font-size: 10px; }
+}
+
+/* ====================================================
+   VŨ KHÍ TỐI THƯỢNG: ÉP MÀU CODE PANEL CHO LIGHT MODE
+==================================================== */
+
+/* Ép buộc nền thẻ panel và container chứa code phải chuyển sang màu sáng */
+body.light-theme .code-panel,
+body.light-theme .code-container {
+    background: #ffffff !important; /* Trắng tinh hoặc dùng #f8fafc */
+}
+
+/* Ép màu cho các đoạn code text bình thường (không bị highlight) */
+body.light-theme .code-text {
+    color: #1f2937 !important; /* Xám đen để nổi trên nền trắng */
+}
+
+/* Ép màu nền cho các dòng code khi được active (dòng đang chạy) */
+body.light-theme .code-line.active {
+    background: rgba(37, 99, 235, 0.1) !important; /* Xanh dương nhạt */
+    border-left-color: #2563eb !important; /* Vệt xanh dương đậm bên trái */
 }

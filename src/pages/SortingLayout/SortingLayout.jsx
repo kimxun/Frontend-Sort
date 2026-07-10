@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import ControlPanel from '../../components/ControlPanel/ControlPanel';
 import AlgorithmInfo from '../../components/AlgorithmInfo/AlgorithmInfo';
 import VariablesPanel from '../../components/VariablesPanel/VariablesPanel';
@@ -8,8 +8,26 @@ import HistoryPanel from '../../components/HistoryPanel/HistoryPanel';
 import './SortingLayout.css';
 import { logout, getCurrentUser } from '../../services/authService';
 import { toast } from 'react-toastify';
+import { FaMoon, FaSun } from "react-icons/fa";
+
+
 
 const SortingLayout = () => {
+  
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("theme") !== "light";
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.remove("light-theme");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.add("light-theme");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
+
   const user = getCurrentUser();
 
   const handleLogoutConfirm = () => {
@@ -82,6 +100,12 @@ const SortingLayout = () => {
       </div>
 
       <div className="header-actions">
+        <button
+            className="theme-toggle-btn"
+            onClick={() => setDarkMode(!darkMode)}
+        >
+            {darkMode ? <FaSun /> : <FaMoon />}
+        </button>
         {user?.role === 1 && (
           <button
             className="header-admin-btn"
@@ -108,6 +132,7 @@ const SortingLayout = () => {
           </button>
         )}
       </div>
+      
     </div>
   );
 
@@ -147,31 +172,36 @@ const SortingLayout = () => {
     <div className="sorting-layout">
       {renderHeader()}
 
-      <div className="layout-desktop">
-        <div className="sorting-layout__main">
-          <div className="layout-column layout-column--center">
-            {renderVisualizer()}
-            <ControlPanel />
-            {renderCodePanel()}
-          </div>
-          <div className="layout-column layout-column--right">
-            <HistoryPanel />
-            <VariablesPanel />
-            <AlgorithmInfo />
-          </div>
-        </div>
+<div className="layout-desktop">
+
+  <div className="layout-main">
+
+    {/* Cột trái */}
+    <div className="layout-left">
+      <div className="layout-animation">
+        {renderVisualizer()}
       </div>
 
-      <div className="layout-mobile">
-        <div className="mobile-layout">
-          {HistoryPanel && <HistoryPanel />}
-          {renderVisualizer()}
-          <ControlPanel />
-          {renderCodePanel()}
-          <VariablesPanel />
-          <AlgorithmInfo />
-        </div>
-      </div>
+      <ControlPanel />
+    </div>
+
+    {/* Cột phải */}
+    <div className="layout-right">
+      {renderCodePanel()}
+
+      <HistoryPanel />
+
+      <VariablesPanel />
+    </div>
+
+  </div>
+
+  {/* Dàn ngang toàn bộ */}
+  <div className="layout-info">
+    <AlgorithmInfo />
+  </div>
+
+</div>
     </div>
   );
 };
