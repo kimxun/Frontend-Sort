@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useSorting } from '../../context/SortingContext';
 import './CodePanel.css';
 
@@ -83,6 +83,7 @@ function highlight(line) {
 
 const CodePanel = () => {
   const { algorithmInfo, steps, currentStep, sortOrder } = useSorting();
+  const activeLineRef = useRef(null);
 
   const code = getCodeForOrder(
     algorithmInfo?.code || '',
@@ -93,6 +94,16 @@ const CodePanel = () => {
   const label = algorithmInfo?.name || 'Algorithm';
 
   const currentLine = steps[currentStep]?.line || 0;
+
+  useEffect(() => {
+    if (!activeLineRef.current) return;
+
+    activeLineRef.current.scrollIntoView({
+      behavior: 'smooth',
+      block: 'center',
+      inline: 'nearest',
+    });
+  }, [currentLine, currentStep]);
 
   return (
     <div className="code-panel">
@@ -105,6 +116,7 @@ const CodePanel = () => {
           return (
             <div
               key={i}
+              ref={isActive ? activeLineRef : null}
               className={`code-line ${isActive ? 'active' : ''}`}
             >
               <span

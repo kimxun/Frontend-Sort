@@ -180,7 +180,7 @@ export default function ControlPanel() {
   );
 
   return (
-    <div className="control-panel">
+    <div className={`control-panel ${isSearchMode ? "search-mode" : "sort-mode"}`}>
       <div className="control-row">
         <div className="select-wrapper" ref={algorithmMenuRef}>
           <button
@@ -192,8 +192,8 @@ export default function ControlPanel() {
             aria-expanded={isAlgorithmMenuOpen}
           >
             <span>{selectedAlgorithm?.name || "Chọn thuật toán"}</span>
+            <span className="select-caret" aria-hidden="true">▾</span>
           </button>
-          <span className="select-arrow">▼</span>
           {isAlgorithmMenuOpen && !isRunning && (
             <div className="algorithm-options" role="listbox">
               {activeAlgorithms.map((a) => (

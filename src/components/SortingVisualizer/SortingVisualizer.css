@@ -14,11 +14,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  align-content: center;
   gap: 20px;
   padding: 8px 16px 16px;
   flex-wrap: wrap;
   border-bottom: 1px solid var(--border);
-  min-height: 56px;
+  height: 104px;
+  min-height: 104px;
+  max-height: 104px;
+  overflow: hidden;
+  box-sizing: border-box;
 }
 
 .legend-item {
@@ -65,6 +70,7 @@
   min-height: 280px;
   background: transparent;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .bar-wrapper {
@@ -93,6 +99,47 @@
 .bar-index {
   font-size: 10px;
   color: var(--text-muted);
+}
+
+@media (min-width: 1201px) {
+  .visualizer-container {
+    height: 100%;
+    min-height: 0;
+    padding: 12px;
+    box-sizing: border-box;
+  }
+
+  .legend-container {
+    gap: 8px 14px;
+    height: 104px;
+    min-height: 104px;
+    max-height: 104px;
+    padding: 4px 8px 10px;
+  }
+
+  .step-status {
+    margin-top: 8px;
+  }
+
+  .bars-container {
+    flex: 1;
+    min-height: 0;
+    padding: 12px 6px 6px;
+    overflow-x: auto;
+  }
+}
+
+body.light-theme .step-status {
+  color: #92400e;
+  font-weight: 700;
+  background: #fffbeb;
+  border-color: #f59e0b;
+}
+
+body.light-theme .step-status.completed {
+  color: #166534;
+  background: #ecfdf5;
+  border-color: #22c55e;
 }
 
 @media (max-width: 768px) {
