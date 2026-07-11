@@ -85,6 +85,10 @@
     transition: .25s;
 }
 
+.password-field input {
+    padding-right: 48px;
+}
+
 .form-group input::placeholder {
     color: #6b7280;
 }
@@ -131,7 +135,8 @@
 .eye-icon {
     position: absolute;
     right: 14px;
-    bottom: 14px; /* thay vì top: 50% */
+    top: 42px;
+    bottom: auto;
 
     display: flex;
     align-items: center;
@@ -139,6 +144,11 @@
 
     cursor: pointer;
     color: #8d90a0;
+    background: transparent;
+    border: 0;
+    padding: 0;
+    width: 22px;
+    height: 22px;
 
     font-size: 18px;
     transition: 0.2s;
@@ -146,6 +156,14 @@
 
 .eye-icon:hover {
     color: white;
+}
+
+body.light-theme .eye-icon {
+    color: #64748b;
+}
+
+body.light-theme .eye-icon:hover {
+    color: #2563eb;
 }
 @media (max-width: 900px) {
     .form-row {
@@ -184,5 +202,9 @@
         padding: 12px 14px;
         font-size: 13px;
         padding-right: 42px;
+    }
+    .eye-icon {
+        top: 39px;
+        right: 12px;
     }
 }

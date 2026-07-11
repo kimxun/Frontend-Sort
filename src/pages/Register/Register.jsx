@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import './Register.css';
 import { register } from '../../services/registerService';
 import { toast } from 'react-toastify';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -16,6 +17,8 @@ const Register = () => {
   });
 
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -85,25 +88,41 @@ const Register = () => {
               required
             />
           </div>
-          <div className="input-group">
+          <div className="input-group password-group">
             <input
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               name="password"
               placeholder="Mật khẩu"
               value={formData.password}
               onChange={handleChange}
               required
             />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+            >
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+            </button>
           </div>
-          <div className="input-group">
+          <div className="input-group password-group">
             <input
-              type="password"
+              type={showConfirmPassword ? 'text' : 'password'}
               name="confirmPassword"
               placeholder="Xác nhận mật khẩu"
               value={formData.confirmPassword}
               onChange={handleChange}
               required
             />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+              aria-label={showConfirmPassword ? 'Ẩn mật khẩu xác nhận' : 'Hiện mật khẩu xác nhận'}
+            >
+              {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+            </button>
           </div>
           {error && <p className="error-text">{error}</p>}
           <button type="submit" className="register-btn">
