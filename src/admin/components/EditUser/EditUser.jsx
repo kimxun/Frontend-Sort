@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAdmin } from "../../../context/AdminContext";
 import { toast } from "react-toastify";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import "./EditUser.css";
 
 export default function EditUser() {
@@ -21,6 +22,8 @@ export default function EditUser() {
     });
 
     const [loading, setLoading] = useState(true);
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     useEffect(() => {
         const user = users.find((u) => String(u.id) === String(id));
@@ -121,13 +124,41 @@ export default function EditUser() {
                     </div>
                 </div>
                 <div className="form-row">
-                    <div className="form-group">
+                    <div className="form-group password-field">
                         <label>MẬT KHẨU MỚI</label>
-                        <input type="password" name="password" placeholder="Để trống nếu không muốn thay đổi" value={formData.password} onChange={handleChange} />
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            name="password"
+                            placeholder="Để trống nếu không muốn thay đổi"
+                            value={formData.password}
+                            onChange={handleChange}
+                        />
+                        <button
+                            type="button"
+                            className="eye-icon"
+                            onClick={() => setShowPassword(!showPassword)}
+                            aria-label={showPassword ? "Ẩn mật khẩu mới" : "Hiện mật khẩu mới"}
+                        >
+                            {showPassword ? <FiEyeOff /> : <FiEye />}
+                        </button>
                     </div>
-                    <div className="form-group">
+                    <div className="form-group password-field">
                         <label>XÁC NHẬN MẬT KHẨU MỚI</label>
-                        <input type="password" name="confirmPassword" placeholder="Xác nhận lại mật khẩu mới" value={formData.confirmPassword} onChange={handleChange} />
+                        <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            name="confirmPassword"
+                            placeholder="Xác nhận lại mật khẩu mới"
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                        />
+                        <button
+                            type="button"
+                            className="eye-icon"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            aria-label={showConfirmPassword ? "Ẩn mật khẩu xác nhận" : "Hiện mật khẩu xác nhận"}
+                        >
+                            {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+                        </button>
                     </div>
                 </div>
                 <div className="button-group">

@@ -122,7 +122,7 @@ export default function AddUser() {
                         />
                     </div>
 
-                    <div className="form-group">
+                    <div className="form-group password-field">
                         <label>VAI TRÒ</label>
 
                         <select
@@ -142,7 +142,7 @@ export default function AddUser() {
                 </div>
 
                 <div className="form-row">
-                    <div className="form-group">
+                    <div className="form-group password-field">
                         <label>HỌ VÀ TÊN</label>
 
                         <input
@@ -179,12 +179,14 @@ export default function AddUser() {
                             onChange={handleChange}
                             autoComplete="new-password"
                         />
-                        <span
+                        <button
+                            type="button"
                             className="eye-icon"
                             onClick={() => setShowPassword(!showPassword)}
+                            aria-label={showPassword ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
                         >
                             {showPassword ? <FiEyeOff /> : <FiEye />}
-                        </span>
+                        </button>
                     </div>
 
                     <div className="form-group">
@@ -198,12 +200,14 @@ export default function AddUser() {
                             onChange={handleChange}
                             autoComplete="new-password"
                         />
-                        <span
+                        <button
+                            type="button"
                             className="eye-icon"
                             onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                            aria-label={showConfirmPassword ? "Ẩn mật khẩu xác nhận" : "Hiện mật khẩu xác nhận"}
                         >
                             {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
-                        </span>
+                        </button>
                     </div>
                 </div>
 
