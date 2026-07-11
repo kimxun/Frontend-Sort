@@ -17,7 +17,7 @@ const Login = () => {
     const user = getCurrentUser();
     if (user) {
       if (user.role === 1) {
-        navigate('/admin');
+        navigate('/admin/dashboard');
       } else {
         navigate('/');
       }
@@ -30,7 +30,7 @@ const Login = () => {
 
     if (result.success) {
       if (result.user.role === 1) {
-        navigate('/admin');
+        navigate('/admin/dashboard');
       } else {
         navigate('/');
       }

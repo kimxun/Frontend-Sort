@@ -109,7 +109,7 @@ const SortingLayout = () => {
         {user?.role === 1 && (
           <button
             className="header-admin-btn"
-            onClick={() => window.location.href = "/admin"}
+            onClick={() => window.location.href = "/admin/dashboard"}
           >
             Admin
           </button>
@@ -176,7 +176,12 @@ const SortingLayout = () => {
 
   <div className="layout-main">
 
-    {/* Cột trái */}
+    {/* Cột thông tin */}
+    <aside className="layout-info">
+      <AlgorithmInfo />
+    </aside>
+
+    {/* Cột giữa */}
     <div className="layout-left">
       <div className="layout-animation">
         {renderVisualizer()}
@@ -194,11 +199,6 @@ const SortingLayout = () => {
       <VariablesPanel />
     </div>
 
-  </div>
-
-  {/* Dàn ngang toàn bộ */}
-  <div className="layout-info">
-    <AlgorithmInfo />
   </div>
 
 </div>

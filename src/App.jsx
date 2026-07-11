@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { SortingProvider } from "./context/SortingContext";
 import { AdminProvider } from "./context/AdminContext";
 import SortingPage from "./pages/SortingLayout/SortingPage";
@@ -35,6 +35,7 @@ function App() {
               </AdminProvider>
             </AdminRoute>
           }>
+            <Route index element={<Navigate to="dashboard" replace />} />
             <Route path="dashboard" element={<DashboardPage />} />
             <Route path="users" element={<UsersPage />} />
             <Route path="add-user" element={<AddUser />} />
