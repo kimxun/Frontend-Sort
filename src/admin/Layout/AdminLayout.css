@@ -17,6 +17,306 @@
     padding: 32px;
 }
 
+.admin-main {
+    color: #edf3ff;
+}
+
+.admin-main h1,
+.admin-main h2,
+.admin-main h3,
+.admin-main h4,
+.admin-main strong {
+    color: #ffffff !important;
+}
+
+.admin-main p,
+.admin-main span,
+.admin-main label,
+.admin-main td,
+.admin-main li {
+    color: #dbe5f3;
+}
+
+.admin-main small,
+.admin-main .dashboard-eyebrow,
+.admin-main .card-kicker,
+.admin-main .empty-text,
+.admin-main .muted,
+.admin-main .description {
+    color: #a9b7cc !important;
+}
+
+.admin-main th {
+    color: #c7d2e5 !important;
+}
+
+.admin-main table td {
+    color: #e5edf8 !important;
+}
+
+.admin-main code {
+    background: #0f1724;
+    color: #ddd6fe;
+}
+
+.admin-main .algorithm-chip {
+    color: #ddd6fe;
+}
+
+.admin-main .simulation-empty,
+.admin-main .simulation-state,
+.admin-main .simulation-pagination {
+    color: #b8c5d8 !important;
+}
+
+.admin-main input,
+.admin-main textarea,
+.admin-main select {
+    color: #f8fafc;
+}
+
+.admin-main input::placeholder,
+.admin-main textarea::placeholder {
+    color: #9aa8bd;
+    opacity: 1;
+}
+
+body.light-theme .admin-layout {
+    background: #eef3f9;
+    color: #0f172a;
+}
+
+body.light-theme .admin-main {
+    background: #eef3f9;
+    color: #0f172a;
+}
+
+body.light-theme .admin-main h1,
+body.light-theme .admin-main h2,
+body.light-theme .admin-main h3,
+body.light-theme .admin-main h4,
+body.light-theme .admin-main strong {
+    color: #0f172a !important;
+}
+
+body.light-theme .admin-main p,
+body.light-theme .admin-main span,
+body.light-theme .admin-main label,
+body.light-theme .admin-main td,
+body.light-theme .admin-main li {
+    color: #1f2937;
+}
+
+body.light-theme .admin-main small,
+body.light-theme .admin-main .dashboard-eyebrow,
+body.light-theme .admin-main .card-kicker,
+body.light-theme .admin-main .empty-text,
+body.light-theme .admin-main .muted,
+body.light-theme .admin-main .description {
+    color: #475569 !important;
+}
+
+body.light-theme .admin-main th {
+    color: #334155 !important;
+}
+
+body.light-theme .dashboard-page,
+body.light-theme .users-page,
+body.light-theme .add-user-page,
+body.light-theme .edit-user-page,
+body.light-theme .algorithms-page,
+body.light-theme .simulation-history-page {
+    color: #0f172a;
+}
+
+body.light-theme .stat-card,
+body.light-theme .dashboard-card,
+body.light-theme .card,
+body.light-theme .table-container,
+body.light-theme .modal-content,
+body.light-theme .simulation-stat-card,
+body.light-theme .simulation-table-card,
+body.light-theme .simulation-modal,
+body.light-theme .add-algorithm-form,
+body.light-theme .users-table-card,
+body.light-theme .algorithm-card,
+body.light-theme .form-card,
+body.light-theme .history-table-card,
+body.light-theme .filter-card {
+    background: #ffffff !important;
+    border-color: #dbe4ef !important;
+    box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08) !important;
+}
+
+body.light-theme .admin-main input,
+body.light-theme .admin-main textarea,
+body.light-theme .admin-main select {
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+    color: #0f172a !important;
+}
+
+body.light-theme .admin-main input::placeholder,
+body.light-theme .admin-main textarea::placeholder {
+    color: #64748b;
+    opacity: 1;
+}
+
+body.light-theme .admin-main thead {
+    background: #eef4ff !important;
+}
+
+body.light-theme .admin-main table td {
+    border-color: #e2e8f0 !important;
+    color: #1f2937 !important;
+}
+
+body.light-theme .admin-main tbody tr:hover {
+    background: #f1f5ff !important;
+}
+
+body.light-theme .admin-main code {
+    background: #eef2ff !important;
+    color: #3730a3 !important;
+}
+
+body.light-theme .admin-main .algorithm-chip {
+    background: #ede9fe !important;
+    border-color: #c4b5fd !important;
+    color: #5b21b6 !important;
+    font-weight: 700;
+}
+
+body.light-theme .simulation-eyebrow {
+    color: #6d28d9 !important;
+}
+
+body.light-theme .simulation-stat-card svg {
+    color: #6d28d9 !important;
+}
+
+body.light-theme .simulation-toolbar,
+body.light-theme .simulation-pagination {
+    border-color: #dbe4ef !important;
+}
+
+body.light-theme .simulation-pagination,
+body.light-theme .simulation-empty,
+body.light-theme .simulation-state {
+    color: #475569 !important;
+}
+
+body.light-theme .simulation-pagination button {
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+    color: #1f2937 !important;
+}
+
+body.light-theme .simulation-pagination button:hover:not(:disabled) {
+    background: #eef4ff !important;
+    border-color: #2563eb !important;
+    color: #1d4ed8 !important;
+}
+
+body.light-theme .users-page .pagination,
+body.light-theme .algorithms-page .pagination {
+    background: #ffffff !important;
+    border-top-color: #dbe4ef !important;
+    color: #1f2937 !important;
+}
+
+body.light-theme .users-page .pagination span,
+body.light-theme .algorithms-page .pagination span {
+    color: #0f172a !important;
+    font-weight: 700;
+}
+
+body.light-theme .users-page .pagination button,
+body.light-theme .algorithms-page .pagination button {
+    background: #f8fafc !important;
+    border-color: #cbd5e1 !important;
+    color: #1f2937 !important;
+    font-weight: 700;
+    opacity: 1;
+}
+
+body.light-theme .users-page .pagination button:hover:not(:disabled),
+body.light-theme .algorithms-page .pagination button:hover:not(:disabled) {
+    background: #eef4ff !important;
+    border-color: #2563eb !important;
+    color: #1d4ed8 !important;
+}
+
+body.light-theme .users-page .pagination button:disabled,
+body.light-theme .algorithms-page .pagination button:disabled {
+    background: #eef2f7 !important;
+    border-color: #dbe4ef !important;
+    color: #64748b !important;
+    opacity: 1;
+}
+
+body.light-theme .simulation-delete-btn {
+    color: #dc2626 !important;
+    border-color: #fecaca !important;
+}
+
+body.light-theme .simulation-delete-btn:hover {
+    background: #fee2e2 !important;
+}
+
+body.light-theme .simulation-modal p {
+    color: #475569 !important;
+}
+
+body.light-theme .simulation-modal .cancel {
+    background: #e2e8f0 !important;
+    color: #1f2937 !important;
+}
+
+body.light-theme .admin-main .badge,
+body.light-theme .admin-main .role-badge,
+body.light-theme .admin-main .status-badge {
+    font-weight: 700;
+}
+
+body.light-theme .admin-main .status-active,
+body.light-theme .admin-main .status-badge.active,
+body.light-theme .admin-main .status-success {
+    color: #047857 !important;
+    background: #d1fae5 !important;
+}
+
+body.light-theme .admin-main .status-inactive,
+body.light-theme .admin-main .status-badge.inactive,
+body.light-theme .admin-main .status-error {
+    color: #b91c1c !important;
+    background: #fee2e2 !important;
+}
+
+body.light-theme .admin-main .role-admin {
+    color: #5b21b6 !important;
+    background: #ede9fe !important;
+}
+
+body.light-theme .admin-main .role-user {
+    color: #075985 !important;
+    background: #e0f2fe !important;
+}
+
+body.light-theme .admin-main .action-btn,
+body.light-theme .admin-main .icon-btn,
+body.light-theme .admin-main .close-btn {
+    color: #334155;
+}
+
+body.light-theme .admin-main .action-btn:hover,
+body.light-theme .admin-main .icon-btn:hover,
+body.light-theme .admin-main .close-btn:hover {
+    color: #1d4ed8;
+    border-color: #2563eb;
+    background: #eef4ff;
+}
+
 @media (max-width: 768px) {
     .admin-content {
         margin-left: 0;

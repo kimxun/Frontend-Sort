@@ -125,6 +125,58 @@
     font-size: 13px;
 }
 
+body.light-theme .topbar {
+    background: #ffffff;
+    border-bottom-color: #dbe4ef;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.04);
+}
+
+body.light-theme .brand {
+    color: #1d4ed8;
+}
+
+body.light-theme .search-box {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #0f172a;
+}
+
+body.light-theme .search-box::placeholder {
+    color: #64748b;
+}
+
+body.light-theme .search-box:focus {
+    border-color: #2563eb;
+}
+
+body.light-theme .hamburger-btn,
+body.light-theme .icon-btn {
+    color: #475569;
+}
+
+body.light-theme .hamburger-btn:hover,
+body.light-theme .icon-btn:hover {
+    background: #eef4ff;
+    color: #1d4ed8;
+}
+
+body.light-theme .divider {
+    background: #dbe4ef;
+}
+
+body.light-theme .profile-avatar {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+body.light-theme .profile-info span {
+    color: #64748b;
+}
+
+body.light-theme .profile-info strong {
+    color: #0f172a;
+}
+
 /* --- ĐÃ SỬA LẠI RESPONSIVE MOBILE TẠI ĐÂY --- */
 @media (max-width: 768px) {
     .hamburger-btn {
