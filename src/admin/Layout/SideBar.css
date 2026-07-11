@@ -120,6 +120,15 @@
     color: #ffffff;
 }
 
+.theme-sidebar-btn {
+    color: #facc15;
+}
+
+.theme-sidebar-btn:hover {
+    background: rgba(250, 204, 21, 0.1);
+    color: #fde68a;
+}
+
 .logout-btn {
     color: #ffb4ab;
 }
@@ -150,4 +159,60 @@
     .sidebar-overlay.active {
         display: block;
     }
+}
+
+body.light-theme .sidebar {
+    background: #ffffff;
+    border-right-color: #dbe4ef;
+    box-shadow: 8px 0 24px rgba(15, 23, 42, 0.06);
+}
+
+body.light-theme .sidebar-logo {
+    border-bottom-color: #dbe4ef;
+}
+
+body.light-theme .sidebar-logo h2 {
+    color: #0f172a;
+}
+
+body.light-theme .sidebar-logo span {
+    color: #64748b;
+}
+
+body.light-theme .sidebar-menu a,
+body.light-theme .sidebar-btn {
+    color: #334155;
+}
+
+body.light-theme .sidebar-menu a:hover,
+body.light-theme .sidebar-btn:hover {
+    background: #eef4ff;
+    color: #1d4ed8;
+}
+
+body.light-theme .sidebar-menu a.active {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+body.light-theme .sidebar-bottom-links {
+    border-top-color: #dbe4ef;
+}
+
+body.light-theme .theme-sidebar-btn {
+    color: #7c3aed;
+}
+
+body.light-theme .theme-sidebar-btn:hover {
+    background: #f3e8ff;
+    color: #6d28d9;
+}
+
+body.light-theme .logout-btn {
+    color: #dc2626;
+}
+
+body.light-theme .sidebar-btn.logout-btn:hover {
+    background: #fee2e2;
+    color: #b91c1c;
 }

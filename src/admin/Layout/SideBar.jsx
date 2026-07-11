@@ -12,11 +12,13 @@ import {
   FiPlus,
   FiLogOut,
   FiHome,
-  FiClock
+  FiClock,
+  FiMoon,
+  FiSun
 } from "react-icons/fi";
 import "./SideBar.css";
 
-export default function Sidebar() {
+export default function Sidebar({ darkMode, onToggleTheme }) {
   const { sidebarOpen, isMobile, closeSidebar } = useAdmin();
   const navigate = useNavigate();
 
@@ -113,6 +115,10 @@ export default function Sidebar() {
 
         <div className="sidebar-bottom">
           <div className="sidebar-bottom-links">
+            <button className="sidebar-btn theme-sidebar-btn" onClick={onToggleTheme}>
+              {darkMode ? <FiSun size={20} /> : <FiMoon size={20} />}
+              <span>{darkMode ? "Chế độ sáng" : "Chế độ tối"}</span>
+            </button>
             <Link to="/" className="sidebar-btn">
               <FiHome size={20} />
               <span>Trang Chủ</span>
