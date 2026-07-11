@@ -85,13 +85,22 @@ def run_logic(arr, sort_order="asc"):
         "line": 1,
         "keys": ["n"],
         "vals": [n],
-        "action": (
-            f"Bắt đầu Bubble Sort theo thứ tự "
-            f"{'tăng dần' if sort_order == 'asc' else 'giảm dần'}."
-        )
+        "action": f"Bắt đầu Bubble Sort theo thứ tự {'tăng dần' if sort_order == 'asc' else 'giảm dần'}."
     })
 
     for i in range(n - 1):
+        steps_history.append({
+            "array": sorted_arr.copy(),
+            "comparing": [],
+            "swapping": [],
+            "pivot": None,
+            "sorted": list(range(n - i, n)) if i > 0 else [],
+            "line": 2,
+            "keys": ["i"],
+            "vals": [i],
+            "action": f"Lượt {i+1}: đưa phần tử {'lớn nhất' if sort_order == 'asc' else 'nhỏ nhất'} về cuối dãy chưa sắp xếp."
+        })
+
         for j in range(n - i - 1):
             comparisons += 1
             steps_history.append({
@@ -99,7 +108,7 @@ def run_logic(arr, sort_order="asc"):
                 "comparing": [j, j + 1],
                 "swapping": [],
                 "pivot": None,
-                "sorted": list(range(n - i, n)),
+                "sorted": list(range(n - i, n)) if i > 0 else [],
                 "line": 3,
                 "keys": ["j", "a[j]", "a[j+1]"],
                 "vals": [j, sorted_arr[j], sorted_arr[j + 1]],
@@ -119,12 +128,24 @@ def run_logic(arr, sort_order="asc"):
                     "comparing": [],
                     "swapping": [j, j + 1],
                     "pivot": None,
-                    "sorted": list(range(n - i, n)),
+                    "sorted": list(range(n - i, n)) if i > 0 else [],
                     "line": 4,
                     "keys": ["j"],
                     "vals": [j],
-                    "action": f"Hoán đổi vị trí {j} và {j + 1}"
+                    "action": f"Vì {sorted_arr[j+1]} {'>' if sort_order == 'asc' else '<'} {sorted_arr[j]} nên hoán đổi vị trí {j} và {j + 1}. Sau hoán đổi a[{j}] = {sorted_arr[j]}, a[{j+1}] = {sorted_arr[j+1]}"
                 })
+
+        steps_history.append({
+            "array": sorted_arr.copy(),
+            "comparing": [],
+            "swapping": [],
+            "pivot": None,
+            "sorted": list(range(n - i - 1, n)),
+            "line": 5,
+            "keys": ["sorted_idx"],
+            "vals": [n - i - 1],
+            "action": f"Đã đưa phần tử {'lớn nhất' if sort_order == 'asc' else 'nhỏ nhất'} về vị trí {n - i - 1}. Giá trị {sorted_arr[n - i - 1]} đã nằm đúng vị trí."
+        })
 
     steps_history.append({
         "array": sorted_arr.copy(),
@@ -132,7 +153,7 @@ def run_logic(arr, sort_order="asc"):
         "swapping": [],
         "pivot": None,
         "sorted": list(range(n)),
-        "line": 5,
+        "line": 6,
         "keys": ["Tổng số phép so sánh", "Tổng số phép hoán đổi"],
         "vals": [comparisons, swaps],
         "action": "Mảng đã được sắp xếp"
