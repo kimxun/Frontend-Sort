@@ -2,16 +2,31 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useAdmin } from '../../../context/AdminContext';
 import { toast } from 'react-toastify';
+import { getAlgorithmById, uploadAlgorithmCode } from '../../../services/algorithmService';
 import './AddAlgorithm.css';
 
 const EditAlgorithm = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { algorithms, editAlgorithm, loading } = useAdmin();
+  const { editAlgorithm, loading } = useAdmin();
   const [formData, setFormData] = useState(null);
   const [error, setError] = useState('');
   const debounceTimer = useRef(null);
   const hasIdentifiedInitialName = useRef(false);
+  const fileInputRef = useRef(null);
+
+  const [uploadState, setUploadState] = useState({
+    uploading: false,
+    success: false,
+    error: null,
+    fileName: null,
+    codeFilename: null,
+    isCustom: false,
+    hasDisplayCode: true,
+    features: [],
+    initialCodeFilename: null,
+    initialIsCustom: false,
+  });
 
   const removeVietnameseTones = (str) => {
     return str
@@ -33,21 +48,38 @@ const EditAlgorithm = () => {
   };
 
   useEffect(() => {
-    const algo = algorithms.find(a => a.id === parseInt(id));
-    if (algo && !formData) {
-      setFormData({
-        name: algo.name || '',
-        slug: algo.slug || '',
-        code: algo.code || '',
-        description: algo.description || '',
-        steps: Array.isArray(algo.steps) ? algo.steps.join('\n') : '',
-        time_complexity: algo.time_complexity || '',
-        space_complexity: algo.space_complexity || '',
-        category_id: algo.category_id || 1,
-        status: algo.status !== undefined ? algo.status : 1,
-      });
-    }
-  }, [algorithms, id, formData]);
+    const fetchAlgorithm = async () => {
+      try {
+        const data = await getAlgorithmById(parseInt(id));
+        if (data) {
+          setFormData({
+            name: data.name || '',
+            slug: data.slug || '',
+            code: data.code || '',
+            description: data.description || '',
+            steps: Array.isArray(data.steps) ? data.steps.join('\n') : (data.steps || ''),
+            time_complexity: data.time_complexity || '',
+            space_complexity: data.space_complexity || '',
+            category_id: data.category_id || 1,
+            status: data.status !== undefined ? data.status : 1,
+          });
+          setUploadState(prev => ({
+            ...prev,
+            success: true,
+            codeFilename: data.code_filename || null,
+            isCustom: data.is_custom || false,
+            features: Array.isArray(data.features) ? data.features : [],
+            initialCodeFilename: data.code_filename || null,
+            initialIsCustom: data.is_custom || false,
+            fileName: data.code_filename || null,
+          }));
+        }
+      } catch (err) {
+        toast.error('Không thể tải thông tin thuật toán');
+      }
+    };
+    fetchAlgorithm();
+  }, [id]);
 
   useEffect(() => {
     if (!formData) return;
@@ -63,7 +95,7 @@ const EditAlgorithm = () => {
         ...prev,
         slug: generateSlug(prev.name),
       }));
-    }, 3500);
+    }, 800);
 
     return () => clearTimeout(debounceTimer.current);
   }, [formData?.name]);
@@ -72,15 +104,122 @@ const EditAlgorithm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleFileSelect = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!file.name.endsWith('.py')) {
+      setUploadState(prev => ({
+        ...prev,
+        uploading: false,
+        success: false,
+        error: 'Chỉ chấp nhận file .py',
+        fileName: null,
+        codeFilename: prev.initialCodeFilename,
+      }));
+      e.target.value = '';
+      return;
+    }
+
+    if (file.size > 200 * 1024) {
+      setUploadState(prev => ({
+        ...prev,
+        uploading: false,
+        success: false,
+        error: 'File vượt quá 200KB.',
+        fileName: null,
+        codeFilename: prev.initialCodeFilename,
+      }));
+      e.target.value = '';
+      return;
+    }
+
+    handleUpload(file);
+  };
+
+  const handleUpload = async (file) => {
+    setUploadState(prev => ({
+      ...prev,
+      uploading: true,
+      success: false,
+      error: null,
+      fileName: file.name,
+      codeFilename: null,
+    }));
+
+    try {
+      const result = await uploadAlgorithmCode(file);
+      const hasDisplay = result.display_code && result.display_code.trim() !== '';
+      setUploadState(prev => ({
+        ...prev,
+        uploading: false,
+        success: true,
+        error: null,
+        fileName: file.name,
+        codeFilename: result.code_filename,
+        isCustom: true,
+        hasDisplayCode: hasDisplay,
+        features: result.features || [],
+      }));
+
+      if (hasDisplay) {
+        setFormData(prev => ({ ...prev, code: result.display_code }));
+      }
+    } catch (err) {
+      const errMsg = err?.response?.data?.error || 'Upload thất bại.';
+      setUploadState(prev => ({
+        ...prev,
+        uploading: false,
+        success: false,
+        error: errMsg,
+        fileName: file.name,
+        codeFilename: prev.initialCodeFilename,
+      }));
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setUploadState(prev => ({
+      ...prev,
+      uploading: false,
+      success: false,
+      error: null,
+      fileName: null,
+      codeFilename: null,
+      isCustom: false,
+      hasDisplayCode: true,
+      features: [],
+    }));
+    if (fileInputRef.current) fileInputRef.current.value = '';
+    setFormData(prev => ({ ...prev, code: '' }));
+  };
+
+  const handleDownloadTemplate = () => {
+    const link = document.createElement('a');
+    link.href = '/templates/algorithm_template.py';
+    link.download = 'algorithm_template.py';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (uploadState.uploading) return;
+    if (uploadState.fileName && !uploadState.success) return;
+
+    const stepsArray = formData.steps.split('\n').filter(s => s.trim() !== '');
+    const submitData = {
+      ...formData,
+      steps: stepsArray.length ? JSON.stringify(stepsArray) : null,
+      is_custom: uploadState.isCustom,
+      code_filename: uploadState.codeFilename,
+      features: uploadState.features,
+    };
+
     try {
-      const stepsArray = formData.steps.split('\n').filter(s => s.trim() !== '');
-      const submitData = {
-        ...formData,
-        steps: stepsArray.length ? JSON.stringify(stepsArray) : null
-      };
       await editAlgorithm(parseInt(id), submitData);
       toast.success('Cập nhật thành công!');
       navigate('/admin/algorithms');
@@ -136,8 +275,70 @@ const EditAlgorithm = () => {
           </div>
 
           <div className="form-group full-width">
-            <label>Mã nguồn (Code)</label>
-            <textarea name="code" value={formData.code} onChange={handleChange} rows="6" className="code-font" />
+            <label>File thuật toán (.py) — tải lên để chạy mô phỏng</label>
+            <div className="upload-box">
+              <div className="upload-actions">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  accept=".py"
+                  onChange={handleFileSelect}
+                  disabled={uploadState.uploading}
+                  id="algo-file-input"
+                  style={{ display: 'none' }}
+                />
+                <label htmlFor="algo-file-input" className="upload-select-btn">
+                  {uploadState.fileName ? 'Chọn file khác' : (uploadState.initialCodeFilename ? 'Thay đổi file' : 'Chọn file .py')}
+                </label>
+                <button type="button" className="template-btn" onClick={handleDownloadTemplate}>
+                  ⬇ Tải template mẫu
+                </button>
+              </div>
+
+              {(uploadState.fileName || uploadState.initialCodeFilename) && (
+                <div className="upload-status">
+                  <span className="file-name">
+                    📄 {uploadState.fileName || uploadState.initialCodeFilename}
+                  </span>
+
+                  {uploadState.uploading && (
+                    <span className="status-badge status-checking">Đang kiểm tra...</span>
+                  )}
+
+                  {uploadState.success && !uploadState.uploading && (
+                    <span className="status-badge status-success">
+                      ✓ Hợp lệ
+                      {!uploadState.hasDisplayCode && (
+                        <span style={{ marginLeft: 8, color: '#fbbf24' }}>⚠ Thiếu DISPLAY_CODE</span>
+                      )}
+                    </span>
+                  )}
+
+                  {uploadState.error && (
+                    <span className="status-badge status-error">✕ {uploadState.error}</span>
+                  )}
+
+                  {uploadState.initialCodeFilename && !uploadState.fileName && (
+                    <span className="status-badge status-success">✓ Đã có file</span>
+                  )}
+
+                  <button type="button" className="remove-file-btn" onClick={handleRemoveFile}>
+                    Xoá
+                  </button>
+                </div>
+              )}
+
+              <p className="upload-hint">
+                File phải có hàm <code>run_logic(arr, sort_order="asc")</code> đúng theo template,
+                trả về đúng 5 giá trị và mỗi bước phải đủ các trường bắt buộc. Hệ thống sẽ tự động
+                kiểm tra an toàn và chạy thử trước khi lưu.
+              </p>
+            </div>
+          </div>
+
+          <div className="form-group full-width">
+            <label>Mã nguồn (Code) — xem trước / chỉnh sửa hiển thị</label>
+            <textarea name="code" value={formData.code} onChange={handleChange} rows="8" className="code-font" />
           </div>
 
           <div className="form-group full-width">
@@ -152,10 +353,16 @@ const EditAlgorithm = () => {
         </div>
 
         {error && <div className="error-message">{error}</div>}
-        
+
         <div className="button-group">
           <button type="button" className="cancel-btn" onClick={() => navigate('/admin/algorithms')}>Hủy</button>
-          <button type="submit" className="save-btn" disabled={loading}>{loading ? 'Đang xử lý...' : 'Cập nhật'}</button>
+          <button
+            type="submit"
+            className="save-btn"
+            disabled={loading || uploadState.uploading || (uploadState.fileName && !uploadState.success)}
+          >
+            {loading ? 'Đang xử lý...' : 'Cập nhật'}
+          </button>
         </div>
       </form>
     </div>
