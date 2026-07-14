@@ -1,5 +1,3 @@
-/* Đã xóa khối :root thừa để kế thừa biến từ SortingLayout.css */
-
 .algorithm-info {
   background: var(--card);
   border-radius: 12px;
@@ -10,7 +8,7 @@
 .algorithm-info-header {
   padding: 14px 16px;
   border-bottom: 1px solid var(--border);
-  background: var(--card-header); /* Đồng bộ màu nền header */
+  background: var(--card-header);
 }
 
 .algorithm-info-header-content {
@@ -22,12 +20,12 @@
 .algorithm-info-name {
   font-size: 14px;
   font-weight: 600;
-  color: var(--heading) !important; /* Vũ khí tối thượng ép đổi màu */
+  color: var(--heading) !important;
 }
 
 .algorithm-info-tagline {
   font-size: 11px;
-  color: var(--title); /* Dùng biến --title để tự đổi màu xanh nhạt/đậm */
+  color: var(--title);
   font-family: 'JetBrains Mono', monospace;
 }
 
@@ -40,14 +38,11 @@
 
 .algorithm-info-description {
   font-size: 12px;
-  color: var(--text-secondary); /* Đổi màu chữ mô tả */
+  color: var(--text-secondary);
   line-height: 1.6;
   margin: 0;
 }
 
-/* =========================================
-   BADGES (Độ phức tạp, Tính ổn định)
-========================================= */
 .algorithm-info-badges {
   display: flex;
   gap: 8px;
@@ -65,37 +60,68 @@
   color: var(--text-muted);
 }
 
-/* Base styles cho Badge (Hiển thị mượt ở Dark mode) */
-.badge-time { background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.2); }
-.badge-time .badge-value { color: #a5b4fc; }
+.badge-time {
+  background: rgba(99, 102, 241, 0.12);
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
 
-.badge-space { background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.2); }
-.badge-space .badge-value { color: #67e8f9; }
+.badge-time .badge-value {
+  color: #a5b4fc;
+}
 
-.badge-stable { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #6ee7b7; }
-.badge-unstable { background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); color: #fca5a5; }
+.badge-space {
+  background: rgba(6, 182, 212, 0.1);
+  border: 1px solid rgba(6, 182, 212, 0.2);
+}
 
-/* FIX BADGE CHO LIGHT MODE: Ép chữ đậm lên để không bị chói/tàng hình */
-body.light-theme .badge-time .badge-value { color: #4f46e5; font-weight: 600; }
-body.light-theme .badge-space .badge-value { color: #0891b2; font-weight: 600; }
-body.light-theme .badge-stable { color: #059669; font-weight: 600; }
-body.light-theme .badge-unstable { color: #dc2626; font-weight: 600; }
+.badge-space .badge-value {
+  color: #67e8f9;
+}
 
-/* =========================================
-   STEPS (Các bước thực hiện)
-========================================= */
+.badge-stable {
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  color: #6ee7b7;
+}
+
+.badge-unstable {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+body.light-theme .badge-time .badge-value {
+  color: #4f46e5;
+  font-weight: 600;
+}
+
+body.light-theme .badge-space .badge-value {
+  color: #0891b2;
+  font-weight: 600;
+}
+
+body.light-theme .badge-stable {
+  color: #059669;
+  font-weight: 600;
+}
+
+body.light-theme .badge-unstable {
+  color: #dc2626;
+  font-weight: 600;
+}
+
 .algorithm-info-steps {
   display: flex;
   flex-direction: column;
 }
 
 .steps-title {
-  font-size: 11px;
-  color: var(--text-muted) !important; /* Ép chữ lấy màu xám đậm ở Light Mode */
+  font-size: 13px;
+  color: var(--text-muted) !important;
   letter-spacing: 0.08em;
   margin-bottom: 8px;
   text-transform: uppercase;
-  font-weight: 600; /* Cho in đậm thêm một chút để dễ nhìn */
+  font-weight: 600;
 }
 
 .steps-list {
@@ -106,62 +132,97 @@ body.light-theme .badge-unstable { color: #dc2626; font-weight: 600; }
 
 .step-item {
   display: flex;
-  gap: 10px;
+  gap: 0;
   align-items: flex-start;
 }
 
 .step-number {
   font-size: 11px;
   font-family: 'JetBrains Mono', monospace;
-  color: var(--title); /* Đổi màu số thứ tự */
+  color: var(--title);
   font-weight: 600;
   min-width: 18px;
   padding-top: 1px;
+  margin-right: 2px;
 }
 
 .step-text {
   font-size: 12px;
-  color: var(--text-secondary); /* Đổi màu nội dung bước */
+  color: var(--text-secondary);
   line-height: 1.5;
+  white-space: pre-wrap;
 }
 
-/* =========================================
-   RESPONSIVE
-========================================= */
+.step-item.sub-step {
+  padding-left: 28px;
+}
+
+.step-item.sub-step .step-number {
+  display: none;
+}
+
+.step-item.sub-step .step-text {
+  font-style: italic;
+}
+
 @media (max-width: 768px) {
-  .algorithm-info-header { padding: 10px 12px; }
-  .algorithm-info-body { padding: 10px 12px; gap: 10px; }
-  .algorithm-info-name { font-size: 13px; }
-  .algorithm-info-tagline { font-size: 10px; }
-  .algorithm-info-description, .step-text { font-size: 11px; }
-  .badge { font-size: 10px; padding: 3px 8px; }
+  .algorithm-info-header {
+    padding: 10px 12px;
+  }
+  .algorithm-info-body {
+    padding: 10px 12px;
+    gap: 10px;
+  }
+  .algorithm-info-name {
+    font-size: 13px;
+  }
+  .algorithm-info-tagline {
+    font-size: 10px;
+  }
+  .algorithm-info-description,
+  .step-text {
+    font-size: 11px;
+  }
+  .badge {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
 }
 
 @media (max-width: 480px) {
-  .algorithm-info-header { padding: 8px 10px; }
-  .algorithm-info-body { padding: 8px 10px; gap: 8px; }
-  .algorithm-info-name { font-size: 12px; }
-  .algorithm-info-tagline { font-size: 9px; }
-  .badge { font-size: 9px; padding: 2px 6px; }
-  .step-number { font-size: 9px; }
-  .step-text { font-size: 10px; }
+  .algorithm-info-header {
+    padding: 8px 10px;
+  }
+  .algorithm-info-body {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+  .algorithm-info-name {
+    font-size: 12px;
+  }
+  .algorithm-info-tagline {
+    font-size: 9px;
+  }
+  .badge {
+    font-size: 9px;
+    padding: 2px 6px;
+  }
+  .step-number {
+    font-size: 9px;
+  }
+  .step-text {
+    font-size: 10px;
+  }
 }
 
-/* ====================================================
-   VŨ KHÍ TỐI THƯỢNG: ÉP MÀU TRỰC TIẾP CHO LIGHT MODE
-==================================================== */
-
-/* Ép tên thuật toán thành màu xanh đậm */
 body.light-theme .algorithm-info-name {
-    color: #1e40af !important; 
+  color: #1e40af !important;
 }
 
-/* Ép chữ "CÁC BƯỚC THỰC HIỆN" thành màu xám đậm */
 body.light-theme .steps-title {
-    color: #64748b !important; 
+  color: #64748b !important;
 }
 
-/* Kèm theo ép màu cho chữ tag line (ví dụ: selection-sort) cho đồng bộ */
 body.light-theme .algorithm-info-tagline {
-    color: #2563eb !important;
+  color: #2563eb !important;
 }

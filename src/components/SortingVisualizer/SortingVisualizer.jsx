@@ -54,8 +54,8 @@ const SortingVisualizer = () => {
   const stepStatus =
     currentStepData?.action ||
     (isSearchMode
-      ? 'Nhấn "Bắt đầu" để tìm kiếm'
-      : 'Nhấn "Bắt đầu" để sắp xếp');
+      ? 'Nhấn "Bắt đầu" hoặc "Bước tiếp"'
+      : 'Nhấn "Bắt đầu" hoặc "Bước tiếp"');
   const isCompleted =
     currentStepData && currentStep === steps.length - 1;
 
@@ -127,4 +127,4 @@ const SortingVisualizer = () => {
   );
 };
 
-export default SortingVisualizer; //comment de push len git
+export default SortingVisualizer;
