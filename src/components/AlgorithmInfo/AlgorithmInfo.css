@@ -142,8 +142,9 @@ body.light-theme .badge-unstable {
   color: var(--title);
   font-weight: 600;
   min-width: 18px;
-  padding-top: 1px;
   margin-right: 2px;
+  padding-top: 2px;
+  line-height: 1.5;
 }
 
 .step-text {

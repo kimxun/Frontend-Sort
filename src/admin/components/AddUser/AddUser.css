@@ -208,3 +208,49 @@ body.light-theme .eye-icon:hover {
         right: 12px;
     }
 }
+body.light-theme .add-user-page,
+body.light-theme .edit-user-page {
+    color: #1f2937;
+}
+
+body.light-theme .breadcrumb {
+    color: #64748b;
+}
+
+body.light-theme .page-header h1 {
+    color: #111827;
+}
+
+body.light-theme .close-btn {
+    color: #64748b;
+}
+
+body.light-theme .close-btn:hover {
+    color: #111827;
+}
+
+body.light-theme .add-user-form,
+body.light-theme .edit-user-form {
+    background: #ffffff;
+    border-color: #e2e8f0;
+}
+
+body.light-theme .form-group label {
+    color: #475569;
+}
+
+body.light-theme .form-group input,
+body.light-theme .form-group select {
+    background: #f8fafc;
+    border-color: #cbd5e1;
+    color: #1f2937;
+}
+
+body.light-theme .form-group input::placeholder {
+    color: #94a3b8;
+}
+
+body.light-theme .cancel-btn {
+    border-color: #cbd5e1;
+    color: #1f2937;
+}

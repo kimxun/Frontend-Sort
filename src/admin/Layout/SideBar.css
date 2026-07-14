@@ -216,3 +216,7 @@ body.light-theme .sidebar-btn.logout-btn:hover {
     background: #fee2e2;
     color: #b91c1c;
 }
+body.light-theme .sidebar-logo h2 {
+  color: #0f172a !important;
+  opacity: 1 !important;
+}

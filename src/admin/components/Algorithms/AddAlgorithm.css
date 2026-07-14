@@ -190,15 +190,15 @@
     grid-template-columns: 1fr;
     gap: 16px;
   }
-  
+
   .add-algorithm-page {
     padding: 20px;
   }
-  
+
   .add-algorithm-form {
     padding: 20px;
   }
-  
+
   .page-header h1 {
     font-size: 24px;
   }
@@ -313,4 +313,60 @@
   border-radius: 6px;
   margin-bottom: 16px;
   font-size: 13px;
+}
+
+body.light-theme .add-algorithm-page {
+  color: #1f2937;
+  background-color: #ffffff;
+}
+
+body.light-theme .breadcrumb {
+  color: #64748b;
+}
+
+body.light-theme .page-header h1 {
+  color: #111827;
+}
+
+body.light-theme .close-btn {
+  color: #64748b;
+}
+
+body.light-theme .close-btn:hover {
+  color: #111827;
+}
+
+body.light-theme .add-algorithm-form {
+  background: #ffffff;
+}
+
+body.light-theme .form-group label {
+  color: #475569;
+}
+
+body.light-theme .form-group input,
+body.light-theme .form-group select,
+body.light-theme .form-group textarea {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #1f2937;
+}
+
+body.light-theme .form-group input::placeholder,
+body.light-theme .form-group textarea::placeholder {
+  color: #94a3b8;
+}
+
+body.light-theme .upload-box {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+body.light-theme .upload-hint {
+  color: #64748b;
+}
+
+body.light-theme .cancel-btn {
+  border-color: #cbd5e1;
+  color: #1f2937;
 }
