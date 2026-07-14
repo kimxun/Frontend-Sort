@@ -1,5 +1,7 @@
 import api from './api';
 
+const getGuestId = () => localStorage.getItem('guest_id');
+
 export const getAlgorithms = async (page = 1, limit = 5) => {
   const response = await api.get(`/algorithms?page=${page}&limit=${limit}`);
   return response.data;
@@ -15,6 +17,11 @@ export const getAlgorithmSteps = async (algorithm, array, sortOrder) => {
   const headers = {};
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
+  } else {
+    const guestId = getGuestId();
+    if (guestId) {
+      headers['X-Guest-ID'] = guestId;
+    }
   }
 
   const response = await api.post('/algorithms/sort',
@@ -57,6 +64,11 @@ export const searchAlgorithmSteps = async (algorithm, array, target) => {
   const headers = {};
   if (token) {
     headers['Authorization'] = `Bearer ${token}`;
+  } else {
+    const guestId = getGuestId();
+    if (guestId) {
+      headers['X-Guest-ID'] = guestId;
+    }
   }
 
   const response = await api.post(`/algorithms/${algorithm.id}/search`,
