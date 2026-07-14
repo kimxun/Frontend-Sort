@@ -55,8 +55,8 @@
 
 .variables-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 6px;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 8px;
 }
 
 /* Các ô chứa biến (Độ dài mảng, Bước hiện tại...) */
@@ -64,11 +64,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 10px;
+  gap: 10px;
+  padding: 9px 10px;
   border-radius: 7px;
   background: var(--card-header) !important; /* Đổi cục đen thui thành nền linh hoạt theo theme */
   border: 1px solid var(--border);
   transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  min-width: 0;
 }
 
 .variable-item.changed {
@@ -81,6 +83,8 @@
   font-size: 12px;
   font-family: 'JetBrains Mono', monospace;
   color: var(--title) !important; /* Chữ tên biến màu xanh dương nhạt/đậm tùy theme */
+  line-height: 1.45;
+  min-width: 0;
 }
 
 .variable-value {
@@ -88,6 +92,22 @@
   font-family: 'JetBrains Mono', monospace;
   color: var(--heading) !important; /* Giá trị biến sẽ có màu nổi bật */
   font-weight: 700;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+@media (min-width: 1280px) {
+  .variables-content {
+    padding: 12px;
+  }
+
+  .variables-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .variable-item {
+    min-height: 44px;
+  }
 }
 
 /* ====================================================

@@ -52,6 +52,25 @@ export default function EditUser() {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
+        const trimmedFullName = formData.full_name.trim();
+        const trimmedEmail = formData.email.trim();
+
+        if (!trimmedFullName) {
+            toast.error("Vui lòng nhập họ và tên");
+            return;
+        }
+
+        if (!trimmedEmail) {
+            toast.error("Vui lòng nhập email");
+            return;
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(trimmedEmail)) {
+            toast.error("Email không đúng định dạng");
+            return;
+        }
+
         if (formData.password && formData.password !== formData.confirmPassword) {
             toast.error("Mật khẩu mới không trùng khớp!");
             return;
@@ -59,8 +78,8 @@ export default function EditUser() {
 
         try {
             const payload = {
-                full_name: formData.full_name,
-                email: formData.email,
+                full_name: trimmedFullName,
+                email: trimmedEmail,
                 role: Number(formData.role),
                 status: Number(formData.status),
             };
@@ -70,12 +89,9 @@ export default function EditUser() {
             }
 
             await editUser(formData.id, payload);
-            toast.success("Cập nhật thông tin người dùng thành công!");
             navigate("/admin/users");
-        } catch (err) {
-            console.error(err);
-            const errorMessage = err?.response?.data?.message || err.message || "Cập nhật thất bại!";
-            toast.error(errorMessage);
+        } catch {
+            // AdminContext already shows the API error toast.
         }
     };
 

@@ -72,14 +72,9 @@ export default function AddUser() {
 
         try {
             await addUser(payload);
-            toast.success("Tạo người dùng thành công");
             navigate("/admin/users");
-        } catch (err) {
-            const message =
-                err.response?.data?.message ||
-                err.message ||
-                "Đã có lỗi xảy ra, vui lòng thử lại";
-            toast.error(message);
+        } catch {
+            // AdminContext already shows the API error toast.
         }
     };
 

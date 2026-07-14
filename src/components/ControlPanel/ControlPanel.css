@@ -214,7 +214,7 @@ button:disabled {
   stroke: currentColor;
 }
 
-.array-input-wrapper { flex: 1; max-width: 340px; }
+.array-input-wrapper { flex: 1 1 260px; max-width: 100%; }
 .target-input-wrapper { flex: 1; max-width: 200px; }
 
 .array-input,
@@ -244,10 +244,10 @@ button:disabled {
 
 .btn-apply, .btn-random { padding: 8px 16px; }
 
-@media (min-width: 1301px) {
+@media (min-width: 769px) {
   .control-panel {
     gap: 8px;
-    padding: 12px;
+    padding: clamp(10px, 1vw, 14px);
   }
 
   .algorithm-options {
@@ -260,13 +260,13 @@ button:disabled {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 8px;
+    gap: clamp(6px, 0.7vw, 10px);
     width: 100%;
   }
 
   .select-wrapper {
-    flex: 1 1 160px;
-    min-width: 150px;
+    flex: 0 1 170px;
+    min-width: 145px;
     max-width: 220px;
   }
 
@@ -275,13 +275,16 @@ button:disabled {
   }
 
   .speed-control {
-    flex: 1 1 190px;
-    min-width: 190px;
+    flex: 1 1 160px;
+    min-width: 150px;
+    max-width: 280px;
+    gap: 6px;
+    padding-inline: 8px;
   }
 
   .array-input-wrapper {
     flex: 2 1 220px;
-    min-width: 200px;
+    min-width: 210px;
     max-width: none;
   }
 
@@ -292,7 +295,7 @@ button:disabled {
   }
 
   .control-row > button {
-    flex: 0 0 auto;
+    flex: 0 1 auto;
   }
 
   button,
@@ -300,11 +303,13 @@ button:disabled {
   .array-input,
   .target-input,
   .speed-control {
-    min-height: 36px;
+    min-height: 34px;
   }
 
   button,
   .algorithm-select {
+    padding-left: 10px;
+    padding-right: 10px;
     padding-top: 6px;
     padding-bottom: 6px;
   }
@@ -316,8 +321,28 @@ button:disabled {
   }
 
   .speed-slider {
-    min-width: 74px;
+    min-width: 54px;
     flex: 1;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1279px) {
+  .select-wrapper {
+    flex: 1 1 190px;
+    max-width: none;
+  }
+
+  .speed-control {
+    flex: 1 1 240px;
+    max-width: none;
+  }
+
+  .control-row > button {
+    flex: 1 1 130px;
+  }
+
+  .array-input-wrapper {
+    flex: 2 1 360px;
   }
 }
 
