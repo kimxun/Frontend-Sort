@@ -77,7 +77,9 @@ export default function ControlPanel() {
       const parsedTarget = parseInt(targetInput, 10);
 
       if (isNaN(parsedTarget)) {
-        toast.warning("Vui lòng nhập giá trị cần tìm hợp lệ");
+        toast.warning("Vui lòng nhập giá trị cần tìm hợp lệ", {
+          position: "top-center"
+        });
         return;
       }
 
@@ -101,7 +103,9 @@ export default function ControlPanel() {
       if (isSearchMode) {
         const parsedTarget = parseInt(targetInput, 10);
         if (isNaN(parsedTarget)) {
-          toast.warning("Vui lòng nhập giá trị cần tìm");
+          toast.warning("Vui lòng nhập giá trị cần tìm", {
+            position: "top-center"
+          });
           return;
         }
         setTarget(parsedTarget);
@@ -133,7 +137,9 @@ export default function ControlPanel() {
     if (isSearchMode) {
       const parsedTarget = parseInt(targetInput, 10);
       if (isNaN(parsedTarget)) {
-        toast.warning("Vui lòng nhập giá trị cần tìm");
+        toast.warning("Vui lòng nhập giá trị cần tìm", {
+          position: "top-center"
+        });
         return;
       }
       setTarget(parsedTarget);
