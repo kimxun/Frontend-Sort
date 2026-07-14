@@ -4,7 +4,6 @@
   flex-direction: column;
   background: var(--card-header);
   border: 1px solid var(--border);
-  box-shadow: inset 0 2px 15px rgba(0, 0, 0, 0.03);
   border-radius: 12px;
   padding: 16px;
   min-height: 350px;
@@ -174,7 +173,7 @@ body.light-theme .step-status.completed {
     padding: 12px 4px 8px;
     min-height: 200px;
     overflow-x: auto;
-    justify-content: center;   
+    justify-content: center;
   }
 
   .bar-wrapper {
@@ -218,7 +217,7 @@ body.light-theme .step-status.completed {
     padding: 8px 2px 6px;
     min-height: 160px;
     overflow-x: auto;
-    justify-content: center;  
+    justify-content: center;
   }
 
   .bar-wrapper {

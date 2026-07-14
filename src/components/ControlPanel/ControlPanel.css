@@ -436,13 +436,13 @@ body.light-theme .array-input,
 body.light-theme .target-input {
   background: #f8fafc;
   border-color: #cbd5e1;
-  color: #0f172a;
+  color: #0f172a !important;
 }
 
 body.light-theme .array-input::placeholder,
 body.light-theme .target-input::placeholder {
-  color: #2563eb;
-  opacity: 0.72;
+  color: #475569 !important;
+  opacity: 1 !important;
 }
 
 body.light-theme .btn-reset,
