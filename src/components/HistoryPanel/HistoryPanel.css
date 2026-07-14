@@ -122,3 +122,26 @@
   font-size: 0.85rem;
   line-height: 1.4;
 }
+
+body.light-theme .history-item {
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+body.light-theme .history-item:hover {
+  background-color: #eef4ff;
+}
+
+body.light-theme .history-item.active {
+  background-color: #eff6ff;
+  border-color: #2563eb;
+}
+
+body.light-theme .history-array {
+  color: #059669;
+}
+
+body.light-theme .history-action-text,
+body.light-theme .history-empty {
+  color: #64748b;
+}

@@ -1,0 +1,29 @@
+﻿Frontend-Sort/
+├── .vite
+│   └── deps
+├── guidelines
+│   └── Guidelines.md
+├── public
+│   ├── templates
+│   ├── favicon.svg
+│   ├── icons.svg
+│   └── pufferfish.svg
+├── src
+│   ├── admin
+│   ├── components
+│   ├── context
+│   ├── pages
+│   ├── services
+│   ├── styles
+│   ├── utils
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+├── .gitignore
+├── eslint.config.js
+├── index.html
+├── package.json
+├── package-lock.json
+├── README.md
+├── tree.txt
+└── vite.config.js

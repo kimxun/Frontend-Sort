@@ -124,6 +124,8 @@ body.light-theme .dashboard-page,
 body.light-theme .users-page,
 body.light-theme .add-user-page,
 body.light-theme .edit-user-page,
+body.light-theme .add-algorithm-page,
+body.light-theme .edit-algorithm-page,
 body.light-theme .algorithms-page,
 body.light-theme .simulation-history-page {
     color: #0f172a;
@@ -189,6 +191,17 @@ body.light-theme .admin-main .algorithm-chip {
 
 body.light-theme .simulation-eyebrow {
     color: #6d28d9 !important;
+}
+
+body.light-theme .simulation-refresh-btn {
+    background: #6d4aff !important;
+    border-color: rgba(124, 92, 255, 0.38) !important;
+    color: #ffffff !important;
+    font-weight: 700;
+}
+
+body.light-theme .simulation-refresh-btn:hover:not(:disabled) {
+    background: #7c5cff !important;
 }
 
 body.light-theme .simulation-stat-card svg {
@@ -315,6 +328,63 @@ body.light-theme .admin-main .close-btn:hover {
     color: #1d4ed8;
     border-color: #2563eb;
     background: #eef4ff;
+}
+
+body.light-theme .legend-item,
+body.light-theme .filter-group {
+    background: #f8fafc !important;
+    border-color: #dbe4ef !important;
+}
+
+body.light-theme .legend-item span,
+body.light-theme .legend-item strong,
+body.light-theme .toolbar h3,
+body.light-theme .name,
+body.light-theme .email,
+body.light-theme .card span,
+body.light-theme .stat-card span,
+body.light-theme .stat-card small,
+body.light-theme .chart-scale,
+body.light-theme .activity-item small {
+    color: #334155 !important;
+}
+
+body.light-theme .donut-total {
+    fill: #0f172a !important;
+}
+
+body.light-theme .donut-label {
+    fill: #475569 !important;
+}
+
+body.light-theme .donut-ring,
+body.light-theme .chart-grid-line {
+    stroke: #cbd5e1 !important;
+}
+
+body.light-theme .chart-dot {
+    stroke: #ffffff !important;
+}
+
+body.light-theme .filter-btn {
+    color: #334155 !important;
+}
+
+body.light-theme .filter-btn:hover,
+body.light-theme .filter-btn.active {
+    background: #e0e7ff !important;
+    color: #3730a3 !important;
+}
+
+body.light-theme .modal-content p,
+body.light-theme .users-page .modal-content p {
+    color: #334155 !important;
+}
+
+body.light-theme .btn-secondary,
+body.light-theme .users-page .btn-secondary {
+    background: #e2e8f0 !important;
+    color: #1f2937 !important;
 }
 
 @media (max-width: 768px) {

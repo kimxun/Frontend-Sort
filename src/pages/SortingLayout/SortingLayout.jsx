@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import ControlPanel from '../../components/ControlPanel/ControlPanel';
 import AlgorithmInfo from '../../components/AlgorithmInfo/AlgorithmInfo';
 import VariablesPanel from '../../components/VariablesPanel/VariablesPanel';
@@ -8,26 +8,11 @@ import HistoryPanel from '../../components/HistoryPanel/HistoryPanel';
 import './SortingLayout.css';
 import { logout, getCurrentUser } from '../../services/authService';
 import { toast } from 'react-toastify';
-import { FaMoon, FaSun } from "react-icons/fa";
+import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
 
 
 
-const SortingLayout = () => {
-  
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") !== "light";
-  });
-
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.remove("light-theme");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.body.classList.add("light-theme");
-      localStorage.setItem("theme", "light");
-    }
-  }, [darkMode]);
-
+const SortingLayout = ({ darkMode, onToggleTheme }) => {
   const user = getCurrentUser();
 
   const handleLogoutConfirm = () => {
@@ -100,12 +85,7 @@ const SortingLayout = () => {
       </div>
 
       <div className="header-actions">
-        <button
-            className="theme-toggle-btn"
-            onClick={() => setDarkMode(!darkMode)}
-        >
-            {darkMode ? <FaSun /> : <FaMoon />}
-        </button>
+        <ThemeToggle darkMode={darkMode} onToggle={onToggleTheme} />
         {user?.role === 1 && (
           <button
             className="header-admin-btn"

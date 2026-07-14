@@ -2,12 +2,13 @@ import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { forgotPassword, resetPassword, verifyOtp } from '../../services/authService';
+import ThemeToggle from '../../components/ThemeToggle/ThemeToggle';
 import './ForgotPassword.css';
 
 const OTP_LENGTH = 6;
 const OTP_TTL = 60;
 
-const ForgotPassword = () => {
+const ForgotPassword = ({ darkMode, onToggleTheme }) => {
   const navigate = useNavigate();
   const otpRefs = useRef([]);
   const [step, setStep] = useState('email');
@@ -120,6 +121,7 @@ const ForgotPassword = () => {
 
   return (
     <div className="forgot-container">
+      <ThemeToggle darkMode={darkMode} onToggle={onToggleTheme} className="auth-theme-toggle" />
       <div className="forgot-card">
         <h2>{step === 'reset' ? 'Đổi mật khẩu' : 'Quên mật khẩu'}</h2>
 

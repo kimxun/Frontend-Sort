@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom";
+import ThemeToggle from "../../components/ThemeToggle/ThemeToggle";
 import "./Forbidden.css";
 
-export default function Forbidden() {
+export default function Forbidden({ darkMode, onToggleTheme }) {
     return (
         <div className="forbidden-container">
+            <ThemeToggle darkMode={darkMode} onToggle={onToggleTheme} className="auth-theme-toggle" />
             <div className="forbidden-card">
                 <h1>403</h1>
                 <h2>Không có quyền truy cập</h2>

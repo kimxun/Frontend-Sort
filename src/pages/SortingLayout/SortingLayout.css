@@ -18,18 +18,18 @@
 body.light-theme {
   --bg: #eef3f9;
   --card: #ffffff;
-  --card-header: #f5f7fb;
+  --card-header: #eef4ff;
   --card-content: #ffffff;
-  --text: #1f2937;
-  --text-secondary: #334155;
-  --text-muted: #64748b;
-  --title: #2563eb;
-  --heading: #1e40af;
+  --text: #0f172a;
+  --text-secondary: #1f2937;
+  --text-muted: #475569;
+  --title: #1d4ed8;
+  --heading: #1e3a8a;
   --button: #2563eb;
   --button-hover: #1d4ed8;
-  --border: #dbe4ef;
-  --scroll-track: #edf2f7;
-  --scroll-thumb: #94a3b8;
+  --border: #cbd5e1;
+  --scroll-track: #e2e8f0;
+  --scroll-thumb: #64748b;
 }
 
 .sorting-layout {
@@ -296,6 +296,8 @@ body.light-theme {
   font-size: 14px;
 }
 
+body.light-theme .brand-title h1 { color: #1e40af !important; }
+body.light-theme .brand-title p { color: #475569 !important; }
 .theme-toggle-btn {
   width: 42px;
   height: 42px;
@@ -332,7 +334,7 @@ body,
 .code-content,
 .header-login-btn,
 .header-admin-btn,
-.theme-toggle-btn,
+.theme-toggle,
 .brand-title h1,
 .brand-title p,
 .header-username {

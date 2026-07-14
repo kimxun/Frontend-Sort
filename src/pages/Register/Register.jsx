@@ -4,8 +4,9 @@ import './Register.css';
 import { register } from '../../services/registerService';
 import { toast } from 'react-toastify';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
+import ThemeToggle from '../../components/ThemeToggle/ThemeToggle';
 
-const Register = () => {
+const Register = ({ darkMode, onToggleTheme }) => {
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -55,6 +56,7 @@ const Register = () => {
 
   return (
     <div className="register-container">
+      <ThemeToggle darkMode={darkMode} onToggle={onToggleTheme} className="auth-theme-toggle" />
       <div className="register-card">
         <h2>Đăng ký tài khoản</h2>
         <form onSubmit={handleSubmit}>

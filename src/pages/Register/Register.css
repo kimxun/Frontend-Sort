@@ -6,6 +6,7 @@ justify-content: center;
 align-items: center;
 padding: 20px;
 font-family: "Segoe UI", sans-serif;
+transition: background 0.35s ease, color 0.35s ease;
 }
 
 .register-card {
@@ -16,6 +17,7 @@ padding: 32px;
 border-radius: 16px;
 border: 1px solid rgba(255,255,255,0.08);
 box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
 
 .register-card h2 {
@@ -136,22 +138,44 @@ border-color: #dbe4ef;
 box-shadow: 0 16px 42px rgba(15, 23, 42, 0.1);
 }
 
+body.light-theme .register-card h2 {
+color: #1e3a8a !important;
+font-weight: 800;
+}
+
 body.light-theme .input-group input {
-background: #f8fafc;
-border-color: #cbd5e1;
-color: #0f172a;
+background: #eef4ff !important;
+border-color: #bfdbfe !important;
+color: #0f172a !important;
+}
+
+body.light-theme .input-group input:-webkit-autofill {
+background: #eef4ff !important;
+border-color: #bfdbfe !important;
+color: #0f172a !important;
+-webkit-text-fill-color: #0f172a !important;
+box-shadow: 0 0 0 1000px #eef4ff inset !important;
 }
 
 body.light-theme .input-group input::placeholder {
-color: #64748b;
+color: #334155 !important;
+opacity: 1;
 }
 
 body.light-theme .password-toggle {
-color: #64748b;
+color: #475569 !important;
 }
 
 body.light-theme .password-toggle:hover {
+color: #1d4ed8 !important;
+}
+
+body.light-theme .back-login {
 color: #2563eb;
+}
+
+body.light-theme .back-login:hover {
+color: #1d4ed8;
 }
 
 @media (max-width: 480px) {
