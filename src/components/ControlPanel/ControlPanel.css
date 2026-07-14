@@ -244,7 +244,7 @@ button:disabled {
 
 .btn-apply, .btn-random { padding: 8px 16px; }
 
-@media (min-width: 1201px) {
+@media (min-width: 1301px) {
   .control-panel {
     gap: 8px;
     padding: 12px;
@@ -257,47 +257,42 @@ button:disabled {
   }
 
   .control-row {
-    display: grid;
-    gap: 8px;
+    display: flex;
+    flex-wrap: wrap;
     align-items: center;
+    gap: 8px;
     width: 100%;
   }
 
-  .control-row:first-child {
-    grid-template-columns:
-      minmax(150px, 200px)
-      minmax(96px, max-content)
-      minmax(104px, max-content)
-      minmax(82px, max-content)
-      minmax(108px, max-content)
-      minmax(190px, 1fr);
+  .select-wrapper {
+    flex: 1 1 160px;
+    min-width: 150px;
+    max-width: 220px;
   }
 
-  .control-panel.search-mode .control-row:first-child {
-    grid-template-columns:
-      minmax(150px, 210px)
-      minmax(96px, max-content)
-      minmax(104px, max-content)
-      minmax(82px, max-content)
-      minmax(210px, 1fr);
+  .algorithm-select {
+    width: 100%;
   }
 
-  .control-row + .control-row {
-    grid-template-columns:
-      minmax(220px, 1fr)
-      minmax(120px, 170px)
-      minmax(92px, max-content)
-      minmax(150px, max-content);
+  .speed-control {
+    flex: 1 1 190px;
+    min-width: 190px;
   }
 
-  .select-wrapper,
-  .algorithm-select,
-  .speed-control,
-  .array-input-wrapper,
-  .target-input-wrapper {
-    min-width: 0;
+  .array-input-wrapper {
+    flex: 2 1 220px;
+    min-width: 200px;
     max-width: none;
-    width: 100%;
+  }
+
+  .target-input-wrapper {
+    flex: 1 1 150px;
+    min-width: 140px;
+    max-width: none;
+  }
+
+  .control-row > button {
+    flex: 0 0 auto;
   }
 
   button,
@@ -323,10 +318,6 @@ button:disabled {
   .speed-slider {
     min-width: 74px;
     flex: 1;
-  }
-
-  .speed-control {
-    min-width: 190px;
   }
 }
 
