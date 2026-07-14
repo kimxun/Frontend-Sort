@@ -5,8 +5,9 @@ import { getCurrentUser } from '../../services/authService';
 import './Login.css';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import ThemeToggle from '../../components/ThemeToggle/ThemeToggle';
 
-const Login = () => {
+const Login = ({ darkMode, onToggleTheme }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -42,6 +43,7 @@ const Login = () => {
 
   return (
     <div className="login-container">
+      <ThemeToggle darkMode={darkMode} onToggle={onToggleTheme} className="auth-theme-toggle" />
       <div className="login-card">
         <h2>Đăng nhập</h2>
         <form onSubmit={handleSubmit}>

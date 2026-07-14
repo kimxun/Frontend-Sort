@@ -127,7 +127,7 @@ body.light-theme .variable-value {
 
 /* Ép buộc màu chữ tiêu đề cho Light Mode */
 body.light-theme .variables-title {
-  color: #64748b !important; /* Màu xám đậm để nổi trên nền trắng */
+  color: #334155 !important; /* Màu xám đậm để nổi trên nền trắng */
   font-weight: 700 !important;
 }
 

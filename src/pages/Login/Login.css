@@ -6,6 +6,7 @@
   align-items: center;
   padding: 20px;
   font-family: "Segoe UI", sans-serif;
+  transition: background 0.35s ease, color 0.35s ease;
 }
 
 .login-card {
@@ -16,6 +17,7 @@
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,0.08);
   box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
 }
 
 .login-card h2 {
@@ -41,6 +43,10 @@
   outline: none;
   transition: 0.2s;
   box-sizing: border-box;
+}
+
+.input-group input::placeholder {
+  color: #94a3b8;
 }
 
 .input-group input[type="text"]:focus,
@@ -135,6 +141,59 @@
 .forgotpassword-link {
   text-align: right;
   margin-left: auto;
+}
+
+body.light-theme .login-container {
+  background: #eef3f9;
+}
+
+body.light-theme .login-card {
+  background: #ffffff;
+  border-color: #dbe4ef;
+  box-shadow: 0 16px 42px rgba(15, 23, 42, 0.1);
+}
+
+body.light-theme .login-card h2 {
+  color: #1e3a8a !important;
+  font-weight: 800;
+}
+
+body.light-theme .input-group input[type="text"],
+body.light-theme .input-group input[type="password"],
+body.light-theme .input-group input:-webkit-autofill {
+  background: #eef4ff !important;
+  border-color: #bfdbfe !important;
+  color: #0f172a !important;
+  -webkit-text-fill-color: #0f172a !important;
+  box-shadow: 0 0 0 1000px #eef4ff inset !important;
+}
+
+body.light-theme .input-group input::placeholder {
+  color: #475569 !important;
+  opacity: 1;
+}
+
+body.light-theme .show-password {
+  color: #0f172a;
+  font-weight: 500;
+}
+
+body.light-theme .show-password input {
+  width: 18px;
+  height: 18px;
+  accent-color: #2563eb;
+  filter: none;
+}
+
+body.light-theme .show-password:hover span,
+body.light-theme .register-link,
+body.light-theme .forgotpassword-link {
+  color: #2563eb;
+}
+
+body.light-theme .register-link:hover,
+body.light-theme .forgotpassword-link:hover {
+  color: #1d4ed8;
 }
 
 @media (max-width: 480px) {

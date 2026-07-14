@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { SortingProvider } from "./context/SortingContext";
 import { AdminProvider } from "./context/AdminContext";
@@ -17,21 +18,37 @@ import DashboardPage from "./admin/components/DashboardPage/DashboardPage";
 import SimulationHistoryPage from "./admin/components/SimulationHistory/SimulationHistoryPage";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
 function App() {
+  const [darkMode, setDarkMode] = useState(() => {
+    return localStorage.getItem("theme") !== "light";
+  });
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.remove("light-theme");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.add("light-theme");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
+
+  const toggleTheme = () => setDarkMode((value) => !value);
+
   return (
     <BrowserRouter>
       <SortingProvider>
         <Routes>
-          <Route path="/" element={<SortingPage />} />
-          <Route path="/:algorithmSlug" element={<SortingPage />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/forgotpassword" element={<ForgotPassword />} />
-          <Route path="/403" element={<Forbidden />} />
+          <Route path="/" element={<SortingPage darkMode={darkMode} onToggleTheme={toggleTheme} />} />
+          <Route path="/:algorithmSlug" element={<SortingPage darkMode={darkMode} onToggleTheme={toggleTheme} />} />
+          <Route path="/login" element={<Login darkMode={darkMode} onToggleTheme={toggleTheme} />} />
+          <Route path="/register" element={<Register darkMode={darkMode} onToggleTheme={toggleTheme} />} />
+          <Route path="/forgot-password" element={<ForgotPassword darkMode={darkMode} onToggleTheme={toggleTheme} />} />
+          <Route path="/forgotpassword" element={<ForgotPassword darkMode={darkMode} onToggleTheme={toggleTheme} />} />
+          <Route path="/403" element={<Forbidden darkMode={darkMode} onToggleTheme={toggleTheme} />} />
           <Route path="/admin" element={
             <AdminRoute>
               <AdminProvider>
-                <AdminLayout />
+                <AdminLayout darkMode={darkMode} onToggleTheme={toggleTheme} />
               </AdminProvider>
             </AdminRoute>
           }>

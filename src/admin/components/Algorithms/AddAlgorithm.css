@@ -317,7 +317,7 @@
 
 body.light-theme .add-algorithm-page {
   color: #1f2937;
-  background-color: #ffffff;
+  background-color: #eef3f9;
 }
 
 body.light-theme .breadcrumb {
@@ -362,11 +362,34 @@ body.light-theme .upload-box {
   border-color: #cbd5e1;
 }
 
-body.light-theme .upload-hint {
-  color: #64748b;
+body.light-theme .upload-hint,
+body.light-theme .file-name,
+body.light-theme .loading-state {
+  color: #334155;
 }
 
+body.light-theme .template-btn,
+body.light-theme .remove-file-btn,
 body.light-theme .cancel-btn {
   border-color: #cbd5e1;
   color: #1f2937;
+}
+
+body.light-theme .template-btn:hover,
+body.light-theme .remove-file-btn:hover,
+body.light-theme .cancel-btn:hover {
+  background: #eef4ff;
+  border-color: #2563eb;
+  color: #1d4ed8;
+}
+
+body.light-theme .upload-status,
+body.light-theme .button-group {
+  border-top-color: #dbe4ef;
+}
+
+body.light-theme .form-group .code-font {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+  color: #3730a3;
 }
