@@ -23,22 +23,23 @@ body.light-theme {
 }
 
 .code-header {
-  padding: 12px 16px;
-  font-size: 15px;
+  padding: 4px 10px;
+  font-size: 12px;
   font-weight: 700;
   color: var(--heading);
   background: var(--card-header);
   border-bottom: 1px solid var(--border);
   font-family: 'JetBrains Mono', monospace;
+  flex-shrink: 0;
 }
 
 .code-container {
   flex: 1;
-  height: 320px !important;
-  max-height: 320px !important;
+  height: 80px !important;
+  max-height: 80px !important;
   overflow-y: auto !important;
   overflow-x: auto !important;
-  padding: 12px 0;
+  padding: 2px 0;
   box-sizing: border-box;
   background: var(--card-content);
 }
@@ -46,10 +47,10 @@ body.light-theme {
 .code-line {
   display: flex;
   align-items: center;
-  min-height: 26px;
+  min-height: 18px;
   background: transparent;
-  border-left: 3px solid transparent;
-  padding-right: 16px;
+  border-left: 2px solid transparent;
+  padding-right: 6px;
 }
 
 .code-line.active {
@@ -58,14 +59,15 @@ body.light-theme {
 }
 
 .line-number {
-  min-width: 40px;
+  min-width: 26px;
   text-align: right;
-  padding-right: 16px;
-  padding-left: 8px;
-  font-size: 12px;
+  padding-right: 8px;
+  padding-left: 4px;
+  font-size: 9px;
   color: var(--text-muted);
   font-family: 'JetBrains Mono', monospace;
   user-select: none;
+  flex-shrink: 0;
 }
 
 .line-number[data-active="true"] {
@@ -74,18 +76,19 @@ body.light-theme {
 }
 
 .code-text {
-  font-size: 13px;
+  font-size: 10px;
   font-family: 'JetBrains Mono', monospace;
   color: var(--text);
   white-space: pre;
 }
 
 .executing-indicator {
-  margin-left: 12px;
-  font-size: 11px;
+  margin-left: 6px;
+  font-size: 8px;
   color: var(--title);
   opacity: 0.8;
   animation: pulse 1.5s infinite;
+  flex-shrink: 0;
 }
 
 @keyframes pulse {
@@ -94,8 +97,8 @@ body.light-theme {
 }
 
 .code-container::-webkit-scrollbar {
-  width: 6px !important;
-  height: 6px !important;
+  width: 4px !important;
+  height: 4px !important;
 }
 
 .code-container::-webkit-scrollbar-track {
@@ -108,44 +111,41 @@ body.light-theme {
 }
 
 @media (max-width: 768px) {
-  .code-panel {
-    width: 100%;
-  }
   .code-container {
-    height: 220px !important;
-    max-height: 220px !important;
-    padding: 8px 0;
+    height: 90px !important;
+    max-height: 90px !important;
+    padding: 2px 0;
   }
   .line-number {
-    min-width: 30px;
-    padding-right: 8px;
-    font-size: 10px;
+    min-width: 20px;
+    padding-right: 4px;
+    font-size: 8px;
   }
   .code-text {
-    font-size: 11px;
+    font-size: 9px;
   }
   .executing-indicator {
-    font-size: 9px;
-    margin-left: 6px;
+    font-size: 7px;
+    margin-left: 4px;
   }
   .code-header {
-    font-size: 13px;
-    padding: 10px 12px;
+    font-size: 11px;
+    padding: 3px 8px;
   }
 }
 
 @media (max-width: 480px) {
   .code-container {
-    height: 180px !important;
-    max-height: 180px !important;
+    height: 70px !important;
+    max-height: 70px !important;
   }
   .line-number {
-    min-width: 24px;
-    padding-right: 6px;
-    font-size: 9px;
+    min-width: 16px;
+    padding-right: 3px;
+    font-size: 7px;
   }
   .code-text {
-    font-size: 10px;
+    font-size: 8px;
   }
 }
 
@@ -161,4 +161,48 @@ body.light-theme .code-text {
 body.light-theme .code-line.active {
   background: rgba(37, 99, 235, 0.1) !important;
   border-left-color: #2563eb !important;
+}
+
+/* Các style có sẵn (giữ nguyên) */
+.code-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: var(--card-content);
+  scrollbar-width: auto;
+  scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+}
+
+.code-content::-webkit-scrollbar {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.code-content::-webkit-scrollbar-track {
+  background: var(--scroll-track) !important;
+  border-radius: 12px !important;
+  margin-block: 2px;
+}
+
+.code-content::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb);
+  border-radius: 12px;
+  border: 2px solid var(--scroll-track);
+  min-height: 48px;
+}
+
+.code-content::-webkit-scrollbar-thumb:hover {
+  background: #a0b3cf !important;
+  cursor: pointer;
+}
+
+.code-content::-webkit-scrollbar-corner {
+  background-color: #0d111a;
+}
+
+.code-content > * {
+  width: 100%;
+  box-sizing: border-box;
 }
