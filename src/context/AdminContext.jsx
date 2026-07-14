@@ -29,7 +29,8 @@ export const AdminProvider = ({ children }) => {
   const [algorithmPage, setAlgorithmPage] = useState(1);
 
   const handleGlobalError = (err, defaultMsg, isAlgorithm = false) => {
-    const msg = err?.response?.data?.message || err?.message || "";
+    const errorData = err?.response?.data || {};
+    const msg = errorData.message || errorData.error || err?.message || "";
     if (err?.response?.status === 500 || msg.includes("500")) {
       if (isAlgorithm) {
         toast.error("Lỗi: Slug đã tồn tại hoặc lỗi máy chủ (500)!");
