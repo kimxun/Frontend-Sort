@@ -208,8 +208,8 @@ export const SortingProvider = ({ children }) => {
   };
 
   const generateRandomArray = () => {
-    const length = Math.floor(Math.random() * 21) + 10; 
-const newArray = Array.from({ length }, () => Math.floor(Math.random() * 100) + 1);
+    const length = Math.floor(Math.random() * 11) + 10;
+    const newArray = Array.from({ length },() => Math.floor(Math.random() * 100) + 1);
     setOriginalArray([...newArray]);
     setArray(newArray);
     setSteps([]);
