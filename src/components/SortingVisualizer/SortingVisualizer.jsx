@@ -10,6 +10,8 @@ const BAR_COLORS = {
   current:   { bg: "#a855f7", glow: "0 0 14px rgba(168,85,247,0.6)" },
   sorted:    { bg: "#10b981", glow: "0 0 12px rgba(16,185,129,0.4)" },
   found:     { bg: "#22c55e", glow: "0 0 14px rgba(34,197,94,0.6)" },
+  discarded: { bg: "#6b7280", glow: "0 0 10px rgba(107,114,128,0.35)" },
+  waiting:   { bg: "#6b7280", glow: "0 0 10px rgba(107,114,128,0.35)" },
 };
 
 const LEGEND = [
@@ -20,24 +22,30 @@ const LEGEND = [
   { id: "pivot", color: BAR_COLORS.current.bg, label: "Phần tử chốt" },
   { id: "sorted", color: BAR_COLORS.sorted.bg, label: "Đã sắp xếp" },
   { id: "found", color: BAR_COLORS.found.bg, label: "Đã tìm thấy" },
+  { id: "discarded", color: BAR_COLORS.discarded.bg, label: "Bị loại" },
+  { id: "waiting", color: BAR_COLORS.waiting.bg, label: "Chưa đụng tới" },
 ];
 
 const getBarColor = (index, stepData, isSearchMode) => {
   if (!stepData) return BAR_COLORS.default;
 
   if (isSearchMode) {
-    if (stepData.found && stepData.current_index === index) return BAR_COLORS.found;
+    const foundIndex = stepData.current_index ?? stepData.mid;
+
+    if (stepData.found && foundIndex === index) return BAR_COLORS.found;
     if (stepData.comparing?.includes(index)) return BAR_COLORS.comparing;
+    if (stepData.discarded?.includes(index)) return BAR_COLORS.discarded;
     return BAR_COLORS.default;
   }
 
-  const { comparing = [], swapping = [], candidate, pivot, sorted = [] } = stepData;
+  const { comparing = [], swapping = [], candidate, pivot, sorted = [], waiting = [] } = stepData;
 
   if (swapping.includes(index)) return BAR_COLORS.swapping;
   if (candidate === index) return BAR_COLORS.candidate;
   if (comparing.includes(index)) return BAR_COLORS.comparing;
   if (pivot === index) return BAR_COLORS.current;
   if (sorted.includes(index)) return BAR_COLORS.sorted;
+  if (waiting.includes(index)) return BAR_COLORS.waiting;
 
   return BAR_COLORS.default;
 };
@@ -76,6 +84,8 @@ const SortingVisualizer = () => {
       return algorithmInfo?.slug === 'quick-sort';
     }
     if (item.id === 'found') return isSearchMode;
+    if (item.id === 'discarded') return algorithmInfo?.slug === 'binary-search';
+    if (item.id === 'waiting') return algorithmInfo?.slug === 'quick-sort';
     if (item.id === 'swapping' || item.id === 'sorted') return !isSearchMode;
     return true;
   });

@@ -68,8 +68,8 @@ export default function ControlPanel() {
         .filter((value) => !isNaN(value) && value > 0);
 
       if (values.length > 0) {
-        if (values.length > 30) {
-          toast.warning("Chỉ được nhập tối đa 30 phần tử", {
+        if (values.length > 20) {
+          toast.warning("Chỉ được nhập tối đa 20 phần tử", {
             position: "top-center"
           });
           return;
