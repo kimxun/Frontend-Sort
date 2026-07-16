@@ -61,9 +61,7 @@ const SortingVisualizer = () => {
     : null;
   const stepStatus =
     currentStepData?.action ||
-    (isSearchMode
-      ? 'Nhấn "Bắt đầu" hoặc "Bước tiếp"'
-      : 'Nhấn "Bắt đầu" hoặc "Bước tiếp"');
+    'Nhấn "Bắt đầu" hoặc "Bước tiếp"';
   const isCompleted =
     currentStepData && currentStep === steps.length - 1;
 
@@ -113,8 +111,9 @@ const SortingVisualizer = () => {
       </div>
       <div className="bars-container">
         {safeArray.map((value, index) => {
-          const heightPct = (value / maxValue) * 100;
-          const barHeight = Math.max(heightPct * 2, 20);
+          // SỬA LỖI Ở ĐÂY: Dùng phần trăm (%) thay vì pixel cứng để cột luôn co giãn theo màn hình
+          // Chiều cao tối đa là 85% để luôn chừa lại 15% khoảng trống phía trên cho các con số
+          const heightPct = (value / maxValue) * 85; 
           const colorScheme = getBarColor(index, currentStepData, isSearchMode);
 
           return (
@@ -123,7 +122,7 @@ const SortingVisualizer = () => {
               <div
                 className="bar"
                 style={{
-                  height: `${barHeight}px`,
+                  height: `${heightPct}%`, // Set height bằng phần trăm
                   background: `linear-gradient(180deg, ${colorScheme.bg}ee, ${colorScheme.bg}99)`,
                   boxShadow: colorScheme.glow,
                 }}
