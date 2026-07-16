@@ -28,7 +28,7 @@
 .history-header > div:first-child {
   color: var(--heading) !important;
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 14px;
   margin: 0;
 }
 
@@ -46,7 +46,7 @@
   padding: 6px 12px;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 12px;
   font-weight: 500;
   transition: all 0.2s ease;
   white-space: nowrap;
@@ -100,26 +100,32 @@
 }
 
 .history-item-top {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  gap: 8px;
+  align-items: start;
   margin-bottom: 4px;
 }
 
 .history-step {
   color: var(--title); 
   font-weight: bold;
-  font-size: 0.85rem;
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 .history-array {
   color: #10b981;
-  font-size: 0.85rem;
+  font-size: 12px;
   font-family: monospace;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.4;
 }
 
 .history-action-text {
   color: var(--text-muted);
-  font-size: 0.85rem;
+  font-size: 12px;
   line-height: 1.4;
 }
 
