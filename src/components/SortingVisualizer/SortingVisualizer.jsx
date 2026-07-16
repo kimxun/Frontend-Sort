@@ -23,7 +23,7 @@ const LEGEND = [
   { id: "sorted", color: BAR_COLORS.sorted.bg, label: "Đã sắp xếp" },
   { id: "found", color: BAR_COLORS.found.bg, label: "Đã tìm thấy" },
   { id: "discarded", color: BAR_COLORS.discarded.bg, label: "Bị loại" },
-  { id: "waiting", color: BAR_COLORS.waiting.bg, label: "Chưa đụng tới" },
+  { id: "waiting", color: BAR_COLORS.waiting.bg, label: "Chưa xét đến" },
 ];
 
 const getBarColor = (index, stepData, isSearchMode) => {
