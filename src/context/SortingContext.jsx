@@ -173,7 +173,7 @@ export const SortingProvider = ({ children }) => {
         return;
       }
       setSteps(stepData);
-      setCurrentStep(-1);
+      setCurrentStep(0);
       setArray([...originalArray]);
       completionToastShownRef.current = false;
     } catch (error) {
