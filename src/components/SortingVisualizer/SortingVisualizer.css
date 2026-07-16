@@ -18,32 +18,32 @@
   justify-content: center;
   align-items: center;
   flex-wrap: wrap;
-  gap: 8px;
-  padding: 8px 4px;
+  gap: 6px;
+  padding: 6px 4px; /* Giảm padding để tiết kiệm diện tích */
   border-bottom: 1px solid var(--border);
   flex-shrink: 0;
-  min-height: 34px;
+  min-height: 30px;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 7px;
-  padding: 8px 14px;
+  gap: 6px;
+  padding: 4px 10px; /* Thu gọn nút Legend */
   border: 1px solid var(--border);
   border-radius: 4px;
   background: rgba(15, 23, 42, 0.78);
 }
 
 .legend-color {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .legend-label {
-  font-size: 12px;
+  font-size: 11px;
   color: #e5eefc;
   white-space: nowrap;
 }
@@ -57,9 +57,8 @@ body.light-theme .legend-label {
   color: #ffffff;
 }
 
-/* THAY ĐỔI: Tăng margin-bottom để tách biệt với bars */
 .step-status {
-  margin: 8px auto 14px auto;
+  margin: 8px auto 10px auto;
   padding: 2px 10px;
   color: #fbbf24;
   font-size: 11px;
@@ -78,15 +77,15 @@ body.light-theme .legend-label {
   border-color: rgba(34, 197, 94, 0.25);
 }
 
-/* THAY ĐỔI CHÍNH: Tăng padding-top lên 35px để cột không đè lên status */
 .bars-container {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-end; /* Đẩy các cột xuống dưới cùng */
   justify-content: center;
   gap: 6px;
-  padding: 35px 2px 4px 2px;
+  padding: 10px 2px 4px 2px; /* Không cần padding top quá lớn nữa vì đã dùng % */
   min-height: 0;
   flex: 1 1 auto;
+  height: 100%; /* Cần thiết để height % của bar-wrapper hoạt động */
   background: transparent;
   width: 100%;
   box-sizing: border-box;
@@ -98,29 +97,32 @@ body.light-theme .legend-label {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-end;
-  gap: 2px;
+  justify-content: flex-end; /* Quan trọng: Đẩy bar xuống đáy */
+  gap: 4px; /* Khoảng cách giữa số trên, cột, và chỉ số dưới */
   flex: 1 0 auto;
   max-width: 52px;
   min-width: 24px;
+  height: 100%; /* Lấy trọn chiều cao container để bar % co giãn chuẩn */
 }
 
 .bar-value {
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--title);
+  line-height: 1;
 }
 
 .bar {
   width: 100%;
-  border-radius: 2px;
-  min-height: 6px;
-  transition: height 0.2s ease, background 0.2s ease;
+  border-radius: 4px 4px 0 0; /* Bo tròn góc trên cho đẹp */
+  min-height: 10px; /* Chiều cao tối thiểu dù giá trị nhỏ */
+  transition: height 0.3s ease, background 0.2s ease;
 }
 
 .bar-index {
-  font-size: 8px;
+  font-size: 10px;
   color: var(--text-muted);
+  line-height: 1;
 }
 
 body.light-theme .step-status {
@@ -136,14 +138,18 @@ body.light-theme .step-status.completed {
   border-color: #22c55e;
 }
 
+/* --- MEDIA QUERIES --- */
 @media (min-width: 1280px) {
   .visualizer-container {
     padding: 6px;
   }
   .legend-container {
     gap: 8px;
-    padding: 7px 4px;
+    padding: 6px 4px;
     min-height: 32px;
+  }
+  .legend-item {
+    padding: 5px 12px;
   }
   .legend-label {
     font-size: 11px;
@@ -153,24 +159,22 @@ body.light-theme .step-status.completed {
     height: 9px;
   }
   .step-status {
-    font-size: 10px;
-    padding: 2px 8px;
-    margin: 7px auto 10px auto;
+    font-size: 11px;
+    padding: 3px 10px;
+    margin: 8px auto 12px auto;
   }
-  /* THAY ĐỔI: Padding-top lớn hơn để an toàn */
   .bars-container {
-    padding: 35px 2px 4px 2px;
-    gap: 5px;
+    gap: 6px;
   }
   .bar-wrapper {
     max-width: 48px;
     min-width: 20px;
   }
   .bar-value {
-    font-size: 9px;
+    font-size: 11px;
   }
   .bar-index {
-    font-size: 7px;
+    font-size: 9px;
   }
 }
 
@@ -180,9 +184,12 @@ body.light-theme .step-status.completed {
     min-height: 200px;
   }
   .legend-container {
-    gap: 2px 6px;
-    padding: 2px 2px;
+    gap: 4px 6px;
+    padding: 4px 2px;
     min-height: 22px;
+  }
+  .legend-item {
+    padding: 3px 8px;
   }
   .legend-label {
     font-size: 9px;
@@ -192,23 +199,22 @@ body.light-theme .step-status.completed {
     height: 6px;
   }
   .step-status {
-    font-size: 9px;
-    padding: 1px 6px;
-    margin: 2px auto;
+    font-size: 10px;
+    padding: 2px 8px;
+    margin: 4px auto;
   }
-  /* THAY ĐỔI: Padding-top 25px */
   .bars-container {
-    padding: 25px 2px 4px 2px;
-    gap: 2px;
+    padding: 10px 2px 2px 2px;
+    gap: 3px;
     min-height: 140px;
   }
   .bar-wrapper {
     max-width: 32px;
-    min-width: 12px;
+    min-width: 14px;
   }
   .bar-value,
   .bar-index {
-    font-size: 8px;
+    font-size: 9px;
   }
 }
 
@@ -218,9 +224,12 @@ body.light-theme .step-status.completed {
     min-height: 160px;
   }
   .legend-container {
-    gap: 1px 4px;
-    padding: 1px 2px;
+    gap: 2px 4px;
+    padding: 2px;
     min-height: 18px;
+  }
+  .legend-item {
+    padding: 2px 6px;
   }
   .legend-label {
     font-size: 8px;
@@ -230,13 +239,12 @@ body.light-theme .step-status.completed {
     height: 5px;
   }
   .step-status {
-    font-size: 8px;
-    padding: 1px 4px;
+    font-size: 9px;
+    padding: 2px 6px;
   }
-  /* THAY ĐỔI: Padding-top 20px */
   .bars-container {
-    padding: 20px 2px 4px 2px;
-    gap: 1px;
+    padding: 10px 2px 2px 2px;
+    gap: 2px;
     min-height: 100px;
   }
   .bar-wrapper {
@@ -245,6 +253,6 @@ body.light-theme .step-status.completed {
   }
   .bar-value,
   .bar-index {
-    font-size: 7px;
+    font-size: 8px;
   }
 }
