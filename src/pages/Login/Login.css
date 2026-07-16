@@ -31,6 +31,10 @@
   margin-bottom: 20px;
 }
 
+.password-group {
+  position: relative;
+}
+
 .input-group input[type="text"],
 .input-group input[type="password"] {
   width: 100%;
@@ -45,6 +49,42 @@
   box-sizing: border-box;
 }
 
+.password-group input {
+  padding-right: 48px !important;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 14px;
+  top: calc(50% + 1px);
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border: 0;
+  background: transparent !important;
+  color: #cbd5e1;
+  cursor: pointer;
+  font-size: 18px;
+  transition: none;
+  box-shadow: none !important;
+  outline: none;
+}
+
+.password-toggle:hover,
+.password-toggle:focus,
+.password-toggle:focus-visible,
+.password-toggle:active {
+  background: transparent !important;
+  border-color: transparent !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: #cbd5e1;
+}
+
 .input-group input::placeholder {
   color: #94a3b8;
 }
@@ -53,32 +93,6 @@
 .input-group input[type="password"]:focus {
   border-color: #3b82f6;
   box-shadow: 0 0 10px rgba(59,130,246,0.3);
-}
-
-.show-password {
-  margin-top: 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #cbd5e1;
-  font-size: 14px;
-  cursor: pointer;
-  user-select: none;
-}
-
-.show-password input {
-  width: 16px;
-  height: 16px;
-  accent-color: #3b82f6;
-  cursor: pointer;
-}
-
-.show-password span {
-  transition: 0.2s;
-}
-
-.show-password:hover span {
-  color: #60a5fa;
 }
 
 .error-text {
@@ -173,19 +187,17 @@ body.light-theme .input-group input::placeholder {
   opacity: 1;
 }
 
-body.light-theme .show-password {
-  color: #0f172a;
-  font-weight: 500;
+body.light-theme .password-toggle {
+  color: #475569 !important;
 }
 
-body.light-theme .show-password input {
-  width: 18px;
-  height: 18px;
-  accent-color: #2563eb;
-  filter: none;
+body.light-theme .password-toggle:hover,
+body.light-theme .password-toggle:focus,
+body.light-theme .password-toggle:focus-visible,
+body.light-theme .password-toggle:active {
+  color: #475569 !important;
 }
 
-body.light-theme .show-password:hover span,
 body.light-theme .register-link,
 body.light-theme .forgotpassword-link {
   color: #2563eb;

@@ -64,15 +64,24 @@ width: 22px;
 height: 22px;
 padding: 0;
 border: 0;
-background: transparent;
-color: #94a3b8;
+background: transparent !important;
+color: #cbd5e1;
 cursor: pointer;
 font-size: 18px;
-transition: 0.2s;
+transition: none;
+box-shadow: none !important;
+outline: none;
 }
 
-.password-toggle:hover {
-color: #60a5fa;
+.password-toggle:hover,
+.password-toggle:focus,
+.password-toggle:focus-visible,
+.password-toggle:active {
+background: transparent !important;
+border-color: transparent !important;
+box-shadow: none !important;
+outline: none !important;
+color: #cbd5e1;
 }
 
 .input-group input:focus {
@@ -166,8 +175,11 @@ body.light-theme .password-toggle {
 color: #475569 !important;
 }
 
-body.light-theme .password-toggle:hover {
-color: #1d4ed8 !important;
+body.light-theme .password-toggle:hover,
+body.light-theme .password-toggle:focus,
+body.light-theme .password-toggle:focus-visible,
+body.light-theme .password-toggle:active {
+color: #475569 !important;
 }
 
 body.light-theme .back-login {

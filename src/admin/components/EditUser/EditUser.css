@@ -145,23 +145,35 @@
     height: 22px;
     padding: 0;
     border: 0;
-    background: transparent;
-    color: #8d90a0;
+    background: transparent !important;
+    color: #cbd5e1;
     cursor: pointer;
     font-size: 18px;
-    transition: 0.2s;
+    transition: none;
+    box-shadow: none !important;
+    outline: none;
 }
 
-.eye-icon:hover {
-    color: white;
+.eye-icon:hover,
+.eye-icon:focus,
+.eye-icon:focus-visible,
+.eye-icon:active {
+    background: transparent !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: #cbd5e1;
 }
 
 body.light-theme .eye-icon {
     color: #64748b;
 }
 
-body.light-theme .eye-icon:hover {
-    color: #2563eb;
+body.light-theme .eye-icon:hover,
+body.light-theme .eye-icon:focus,
+body.light-theme .eye-icon:focus-visible,
+body.light-theme .eye-icon:active {
+    color: #64748b;
 }
 
 @media (max-width: 900px) {
