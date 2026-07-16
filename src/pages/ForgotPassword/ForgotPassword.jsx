@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { forgotPassword, resetPassword, verifyOtp } from '../../services/authService';
 import ThemeToggle from '../../components/ThemeToggle/ThemeToggle';
 import './ForgotPassword.css';
@@ -17,6 +18,8 @@ const ForgotPassword = ({ darkMode, onToggleTheme }) => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -185,25 +188,41 @@ const ForgotPassword = ({ darkMode, onToggleTheme }) => {
 
         {step === 'reset' && (
           <form onSubmit={handleResetPassword}>
-            <div className="input-group">
+            <div className="input-group password-group">
               <input
-                type="password"
+                type={showNewPassword ? 'text' : 'password'}
                 placeholder="Mật khẩu mới"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
                 minLength="8"
                 required
               />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                aria-label={showNewPassword ? 'Ẩn mật khẩu mới' : 'Hiện mật khẩu mới'}
+              >
+                {showNewPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
             </div>
-            <div className="input-group">
+            <div className="input-group password-group">
               <input
-                type="password"
+                type={showConfirmPassword ? 'text' : 'password'}
                 placeholder="Xác nhận mật khẩu"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 minLength="8"
                 required
               />
+              <button
+                type="button"
+                className="password-toggle"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                aria-label={showConfirmPassword ? 'Ẩn mật khẩu xác nhận' : 'Hiện mật khẩu xác nhận'}
+              >
+                {showConfirmPassword ? <FiEyeOff /> : <FiEye />}
+              </button>
             </div>
             {error && <p className="error-text">{error}</p>}
             <button type="submit" className="forgot-btn" disabled={loading}>

@@ -5,6 +5,7 @@ import { getCurrentUser } from '../../services/authService';
 import './Login.css';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 import ThemeToggle from '../../components/ThemeToggle/ThemeToggle';
 
 const Login = ({ darkMode, onToggleTheme }) => {
@@ -56,7 +57,7 @@ const Login = ({ darkMode, onToggleTheme }) => {
               required
             />
           </div>
-          <div className="input-group">
+          <div className="input-group password-group">
             <input
               type={showPassword ? 'text' : 'password'}
               placeholder="Mật khẩu"
@@ -64,15 +65,15 @@ const Login = ({ darkMode, onToggleTheme }) => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <button
+              type="button"
+              className="password-toggle"
+              onClick={() => setShowPassword(!showPassword)}
+              aria-label={showPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+            >
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+            </button>
           </div>
-          <label className="show-password">
-            <input
-              type="checkbox"
-              checked={showPassword}
-              onChange={() => setShowPassword(!showPassword)}
-            />
-            <span>Hiện mật khẩu</span>
-          </label>
           {error && <p className="error-text">{error}</p>}
           <button type="submit" className="login-btn">
             Đăng nhập
