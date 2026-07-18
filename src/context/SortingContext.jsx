@@ -207,16 +207,24 @@ export const SortingProvider = ({ children }) => {
     toast.info('Đã đặt lại trạng thái ban đầu.');
   };
 
-  const generateRandomArray = () => {
-    const length = Math.floor(Math.random() * 11) + 10;
-    const newArray = Array.from({ length },() => Math.floor(Math.random() * 100) + 1);
-    setOriginalArray([...newArray]);
-    setArray(newArray);
-    setSteps([]);
-    setCurrentStep(0);
-    setIsRunning(false);
-    completionToastShownRef.current = false;
-  };
+  const generateRandomArray = (length) => {
+  const lengthNum = parseInt(length, 10);
+  if (isNaN(lengthNum) || lengthNum <= 0) {
+    toast.warning('Vui lòng nhập số nguyên dương.');
+    return;
+  }
+  if (lengthNum > 20) {
+  toast.warning('Tối đa 20 phần tử.');
+  return;
+}
+  const newArray = Array.from({ length: lengthNum }, () => Math.floor(Math.random() * 100) + 1);
+  setOriginalArray([...newArray]);
+  setArray(newArray);
+  setSteps([]);
+  setCurrentStep(0);
+  setIsRunning(false);
+  completionToastShownRef.current = false;
+};
 
   const toggleSortOrder = () => {
     const nextOrder = sortOrder === 'asc' ? 'desc' : 'asc';

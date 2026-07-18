@@ -29,6 +29,7 @@ const AddAlgorithm = () => {
     hasDisplayCode: true,
     features: [],
   });
+  const [formError, setFormError] = useState(null);
   const fileInputRef = useRef(null);
   const debounceTimer = useRef(null);
   const [slugManuallyEdited, setSlugManuallyEdited] = useState(false);
@@ -60,7 +61,7 @@ const AddAlgorithm = () => {
         ...prev,
         slug: generateSlug(prev.name),
       }));
-    }, 800);
+    },3500);
     return () => clearTimeout(debounceTimer.current);
   }, [formData.name]);
 
@@ -79,7 +80,7 @@ const AddAlgorithm = () => {
         uploading: false,
         success: false,
         error: 'Chỉ chấp nhận file .py',
-        fileName: null,
+        fileName: file.name,
         codeFilename: null,
         isCustom: false,
         hasDisplayCode: true,
@@ -94,7 +95,7 @@ const AddAlgorithm = () => {
         uploading: false,
         success: false,
         error: 'File vượt quá 200KB. Kiểm tra lại thuật toán có bị lặp không cần thiết.',
-        fileName: null,
+        fileName: file.name,
         codeFilename: null,
         isCustom: false,
         hasDisplayCode: true,
@@ -134,11 +135,12 @@ const AddAlgorithm = () => {
       });
       setSlugManuallyEdited(false);
 
-      if (hasDisplay) {
-        setFormData((prev) => ({ ...prev, code: result.display_code }));
-      } else {
-        setFormData((prev) => ({ ...prev, code: '' }));
-      }
+      setFormData((prev) => ({
+        ...prev,
+        code: hasDisplay ? result.display_code : '',
+        time_complexity: result.time_complexity || prev.time_complexity,
+        space_complexity: result.space_complexity || prev.space_complexity,
+      }));
     } catch (err) {
       const errMsg =
         err?.response?.data?.error ||
@@ -169,7 +171,7 @@ const AddAlgorithm = () => {
     });
     if (fileInputRef.current) fileInputRef.current.value = '';
     setSlugManuallyEdited(false);
-    setFormData(prev => ({ ...prev, code: '' }));
+    setFormData(prev => ({ ...prev, code: '', time_complexity: '', space_complexity: '' }));
   };
 
   const handleDownloadTemplate = () => {
@@ -183,16 +185,28 @@ const AddAlgorithm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError(null);
 
     if (uploadState.uploading) return;
     if (uploadState.fileName && !uploadState.success) {
+      setFormError('File thuật toán chưa hợp lệ. Vui lòng chọn file khác hoặc bấm "Xoá" trước khi lưu.');
+      return;
+    }
+
+    if (!formData.description.trim()) {
+      setFormError('Vui lòng nhập mô tả thuật toán.');
       return;
     }
 
     const stepsArray = formData.steps.split('\n').filter((s) => s.trim() !== '');
+    if (stepsArray.length === 0) {
+      setFormError('Vui lòng nhập ít nhất một bước thực hiện.');
+      return;
+    }
+
     const submitData = {
       ...formData,
-      steps: stepsArray.length ? JSON.stringify(stepsArray) : null,
+      steps: JSON.stringify(stepsArray),
       is_custom: uploadState.isCustom,
       code_filename: uploadState.codeFilename,
       features: uploadState.features,
@@ -202,6 +216,11 @@ const AddAlgorithm = () => {
       await addAlgorithm(submitData);
       navigate('/admin/algorithms');
     } catch (err) {
+      const message =
+        err?.response?.data?.error ||
+        err?.message ||
+        'Thêm thuật toán thất bại. Vui lòng thử lại.';
+      setFormError(message);
     }
   };
 
@@ -213,10 +232,27 @@ const AddAlgorithm = () => {
         <button type="button" className="close-btn" onClick={() => navigate('/admin/algorithms')}>✕</button>
       </div>
       <form className="add-algorithm-form" onSubmit={handleSubmit}>
+        {formError && (
+          <div
+            className="status-badge status-error"
+            style={{ display: 'block', marginBottom: '16px', padding: '10px 12px' }}
+          >
+            ✕ {formError}
+          </div>
+        )}
         <div className="form-grid">
           <div className="form-group">
             <label>Tên thuật toán</label>
-            <input type="text" name="name" placeholder="e.g. Bubble Sort" value={formData.name} onChange={handleChange} required />
+            <input
+              type="text"
+              name="name"
+              placeholder="e.g. Bubble Sort"
+              value={formData.name}
+              onChange={handleChange}
+              required
+              onInvalid={(e) => e.target.setCustomValidity('Vui lòng nhập tên thuật toán.')}
+              onInput={(e) => e.target.setCustomValidity('')}
+            />
           </div>
           <div className="form-group">
             <label>Slug</label>
@@ -226,7 +262,6 @@ const AddAlgorithm = () => {
               placeholder="Tự động từ tên"
               value={formData.slug}
               onChange={handleChange}
-              required
             />
           </div>
 
@@ -324,13 +359,31 @@ const AddAlgorithm = () => {
           </div>
 
           <div className="form-group full-width">
-            <label>Mô tả</label>
-            <textarea name="description" placeholder="Mô tả thuật toán" value={formData.description} onChange={handleChange} rows="3" />
+            <label>Mô tả <span style={{ color: '#ef4444' }}>*</span></label>
+            <textarea
+              name="description"
+              placeholder="Mô tả thuật toán"
+              value={formData.description}
+              onChange={handleChange}
+              rows="3"
+              required
+              onInvalid={(e) => e.target.setCustomValidity('Vui lòng nhập mô tả thuật toán.')}
+              onInput={(e) => e.target.setCustomValidity('')}
+            />
           </div>
 
           <div className="form-group full-width">
-            <label>Các bước thực hiện</label>
-            <textarea name="steps" placeholder="Mỗi bước trên một dòng..." value={formData.steps} onChange={handleChange} rows="5" />
+            <label>Các bước thực hiện <span style={{ color: '#ef4444' }}>*</span></label>
+            <textarea
+              name="steps"
+              placeholder="Mỗi bước trên một dòng..."
+              value={formData.steps}
+              onChange={handleChange}
+              rows="5"
+              required
+              onInvalid={(e) => e.target.setCustomValidity('Vui lòng nhập các bước thực hiện.')}
+              onInput={(e) => e.target.setCustomValidity('')}
+            />
           </div>
         </div>
 

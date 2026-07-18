@@ -3,7 +3,6 @@ import "./DashboardPage.css";
 import {
     FiActivity,
     FiBarChart2,
-    FiClock,
     FiDatabase,
     FiEdit3,
     FiRefreshCw,
@@ -36,18 +35,17 @@ function buildLinePoints(values) {
     const max = Math.max(...values, 1);
     const stepX = values.length > 1 ? (width - padding * 2) / (values.length - 1) : 0;
 
-    return values
-        .map((value, index) => {
-            const x = padding + index * stepX;
-            const y = height - padding - (value / max) * (height - padding * 2);
-            return `${x},${y}`;
-        })
-        .join(" ");
+    return values.map((value, index) => {
+        const x = padding + index * stepX;
+        const y = height - padding - (value / max) * (height - padding * 2);
+        return { x, y, value };
+    });
 }
 
 function LineChart({ values }) {
     const points = buildLinePoints(values);
     const max = Math.max(...values, 1);
+    const pointString = points.map(p => `${p.x},${p.y}`).join(" ");
 
     return (
         <div className="line-chart" aria-label="Biểu đồ lượt sử dụng theo ngày">
@@ -61,12 +59,23 @@ function LineChart({ values }) {
                 <polyline className="chart-grid-line" points="22,54 618,54" />
                 <polyline className="chart-grid-line" points="22,110 618,110" />
                 <polyline className="chart-grid-line" points="22,166 618,166" />
-                <polygon points={`22,198 ${points} 618,198`} fill="url(#lineFill)" />
-                <polyline className="chart-line" points={points} />
-                {points.split(" ").map((point, index) => {
-                    const [cx, cy] = point.split(",");
-                    return <circle key={index} className="chart-dot" cx={cx} cy={cy} r="5" />;
-                })}
+                <polygon points={`22,198 ${pointString} 618,198`} fill="url(#lineFill)" />
+                <polyline className="chart-line" points={pointString} />
+                {points.map((point, index) => (
+                    <g key={index}>
+                        <circle className="chart-dot" cx={point.x} cy={point.y} r="5" />
+                        <text
+                            x={point.x}
+                            y={point.y - 10}
+                            textAnchor="middle"
+                            fill="#f8fafc"
+                            fontSize="12"
+                            fontWeight="600"
+                        >
+                            {point.value}
+                        </text>
+                    </g>
+                ))}
             </svg>
             <div className="chart-scale">
                 <span>7 ngày gần đây</span>
@@ -176,10 +185,6 @@ export default function DashboardPage() {
         const lineValues = lastSevenDays.map((key) => dailyMap.get(key) || 0);
         const hasLineData = lineValues.some((value) => value > 0);
 
-        const recentSimulations = [...simulations]
-            .sort((a, b) => new Date(b.executed_at || 0) - new Date(a.executed_at || 0))
-            .slice(0, 4);
-
         return {
             totalUsers,
             activeUsers,
@@ -189,8 +194,6 @@ export default function DashboardPage() {
             chartUsage,
             mostUsed,
             lineValues: hasLineData ? lineValues : FALLBACK_LINE,
-            recentSimulations,
-            algorithmMap,
         };
     }, [users, algorithms, simulations, pagination, algorithmPagination]);
 
@@ -214,27 +217,25 @@ export default function DashboardPage() {
             </div>
 
             <div className="dashboard-stats">
+                {/* ... các stat card giữ nguyên */}
                 <div className="stat-card">
                     <FiUsers size={26} />
                     <span>Tổng người dùng</span>
                     <h2>{formatNumber(dashboardData.totalUsers)}</h2>
                     <small>{formatNumber(dashboardData.activeUsers)} tài khoản hoạt động</small>
                 </div>
-
                 <div className="stat-card">
                     <FiDatabase size={26} />
                     <span>Thuật toán</span>
                     <h2>{formatNumber(dashboardData.totalAlgorithms)}</h2>
                     <small>{formatNumber(dashboardData.activeAlgorithms)} đang hiển thị</small>
                 </div>
-
                 <div className="stat-card">
                     <FiActivity size={26} />
                     <span>Lượt sử dụng</span>
                     <h2>{formatNumber(dashboardData.totalSimulations)}</h2>
                     <small>Lịch sử mô phỏng đã ghi nhận</small>
                 </div>
-
                 <div className="stat-card highlight">
                     <FiTrendingUp size={26} />
                     <span>Dùng nhiều nhất</span>
@@ -252,7 +253,6 @@ export default function DashboardPage() {
                         </div>
                         <FiBarChart2 />
                     </div>
-
                     <div className="usage-layout">
                         <DonutChart data={dashboardData.chartUsage} />
                         <div className="legend-list">
@@ -280,47 +280,7 @@ export default function DashboardPage() {
             </div>
 
             <div className="dashboard-grid">
-                <section className="dashboard-card">
-                    <div className="card-title-row">
-                        <div>
-                            <span className="card-kicker">Gần đây</span>
-                            <h3>Hoạt động người dùng</h3>
-                        </div>
-                        <FiClock />
-                    </div>
-
-                    <div className="activity-list">
-                        {dashboardData.recentSimulations.length > 0 ? (
-                            dashboardData.recentSimulations.map((simulation) => (
-                                <div className="activity-item" key={simulation.id}>
-                                    <span className="activity-dot user" />
-                                    <div>
-                                        <p>
-                                            User #{simulation.user_id} chạy{" "}
-                                            <b>{dashboardData.algorithmMap.get(simulation.algorithm_id) || `thuật toán #${simulation.algorithm_id}`}</b>
-                                        </p>
-                                        <small>
-                                            {simulation.executed_at
-                                                ? new Date(simulation.executed_at).toLocaleString("vi-VN")
-                                                : "Vừa xong"}{" "}
-                                            - {formatNumber(simulation.steps)} bước
-                                        </small>
-                                    </div>
-                                </div>
-                            ))
-                        ) : (
-                            <div className="activity-item">
-                                <span className="activity-dot user" />
-                                <div>
-                                    <p>Chưa có lịch sử mô phỏng từ API.</p>
-                                    <small>Dashboard sẽ tự cập nhật khi người dùng chạy thuật toán.</small>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </section>
-
-                <section className="dashboard-card">
+                <section className="dashboard-card admin-card full-width">
                     <div className="card-title-row">
                         <div>
                             <span className="card-kicker">Quản trị</span>
@@ -328,7 +288,6 @@ export default function DashboardPage() {
                         </div>
                         <FiEdit3 />
                     </div>
-
                     <div className="admin-actions">
                         <div className="admin-action">
                             <span className="activity-dot admin" />

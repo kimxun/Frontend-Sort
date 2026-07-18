@@ -100,7 +100,10 @@ export default function ControlPanel() {
   };
 
   const handleRandomArray = () => {
-    generateRandomArray();
+    const input = window.prompt("Nhập số phần tử muốn tạo:", "10");
+    if (input !== null) {
+      generateRandomArray(input);
+    }
   };
 
   const handleStepForward = async () => {

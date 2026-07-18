@@ -88,7 +88,8 @@ const AlgorithmsPage = () => {
                                     <th>ID</th>
                                     <th>Tên</th>
                                     <th>Slug</th>
-                                    <th>Độ phức tạp</th>
+                                    <th>Độ phức tạp thời gian</th>
+                                    <th>Độ phức tạp bộ nhớ</th>
                                     <th>Trạng thái</th>
                                     <th>Hành động</th>
                                 </tr>
@@ -99,7 +100,8 @@ const AlgorithmsPage = () => {
                                         <td>{algo.id}</td>
                                         <td>{algo.name}</td>
                                         <td>{algo.slug}</td>
-                                        <td>{algo.time_complexity}</td>
+                                        <td>{algo.time_complexity || '—'}</td>
+                                        <td>{algo.space_complexity || '—'}</td>
                                         <td>
                                             <span className={`status-badge ${algo.status === 1 ? 'active' : 'inactive'}`}>
                                                 {algo.status === 1 ? 'Hoạt động' : 'Không hoạt động'}
@@ -123,7 +125,7 @@ const AlgorithmsPage = () => {
                                 ))}
                                 {filtered.length === 0 && (
                                     <tr>
-                                        <td colSpan="6" style={{ textAlign: 'center', padding: '20px' }}>
+                                        <td colSpan={7} style={{ textAlign: 'center', padding: '20px' }}>
                                             Không tìm thấy thuật toán nào.
                                         </td>
                                     </tr>
@@ -154,7 +156,6 @@ const AlgorithmsPage = () => {
                 )}
             </div>
 
-            {/* Modal xác nhận kiểu xóa */}
             {deleteTarget && (
                 <div className="modal-overlay" onClick={() => setDeleteTarget(null)}>
                     <div className="modal-content" onClick={e => e.stopPropagation()}>

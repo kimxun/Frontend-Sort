@@ -1,7 +1,55 @@
+/* ========== DEFAULT DARK THEME ========== */
+:root {
+    --dbg: #0f172a;
+    --card-bg: #151c28;
+    --border: rgba(148, 163, 184, 0.12);
+    --text-primary: #f8fafc;
+    --text-secondary: #a8b3c7;
+    --text-muted: #748197;
+    --accent: #7c5cff;
+    --accent-hover: #6d4aff;
+    --green: #20c997;
+    --chart-line: #7c5cff;
+    --chart-dot: #20c997;
+    --chart-dot-stroke: #151c28;
+    --grid-line: rgba(148, 163, 184, 0.13);
+    --legend-bg: rgba(15, 23, 42, 0.62);
+    --legend-border: rgba(148, 163, 184, 0.09);
+    --activity-border: rgba(148, 163, 184, 0.1);
+    --refresh-btn-bg: #6d4aff;
+    --refresh-btn-border: rgba(124, 92, 255, 0.38);
+    --refresh-btn-hover: #7c5cff;
+}
+
+/* ========== LIGHT THEME OVERRIDE ========== */
+.light-theme {
+    --dbg: #f1f5f9;
+    --card-bg: #ffffff;
+    --border: rgba(0, 0, 0, 0.08);
+    --text-primary: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --accent: #7c5cff;
+    --accent-hover: #6d4aff;
+    --green: #0d9488;
+    --chart-line: #7c5cff;
+    --chart-dot: #0d9488;
+    --chart-dot-stroke: #ffffff;
+    --grid-line: rgba(0, 0, 0, 0.06);
+    --legend-bg: #f8fafc;
+    --legend-border: rgba(0, 0, 0, 0.06);
+    --activity-border: rgba(0, 0, 0, 0.08);
+    --refresh-btn-bg: #6d4aff;
+    --refresh-btn-border: rgba(124, 92, 255, 0.5);
+    --refresh-btn-hover: #7c5cff;
+}
+
+/* ========== LAYOUT ========== */
 .dashboard-page {
     min-height: 100%;
     padding: 30px;
-    color: #f8fafc;
+    color: var(--text-primary);
+    background: var(--dbg);  /* Nếu muốn nền toàn trang */
 }
 
 .dashboard-header {
@@ -16,7 +64,7 @@
 .card-kicker {
     display: block;
     margin-bottom: 6px;
-    color: #8ea0b8;
+    color: var(--text-muted);
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0;
@@ -28,6 +76,7 @@
     font-size: 28px;
     font-weight: 800;
     letter-spacing: 0;
+    color: var(--text-primary);
 }
 
 .refresh-btn {
@@ -36,8 +85,8 @@
     justify-content: center;
     gap: 8px;
     min-width: 118px;
-    border: 1px solid rgba(124, 92, 255, 0.38);
-    background: #6d4aff;
+    border: 1px solid var(--refresh-btn-border);
+    background: var(--refresh-btn-bg);
     color: #ffffff;
     padding: 10px 16px;
     border-radius: 8px;
@@ -47,7 +96,7 @@
 }
 
 .refresh-btn:hover:not(:disabled) {
-    background: #7c5cff;
+    background: var(--refresh-btn-hover);
     transform: translateY(-1px);
 }
 
@@ -65,8 +114,8 @@
 
 .stat-card,
 .dashboard-card {
-    background: #151c28;
-    border: 1px solid rgba(148, 163, 184, 0.12);
+    background: var(--card-bg);
+    border: 1px solid var(--border);
     border-radius: 8px;
     box-shadow: 0 16px 42px rgba(0, 0, 0, 0.18);
 }
@@ -83,36 +132,36 @@
     position: absolute;
     inset: auto 18px 0 18px;
     height: 3px;
-    background: #7c5cff;
+    background: var(--accent);
     opacity: 0.9;
 }
 
 .stat-card.highlight::after {
-    background: #20c997;
+    background: var(--green);
 }
 
 .stat-card svg {
-    color: #7c5cff;
+    color: var(--accent);
     margin-bottom: 16px;
 }
 
 .stat-card span {
     display: block;
-    color: #a8b3c7;
+    color: var(--text-secondary);
     font-size: 14px;
 }
 
 .stat-card h2 {
     max-width: 100%;
     margin: 9px 0 8px;
-    color: #ffffff;
+    color: var(--text-primary);
     font-size: clamp(24px, 2.2vw, 32px);
     line-height: 1.08;
     overflow-wrap: anywhere;
 }
 
 .stat-card small {
-    color: #748197;
+    color: var(--text-muted);
     font-size: 13px;
 }
 
@@ -141,14 +190,14 @@
 
 .card-title-row h3 {
     margin: 0;
-    color: #ffffff;
+    color: var(--text-primary);
     font-size: 19px;
     line-height: 1.2;
 }
 
 .card-title-row > svg {
     flex: 0 0 auto;
-    color: #7c5cff;
+    color: var(--accent);
     font-size: 23px;
 }
 
@@ -174,7 +223,7 @@
 
 .donut-ring {
     fill: transparent;
-    stroke: rgba(148, 163, 184, 0.16);
+    stroke: var(--border);
     stroke-width: 4;
 }
 
@@ -187,14 +236,14 @@
 }
 
 .donut-total {
-    fill: #ffffff;
+    fill: var(--text-primary);
     font-size: 6px;
     font-weight: 800;
     text-anchor: middle;
 }
 
 .donut-label {
-    fill: #9ca8ba;
+    fill: var(--text-secondary);
     font-size: 3.4px;
     font-weight: 700;
     text-anchor: middle;
@@ -212,19 +261,19 @@
     gap: 10px;
     min-height: 38px;
     padding: 10px 12px;
-    background: rgba(15, 23, 42, 0.62);
-    border: 1px solid rgba(148, 163, 184, 0.09);
+    background: var(--legend-bg);
+    border: 1px solid var(--legend-border);
     border-radius: 8px;
 }
 
 .legend-item span:nth-child(2) {
-    color: #dbe5f3;
+    color: var(--text-primary);
     font-size: 14px;
     overflow-wrap: anywhere;
 }
 
 .legend-item strong {
-    color: #ffffff;
+    color: var(--text-primary);
     font-size: 15px;
 }
 
@@ -246,29 +295,36 @@
 
 .chart-grid-line {
     fill: none;
-    stroke: rgba(148, 163, 184, 0.13);
+    stroke: var(--grid-line);
     stroke-width: 1;
 }
 
 .chart-line {
     fill: none;
-    stroke: #7c5cff;
+    stroke: var(--chart-line);
     stroke-width: 4;
     stroke-linecap: round;
     stroke-linejoin: round;
 }
 
 .chart-dot {
-    fill: #20c997;
-    stroke: #151c28;
+    fill: var(--chart-dot);
+    stroke: var(--chart-dot-stroke);
     stroke-width: 3;
+}
+
+/* Số trên biểu đồ đường */
+.line-chart text {
+    fill: var(--text-primary);
+    font-size: 12px;
+    font-weight: 600;
 }
 
 .chart-scale {
     display: flex;
     justify-content: space-between;
     gap: 14px;
-    color: #8ea0b8;
+    color: var(--text-muted);
     font-size: 13px;
 }
 
@@ -285,7 +341,7 @@
     gap: 12px;
     align-items: flex-start;
     padding: 13px 0;
-    border-bottom: 1px solid rgba(148, 163, 184, 0.1);
+    border-bottom: 1px solid var(--activity-border);
 }
 
 .activity-item:last-child,
@@ -296,12 +352,12 @@
 .activity-item p,
 .admin-action p {
     margin: 0 0 5px;
-    color: #e6edf7;
+    color: var(--text-primary);
     line-height: 1.4;
 }
 
 .activity-item small {
-    color: #7f8ba0;
+    color: var(--text-muted);
 }
 
 .activity-dot {
@@ -309,7 +365,7 @@
     height: 10px;
     margin-top: 6px;
     border-radius: 50%;
-    background: #7c5cff;
+    background: var(--accent);
     box-shadow: 0 0 0 5px rgba(124, 92, 255, 0.14);
 }
 
@@ -319,7 +375,7 @@
 }
 
 .activity-dot.admin {
-    background: #20c997;
+    background: var(--green);
     box-shadow: 0 0 0 5px rgba(32, 201, 151, 0.13);
 }
 
@@ -350,15 +406,32 @@
 
 .admin-action strong {
     flex: 0 0 auto;
-    color: #ffffff;
+    color: var(--text-primary);
     font-size: 20px;
 }
 
+/* Full width cho card admin */
+.dashboard-card.full-width {
+    grid-column: 1 / -1;
+}
+
+.admin-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-actions {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+}
+
+/* ========== RESPONSIVE ========== */
 @media (max-width: 1180px) {
     .dashboard-stats {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
-
     .dashboard-grid,
     .chart-grid {
         grid-template-columns: 1fr;
@@ -369,28 +442,22 @@
     .dashboard-page {
         padding: 20px;
     }
-
     .dashboard-header {
         align-items: flex-start;
         flex-direction: column;
     }
-
     .refresh-btn {
         width: 100%;
     }
-
     .dashboard-stats {
         grid-template-columns: 1fr;
     }
-
     .usage-layout {
         grid-template-columns: 1fr;
     }
-
     .donut-wrap {
         min-height: 190px;
     }
-
     .chart-scale,
     .admin-action > div {
         flex-direction: column;
