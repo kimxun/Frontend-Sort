@@ -46,6 +46,9 @@ QUY TẮC BẮT BUỘC:
 8. NÊN khai báo biến DISPLAY_CODE (chuỗi) chứa pseudocode / code mẫu hiển thị
    trên giao diện Code Editor. Nếu không có, hệ thống vẫn lưu được nhưng sẽ để
    trống ô Code và nhắc nhở admin tự nhập tay.
+   Tương tự với TIME_COMPLEXITY và SPACE_COMPLEXITY (xem bên dưới), nếu bạn
+   không điền, hệ thống sẽ cố gắng tự động gán dựa trên tên file (slug) nếu
+   có trong từ điển độ phức tạp của hệ thống, ngược lại sẽ để trống.
 # FEATURES khai báo các tính năng đặc biệt của thuật toán (nếu có).
 # Hệ thống dùng danh sách này để hiển thị đúng các trạng thái màu (legend) khi mô phỏng.
 # Ví dụ: ["pivot"] -> hiển thị thêm màu "Phần tử chốt" (dành cho Quick Sort).
@@ -67,6 +70,8 @@ DISPLAY_CODE = """void BubbleSort(int a[], int N) {
 }"""
 
 FEATURES = []
+TIME_COMPLEXITY = ""
+SPACE_COMPLEXITY = ""
 
 def run_logic(arr, sort_order="asc"):
     steps_history = []
@@ -97,7 +102,7 @@ def run_logic(arr, sort_order="asc"):
             "line": 3,
             "keys": ["i"],
             "vals": [i],
-            "action": f"Lượt {i+1}: đưa phần tử {'nhỏ nhất' if sort_order == 'asc' else 'lớn nhất'} về đầu dãy chưa sắp xếp."
+            "action": f"Lượt {i+1}: đưa phần tử {'nhỏ nhất' if sort_order == 'asc' else 'lớn nhất'} về vị trí a[{i}]."
         })
 
         for j in range(n - 1, i, -1):
@@ -120,6 +125,8 @@ def run_logic(arr, sort_order="asc"):
                 else sorted_arr[j] > sorted_arr[j - 1]
             )
             if condition:
+                old_val_j = sorted_arr[j]
+                old_val_j_minus_1 = sorted_arr[j - 1]
                 sorted_arr[j], sorted_arr[j - 1] = sorted_arr[j - 1], sorted_arr[j]
                 swaps += 1
                 steps_history.append({
@@ -131,7 +138,12 @@ def run_logic(arr, sort_order="asc"):
                     "line": 5,
                     "keys": ["j"],
                     "vals": [j],
-                    "action": f"Hoán đổi a[{j}] và a[{j-1}] vì {sorted_arr[j]} {'<' if sort_order == 'asc' else '>'} {sorted_arr[j-1]}. Sau hoán đổi a[{j}] = {sorted_arr[j]}, a[{j-1}] = {sorted_arr[j-1]}"
+                    "action": (
+                        f"Hoán đổi a[{j}] và a[{j-1}] "
+                        f"vì a[{j}] {'<' if sort_order == 'asc' else '>'} a[{j-1}] "
+                        f"({old_val_j} {'<' if sort_order == 'asc' else '>'} {old_val_j_minus_1}). "
+                        f"Sau hoán đổi a[{j}] = {sorted_arr[j]}, a[{j-1}] = {sorted_arr[j-1]}"
+                    )
                 })
 
         steps_history.append({
@@ -141,9 +153,9 @@ def run_logic(arr, sort_order="asc"):
             "pivot": None,
             "sorted": list(range(i + 1)),
             "line": 6,
-            "keys": ["sorted_idx"],
+            "keys": ["i"],
             "vals": [i],
-            "action": f"Đã đưa phần tử {'nhỏ nhất' if sort_order == 'asc' else 'lớn nhất'} về vị trí {i}. Giá trị {sorted_arr[i]} đã nằm đúng vị trí."
+            "action": f"Kết thúc lượt {i+1}. Phần tử {sorted_arr[i]} đã về đúng vị trí a[{i}]."
         })
 
     steps_history.append({
@@ -153,9 +165,9 @@ def run_logic(arr, sort_order="asc"):
         "pivot": None,
         "sorted": list(range(n)),
         "line": 7,
-        "keys": ["Tổng số phép so sánh", "Tổng số phép hoán đổi"],
+        "keys": ["Tổng so sánh", "Tổng hoán đổi"],
         "vals": [comparisons, swaps],
-        "action": "Mảng đã được sắp xếp"
+        "action": "Mảng đã được sắp xếp."
     })
 
     return sorted_arr, len(steps_history), comparisons, swaps, steps_history
