@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { login } from '../../services/authService';
 import { getCurrentUser } from '../../services/authService';
 import './Login.css';
@@ -14,17 +14,20 @@ const Login = ({ darkMode, onToggleTheme }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from || '/';
 
   useEffect(() => {
     const user = getCurrentUser();
     if (user) {
       if (user.role === 1) {
-        navigate('/admin/dashboard');
+        navigate(from !== '/' ? from : '/admin/dashboard', { replace: true });
       } else {
-        navigate('/');
+        navigate(from !== '/' ? from : '/', { replace: true });
       }
     }
-  }, [navigate]);
+  }, [navigate, from]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,9 +35,9 @@ const Login = ({ darkMode, onToggleTheme }) => {
 
     if (result.success) {
       if (result.user.role === 1) {
-        navigate('/admin/dashboard');
+        navigate(from !== '/' ? from : '/admin/dashboard', { replace: true });
       } else {
-        navigate('/');
+        navigate(from !== '/' ? from : '/', { replace: true });
       }
     } else {
       setError(result.message);

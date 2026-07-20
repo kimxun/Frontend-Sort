@@ -227,3 +227,18 @@ body.light-theme .steps-title {
 body.light-theme .algorithm-info-tagline {
   color: #2563eb !important;
 }
+.algorithm-info-header {
+  cursor: pointer;
+  user-select: none;
+}
+
+.toggle-icon {
+  font-size: 14px;
+  color: var(--text-muted);
+  transition: transform 0.2s ease;
+  display: inline-block;
+}
+
+.toggle-icon.expanded {
+  transform: rotate(180deg);
+}

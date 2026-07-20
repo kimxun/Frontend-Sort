@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useSorting } from "../../context/SortingContext";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "./ControlPanel.css";
 
 export default function ControlPanel() {
+  const navigate = useNavigate();
   const {
     algorithmId,
     setAlgorithmId,
@@ -35,6 +37,7 @@ export default function ControlPanel() {
   const [hovered, setHovered] = useState(null);
   const [isAlgorithmMenuOpen, setIsAlgorithmMenuOpen] = useState(false);
   const algorithmMenuRef = useRef(null);
+  const [randomSize, setRandomSize] = useState("");
 
   const activeAlgorithms = (algorithms || []).filter((a) => a.status === 1);
   const selectedAlgorithm =
@@ -100,10 +103,7 @@ export default function ControlPanel() {
   };
 
   const handleRandomArray = () => {
-    const input = window.prompt("Nhập số phần tử muốn tạo:", "10");
-    if (input !== null) {
-      generateRandomArray(input);
-    }
+    generateRandomArray(randomSize);
   };
 
   const handleStepForward = async () => {
@@ -324,13 +324,34 @@ export default function ControlPanel() {
         </button>
 
         <button
-          onClick={handleRandomArray}
-          disabled={isRunning}
-          {...handleHover("random")}
-          className={`btn-random ${isRunning ? "disabled" : ""} ${hovered === "random" && !isRunning ? "hover" : ""}`}
+          onClick={() => navigate('/compare')}
+          {...handleHover("compare")}
+          className={`btn-compare ${hovered === "compare" ? "hover" : ""}`}
         >
-          <ShuffleIcon /> Mảng ngẫu nhiên
+          <CompareIcon /> So sánh
         </button>
+
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          <input
+            type="number"
+            min="1"
+            max="20"
+            placeholder="Số phần tử"
+            value={randomSize}
+            onChange={(e) => setRandomSize(e.target.value)}
+            disabled={isRunning}
+            className="array-input"
+            style={{ width: '140px' }}
+          />
+          <button
+            onClick={handleRandomArray}
+            disabled={isRunning}
+            {...handleHover("random")}
+            className={`btn-random ${isRunning ? "disabled" : ""} ${hovered === "random" && !isRunning ? "hover" : ""}`}
+          >
+            <ShuffleIcon /> Mảng ngẫu nhiên
+          </button>
+        </div>
       </div>
     </div>
   );
@@ -344,3 +365,4 @@ function AscIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill
 function DescIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="12" y1="5" x2="12" y2="19" /><polyline points="19,12 12,19 5,12" /></svg>; }
 function ShuffleIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="16,3 21,3 21,8" /><line x1="4" y1="20" x2="21" y2="3" /><polyline points="21,16 21,21 16,21" /><line x1="15" y1="15" x2="21" y2="21" /><line x1="4" y1="4" x2="9" y2="9" /></svg>; }
 function SpeedIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2a10 10 0 1 1-7.07 2.93" /><polyline points="12,6 12,12 16,14" /></svg>; }
+function CompareIcon() { return <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="4" y1="6" x2="20" y2="6" /><line x1="4" y1="12" x2="20" y2="12" /><line x1="4" y1="18" x2="16" y2="18" /></svg>; }

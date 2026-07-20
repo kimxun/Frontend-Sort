@@ -1,0 +1,188 @@
+.compare-container {
+  padding: 24px;
+  max-width: 900px;
+  margin: 20px auto;
+  border-radius: 12px;
+  border: 1px solid;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  background-color: #1e1e2e;
+  color: #ffffff;
+  border-color: #313244;
+}
+
+.compare-container h2 {
+  margin-top: 0;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.compare-login-required {
+  text-align: center;
+  font-size: 18px;
+  font-weight: 500;
+  color: #ef4444;
+  margin: 40px 0;
+}
+
+.compare-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.compare-selects {
+  display: flex;
+  gap: 10px;
+  flex: 1;
+}
+
+.compare-array-input {
+  flex: 1;
+}
+
+.compare-array-input input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.compare-selects select,
+.compare-array-input input {
+  padding: 10px 12px;
+  border-radius: 8px;
+  border: 1px solid;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+  background-color: #242438;
+  color: #ffffff;
+  border-color: #45475a;
+}
+
+.compare-selects select option {
+  background-color: #1e1e2e;
+  color: #ffffff;
+}
+
+.compare-array-input input::placeholder {
+  color: #a6adc8;
+}
+
+.compare-selects select:focus,
+.compare-array-input input:focus {
+  border-color: #7c5cff;
+}
+
+.compare-controls button {
+  padding: 10px 24px;
+  background-color: #7c5cff;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  flex: 0 0 auto;
+}
+
+.compare-controls button:hover:not(:disabled) {
+  background-color: #6941c6;
+}
+
+.compare-controls button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.compare-results {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+.compare-results table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #1e1e2e;
+}
+
+.compare-results th,
+.compare-results td {
+  border: 1px solid #313244;
+  padding: 12px;
+  text-align: center;
+  font-size: 0.95rem;
+}
+
+.compare-results th {
+  background-color: #242438;
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.compare-results td {
+  color: #ffffff;
+}
+
+body.light-theme .compare-container,
+[data-theme='light'] .compare-container,
+.light .compare-container {
+  background-color: #ffffff;
+  color: #0f172a;
+  border-color: #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+body.light-theme .compare-container h2,
+[data-theme='light'] .compare-container h2,
+.light .compare-container h2 {
+  color: #0f172a !important;
+}
+
+body.light-theme .compare-selects select,
+body.light-theme .compare-array-input input,
+[data-theme='light'] .compare-selects select,
+[data-theme='light'] .compare-array-input input,
+.light .compare-selects select,
+.light .compare-array-input input {
+  background-color: #ffffff;
+  color: #0f172a !important;
+  border-color: #cbd5e1;
+}
+
+body.light-theme .compare-selects select option,
+[data-theme='light'] .compare-selects select option,
+.light .compare-selects select option {
+  background-color: #ffffff;
+  color: #0f172a !important;
+}
+
+body.light-theme .compare-array-input input::placeholder,
+[data-theme='light'] .compare-array-input input::placeholder,
+.light .compare-array-input input::placeholder {
+  color: #64748b;
+}
+
+body.light-theme .compare-results table,
+[data-theme='light'] .compare-results table,
+.light .compare-results table {
+  background-color: #ffffff;
+}
+
+body.light-theme .compare-results th,
+[data-theme='light'] .compare-results th,
+.light .compare-results th {
+  background-color: #f8fafc;
+  color: #0f172a !important;
+  border-color: #e2e8f0;
+}
+
+body.light-theme .compare-results td,
+[data-theme='light'] .compare-results td,
+.light .compare-results td {
+  color: #334155 !important;
+  border-color: #e2e8f0;
+}

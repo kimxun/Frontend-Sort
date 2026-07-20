@@ -5,7 +5,7 @@ import './VariablesPanel.css';
 const VAR_COLORS = ["#a5b4fc", "#67e8f9", "#86efac", "#fbbf24", "#f9a8d4", "#c084fc"];
 
 const VariablesPanel = () => {
-  const { array, steps, currentStep } = useSorting();
+  const { array, steps, currentStep, comparisons, swaps } = useSorting();
   const activeVariableRef = useRef(null);
 
   const safeSteps = Array.isArray(steps) ? steps : [];
@@ -20,6 +20,11 @@ const VariablesPanel = () => {
     { name: "Độ dài mảng", value: safeArray.length },
     { name: "Bước hiện tại", value: safeSteps.length > 0 ? `${currentStep + 1} / ${safeSteps.length}` : '0/0' },
   ];
+
+  if (safeSteps.length > 0) {
+    systemVariables.push({ name: "Phép so sánh", value: comparisons });
+    systemVariables.push({ name: "Phép hoán đổi", value: swaps });
+  }
 
   const backendKeys = currentStepData?.keys || [];
   const backendVals = currentStepData?.vals || [];
