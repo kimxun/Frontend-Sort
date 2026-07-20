@@ -4,6 +4,8 @@ import { getActiveAlgorithms } from '../../services/algorithmService';
 import { toast } from 'react-toastify';
 import './CompareAlgorithms.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const CompareAlgorithms = () => {
   const navigate = useNavigate();
   const [algorithms, setAlgorithms] = useState([]);
@@ -49,6 +51,15 @@ const CompareAlgorithms = () => {
       toast.warning('Vui lòng chọn hai thuật toán');
       return;
     }
+
+    const selectedAlgo1 = algorithms.find((a) => a.id === parseInt(algo1));
+    const selectedAlgo2 = algorithms.find((a) => a.id === parseInt(algo2));
+
+    if (!selectedAlgo1 || !selectedAlgo2) {
+      toast.error('Không tìm thấy thông tin thuật toán. Vui lòng thử lại.');
+      return;
+    }
+
     const arr = inputArray
       .split(',')
       .map((v) => parseInt(v.trim()))
@@ -63,9 +74,10 @@ const CompareAlgorithms = () => {
     }
 
     setLoading(true);
+    setResult(null);
     try {
       const token = localStorage.getItem('token');
-      const res = await fetch('/api/algorithms/compare', {
+      const res = await fetch(`${API_BASE_URL}/api/algorithms/compare`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -77,14 +89,22 @@ const CompareAlgorithms = () => {
           algorithm_id_2: parseInt(algo2),
         }),
       });
+
       if (!res.ok) {
-        const err = await res.json();
-        throw new Error(err.error || 'Lỗi khi so sánh');
+        let errorMsg = 'Lỗi khi so sánh thuật toán';
+        try {
+          const errData = await res.json();
+          errorMsg = errData?.error || errData?.message || errorMsg;
+        } catch (jsonError) {
+          errorMsg = `Lỗi server (${res.status})`;
+        }
+        throw new Error(errorMsg);
       }
+
       const data = await res.json();
       setResult(data);
     } catch (err) {
-      toast.error(err.message);
+      toast.error(err.message || 'Đã xảy ra lỗi');
     } finally {
       setLoading(false);
     }
