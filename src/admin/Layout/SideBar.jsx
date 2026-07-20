@@ -50,7 +50,7 @@ export default function Sidebar({ darkMode, onToggleTheme }) {
                 try {
                   await logout();
                   toast.success("Đăng xuất thành công!");
-                  navigate("/login"); 
+                  navigate("/"); 
                 } catch (err) {
                   toast.error("Đăng xuất thất bại!");
                 }
