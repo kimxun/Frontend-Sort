@@ -43,7 +43,7 @@ const SortingLayout = ({ darkMode, onToggleTheme }) => {
                 try {
                   await logout();
                   toast.success("Đăng xuất thành công!");
-                  window.location.href = "/login";
+                  window.location.href = "/";
                 } catch (err) {
                   toast.error("Đăng xuất thất bại!");
                 }
