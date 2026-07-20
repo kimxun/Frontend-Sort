@@ -532,3 +532,35 @@ body.light-theme .target-input:focus {
   background: #ffffff;
   border-color: #2563eb;
 }
+.btn-compare {
+  background: #f59e0b;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.18s ease, background 0.18s ease;
+}
+
+.btn-compare:hover:not(:disabled) {
+  background: #d97706;
+  transform: translateY(-1px);
+}
+
+.btn-compare.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+body.light-theme .btn-compare {
+  background: #f59e0b;
+  color: #ffffff;
+}
+
+body.light-theme .btn-compare:hover:not(:disabled) {
+  background: #b45309;
+}

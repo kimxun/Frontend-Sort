@@ -17,6 +17,7 @@ import Register from "./pages/Register/Register";
 import DashboardPage from "./admin/components/DashboardPage/DashboardPage";
 import SimulationHistoryPage from "./admin/components/SimulationHistory/SimulationHistoryPage";
 import ForgotPassword from "./pages/ForgotPassword/ForgotPassword";
+import CompareAlgorithms from "./components/CompareAlgorithms/CompareAlgorithms";
 function App() {
   const [darkMode, setDarkMode] = useState(() => {
     return localStorage.getItem("theme") !== "light";
@@ -40,6 +41,7 @@ function App() {
         <Routes>
           <Route path="/" element={<SortingPage darkMode={darkMode} onToggleTheme={toggleTheme} />} />
           <Route path="/:algorithmSlug" element={<SortingPage darkMode={darkMode} onToggleTheme={toggleTheme} />} />
+          <Route path="/compare" element={<CompareAlgorithms darkMode={darkMode} onToggleTheme={toggleTheme} />} />
           <Route path="/login" element={<Login darkMode={darkMode} onToggleTheme={toggleTheme} />} />
           <Route path="/register" element={<Register darkMode={darkMode} onToggleTheme={toggleTheme} />} />
           <Route path="/forgot-password" element={<ForgotPassword darkMode={darkMode} onToggleTheme={toggleTheme} />} />
