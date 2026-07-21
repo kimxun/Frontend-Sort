@@ -5,7 +5,7 @@ import './VariablesPanel.css';
 const VAR_COLORS = ["#a5b4fc", "#67e8f9", "#86efac", "#fbbf24", "#f9a8d4", "#c084fc"];
 
 const VariablesPanel = () => {
-  const { array, steps, currentStep, comparisons, swaps } = useSorting();
+  const { array, steps, currentStep, comparisons, swaps, algorithmInfo } = useSorting();
   const activeVariableRef = useRef(null);
 
   const safeSteps = Array.isArray(steps) ? steps : [];
@@ -15,6 +15,9 @@ const VariablesPanel = () => {
 
   const currentArray = currentStepData?.array || array;
   const safeArray = Array.isArray(currentArray) ? currentArray : [];
+  const isSearchMode =
+    algorithmInfo?.slug === 'linear-search' ||
+    algorithmInfo?.slug === 'binary-search';
 
   const systemVariables = [
     { name: "Độ dài mảng", value: safeArray.length },
@@ -29,10 +32,15 @@ const VariablesPanel = () => {
   const backendKeys = currentStepData?.keys || [];
   const backendVals = currentStepData?.vals || [];
 
-  const dynamicVariables = backendKeys.map((key, index) => ({
-    name: key,
-    value: backendVals[index] !== undefined && backendVals[index] !== null ? String(backendVals[index]) : '-'
-  }));
+  const dynamicVariables = backendKeys
+    .map((key, index) => ({
+      name: key,
+      value: backendVals[index] !== undefined && backendVals[index] !== null ? String(backendVals[index]) : '-'
+    }))
+    .filter((variable) => {
+      if (!isSearchMode) return true;
+      return variable.name !== 'comparisons';
+    });
 
   const allVariables = [...systemVariables, ...dynamicVariables];
   const changedVariableNames = useMemo(() => {
