@@ -186,3 +186,85 @@ body.light-theme .compare-results td,
   color: #334155 !important;
   border-color: #e2e8f0;
 }
+
+@media (max-width: 768px) {
+  .compare-container {
+    padding: 16px;
+    margin: 12px 8px;
+  }
+
+  .compare-container h2 {
+    font-size: 1.25rem;
+    margin-bottom: 16px;
+  }
+
+  .compare-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .compare-selects {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .compare-selects select,
+  .compare-array-input input {
+    padding: 12px 14px;
+    font-size: 1rem;
+  }
+
+  .compare-array-input {
+    flex: none;
+  }
+
+  .compare-controls button {
+    padding: 12px;
+    font-size: 1rem;
+    width: 100%;
+    flex: none;
+  }
+
+  .compare-results th,
+  .compare-results td {
+    padding: 10px 8px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .compare-container {
+    padding: 12px;
+    margin: 8px 4px;
+    border-radius: 8px;
+  }
+
+  .compare-container h2 {
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+  }
+
+  .compare-selects select,
+  .compare-array-input input {
+    padding: 10px 12px;
+    font-size: 0.9rem;
+  }
+
+  .compare-controls button {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .compare-results th,
+  .compare-results td {
+    padding: 8px 6px;
+    font-size: 0.75rem;
+    word-break: break-word;
+  }
+
+  .compare-results {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}

@@ -37,22 +37,16 @@ QUY TẮC BẮT BUỘC:
    Backend sẽ tự động dừng và báo lỗi nếu steps_history vượt quá 5000 phần tử,
    hoặc nếu thời gian thực thi hàm vượt quá 15 giây.
 
-7. Tên file khi upload sẽ tự động dùng làm slug (bỏ đuôi .py, chuẩn hoá về dạng
-   chữ-thường-có-gạch-ngang). Ví dụ: file "Bubble_Sort.py" -> slug "bubble-sort".
-   Slug này sẽ được dùng để tra cứu khi chạy mô phỏng, nên đặt tên file rõ ràng,
-   không trùng với thuật toán đã có sẵn (selection-sort, quick-sort,
-   interchange-sort, linear-search, binary-search) trừ khi bạn muốn GHI ĐÈ.
+7. NÊN khai báo các biến sau để tự động điền thông tin khi upload:
+   - DISPLAY_CODE (str): mã nguồn hiển thị (pseudocode / code mẫu)
+   - FEATURES (list[str]): danh sách tính năng đặc biệt (vd ["pivot"])
+   - TIME_COMPLEXITY (str): độ phức tạp thời gian
+   - SPACE_COMPLEXITY (str): độ phức tạp bộ nhớ
+   - DESCRIPTION (str): mô tả thuật toán (sẽ tự động điền vào form)
+   - STEPS (list[str]): danh sách các bước thực hiện (sẽ tự động điền vào form)
 
-8. NÊN khai báo biến DISPLAY_CODE (chuỗi) chứa pseudocode / code mẫu hiển thị
-   trên giao diện Code Editor. Nếu không có, hệ thống vẫn lưu được nhưng sẽ để
-   trống ô Code và nhắc nhở admin tự nhập tay.
-   Tương tự với TIME_COMPLEXITY và SPACE_COMPLEXITY (xem bên dưới), nếu bạn
-   không điền, hệ thống sẽ cố gắng tự động gán dựa trên tên file (slug) nếu
-   có trong từ điển độ phức tạp của hệ thống, ngược lại sẽ để trống.
-# FEATURES khai báo các tính năng đặc biệt của thuật toán (nếu có).
-# Hệ thống dùng danh sách này để hiển thị đúng các trạng thái màu (legend) khi mô phỏng.
-# Ví dụ: ["pivot"] -> hiển thị thêm màu "Phần tử chốt" (dành cho Quick Sort).
-# Để trống [] nếu thuật toán không có trạng thái đặc biệt nào.
+   Nếu không khai báo, các trường tương ứng sẽ để trống và admin phải nhập tay.
+
 =====================================================================
 VÍ DỤ MẪU: BUBBLE SORT (copy cấu trúc này để viết thuật toán của bạn)
 =====================================================================
@@ -70,8 +64,24 @@ DISPLAY_CODE = """void BubbleSort(int a[], int N) {
 }"""
 
 FEATURES = []
-TIME_COMPLEXITY = ""
-SPACE_COMPLEXITY = ""
+TIME_COMPLEXITY = "O(n^2)"
+SPACE_COMPLEXITY = "O(1)"
+
+DESCRIPTION = (
+    "Bubble Sort là thuật toán sắp xếp đơn giản. "
+    "Ý tưởng: Duyệt nhiều lần qua mảng, so sánh các cặp phần tử liền kề và hoán đổi nếu sai thứ tự. "
+    "Mỗi lượt duyệt sẽ đưa phần tử lớn nhất (hoặc nhỏ nhất) về cuối (hoặc đầu) dãy."
+)
+
+STEPS = [
+    "Bắt đầu từ phần tử đầu tiên, duyệt từ cuối mảng về đầu.",
+    "So sánh cặp phần tử liền kề (a[j] và a[j-1]).",
+    "Nếu a[j] < a[j-1] (với thứ tự tăng dần) hoặc a[j] > a[j-1] (với thứ tự giảm dần), hoán đổi chúng.",
+    "Tiếp tục với j giảm dần đến i+1.",
+    "Sau mỗi vòng lặp i, phần tử a[i] đã được đặt đúng vị trí.",
+    "Tăng i và lặp lại bước 2–5 cho đến khi i đạt n-1.",
+    "Kết thúc, mảng được sắp xếp."
+]
 
 def run_logic(arr, sort_order="asc"):
     steps_history = []

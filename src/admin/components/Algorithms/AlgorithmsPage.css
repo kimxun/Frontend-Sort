@@ -324,3 +324,25 @@ tbody td {
         min-width: 600px;
     }
 }
+.upload-select-btn {
+    background: #4f319c;        
+    color: #ffffff !important;  
+    padding: 8px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-block;
+    font-weight: 500;
+    transition: background 0.2s;
+    border: none;
+    font-size: 14px;
+}
+
+.upload-select-btn:hover {
+    background: #6240bb;
+}
+
+.light-mode .upload-select-btn {
+    background: #4f319c;
+    color: #ffffff !important;
+}
+

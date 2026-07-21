@@ -82,10 +82,12 @@ export const searchAlgorithmSteps = async (algorithm, array, target) => {
   return response.data;
 };
 
-export const uploadAlgorithmCode = async (file) => {
+export const uploadAlgorithmCode = async (file, slug) => {
   const formData = new FormData();
   formData.append('file', file);
-
+  if (slug) {
+    formData.append('slug', slug);
+  }
   const response = await api.post('/algorithms/upload-code', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',

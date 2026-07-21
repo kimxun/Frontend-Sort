@@ -61,9 +61,9 @@ const AddAlgorithm = () => {
         ...prev,
         slug: generateSlug(prev.name),
       }));
-    },3500);
+    }, 3500);
     return () => clearTimeout(debounceTimer.current);
-  }, [formData.name]);
+  }, [formData.name, slugManuallyEdited]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -74,6 +74,17 @@ const AddAlgorithm = () => {
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    let slugToSend = formData.slug.trim();
+    if (!slugToSend && formData.name.trim()) {
+      slugToSend = generateSlug(formData.name);
+      setFormData(prev => ({ ...prev, slug: slugToSend }));
+      setSlugManuallyEdited(false);
+    } else if (!slugToSend) {
+      alert('Vui lòng nhập tên thuật toán trước khi chọn file.');
+      e.target.value = '';
+      return;
+    }
 
     if (!file.name.endsWith('.py')) {
       setUploadState({
@@ -105,10 +116,10 @@ const AddAlgorithm = () => {
       return;
     }
 
-    handleUpload(file);
+    handleUpload(file, slugToSend);
   };
 
-  const handleUpload = async (file) => {
+  const handleUpload = async (file, slug) => {
     setUploadState({
       uploading: true,
       success: false,
@@ -121,7 +132,7 @@ const AddAlgorithm = () => {
     });
 
     try {
-      const result = await uploadAlgorithmCode(file);
+      const result = await uploadAlgorithmCode(file, slug);
       const hasDisplay = result.display_code && result.display_code.trim() !== '';
       setUploadState({
         uploading: false,
@@ -140,6 +151,8 @@ const AddAlgorithm = () => {
         code: hasDisplay ? result.display_code : '',
         time_complexity: result.time_complexity || prev.time_complexity,
         space_complexity: result.space_complexity || prev.space_complexity,
+        description: result.description || prev.description,
+        steps: Array.isArray(result.steps) ? result.steps.join('\n') : prev.steps,
       }));
     } catch (err) {
       const errMsg =
@@ -171,7 +184,7 @@ const AddAlgorithm = () => {
     });
     if (fileInputRef.current) fileInputRef.current.value = '';
     setSlugManuallyEdited(false);
-    setFormData(prev => ({ ...prev, code: '', time_complexity: '', space_complexity: '' }));
+    setFormData(prev => ({ ...prev, code: '', time_complexity: '', space_complexity: '', description: '', steps: '' }));
   };
 
   const handleDownloadTemplate = () => {
